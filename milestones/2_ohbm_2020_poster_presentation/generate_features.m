@@ -6,7 +6,8 @@
 % FIXME: Generate the features from the raw data instead.
 
 % Data are N*82*82 matrices where N is the number of 10 seconds window and
-% 82 is the number of channels
+% 82 is the number of channels. (aec however is 82*82*N which is a bit
+% cumbersome, it is addressed by permutig the dimension in the data loader)
 
 %% Experimental Variables
 DATA_PATH = "/media/yacine/My Book/datasets/consciousness/aec_wpli_source_localized_data/";
@@ -19,8 +20,15 @@ files = dir(DATA_PATH);
 for id = 3:length(files)
     file = files(id);
     [freq, type, epoch, data] = load_data(file);
+
+    % Skip the data that are not related to our analysis
+    if ~strcmp(freq, FREQUENCY) || ~any(strcmp(EPOCHS,epoch))
+       continue 
+    end
     
+    % At this point we need to generate the features
     fprintf("freq = %s, type = %s epoch = %s\n", freq, type, epoch);
+    
     
 
 
@@ -40,8 +48,12 @@ function [freq, type, epoch, data] = load_data(file)
     
     raw = load(data_path);
     
+    % The field within the raw datastructure depends on the type
     if strcmp(type, "aec")
         data = raw.AEC_OUT;
+        
+        % We need to permute the dimension of aec to fit pli
+        data = permute(data,[3 2 1]);
     else
         data = raw.PLI_OUT;
     end

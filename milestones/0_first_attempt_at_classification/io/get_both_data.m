@@ -26,7 +26,7 @@ function [data,data_pli,data_aec,label,identity] = get_both_data(epoch,frequency
         aec_data{i} = aec_data{i}(1:min_window_length,:,:);
     end
 
-    % Process the remaining data and merge theminto one file
+    % Process the remaining data and merge them into one file
     data_pli = [];
     data_aec = [];
     merged_data = [];

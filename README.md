@@ -6,4 +6,5 @@ In this repository we have adopted a iterative milestone approach. Meaning that 
 
 ### Milestones
 0. First Attempt at Classification: this is the code used to generate the result for the first draft of the paper sent out for review.
-1. OHBM 2020 Poster Presentation : this analysis was presented at OHBM and was focused on the binarized vs non-binarized graph.
+1. MAIN 2019 Poster Presentation: this analysis was presentated at the Montreal Artificial Intelligence Neuroscience conference. We looked at adding graph features to the classification to see if they helped improved the performance.
+2. OHBM 2020 Poster Presentation : this analysis was presented at OHBM and was focused on the binarized vs non-binarized graph. This work build upon what was presented at the MAIN conference.
