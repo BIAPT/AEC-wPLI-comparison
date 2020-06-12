@@ -9,6 +9,7 @@
 
 %% Compute Canada Setup
 NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
+NUM_CPU = 40;
 
 % Add NA library to our path so that we can use it
 addpath(genpath(NEUROALGO_PATH));
@@ -23,7 +24,7 @@ local_cluster = parcluster('local')
 pc.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'))
 
 % Start the parallel pool
-parpool(local_cluster)
+parpool(local_cluster, NUM_CPU)
 
 %% Experimental Variables
 DATA_PATH = "/lustre03/project/6010672/yacine08/aec_vs_pli/data/";
