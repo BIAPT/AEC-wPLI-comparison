@@ -4,6 +4,26 @@
 % machine learning analysis.
 % 
 % FIXME: Generate the features from the raw data instead.
+% FIXME: Modify the code to be parallelizable easily (Write each
+% participant to different files and merge them afterward)
+
+%% Compute Canada Setup
+NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
+
+% Add NA library to our path so that we can use it
+addpath(genpath(NEUROALGO_PATH));
+
+% Disable this feature
+distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happening in the cluster
+
+% Create a "local" cluster object
+local_cluster = parcluster('local')
+
+% Modify the JobStorageLocation to $SLURM_TMPDIR
+pc.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'))
+
+% Start the parallel pool
+parpool(local_cluster)
 
 %% Experimental Variables
 DATA_PATH = "/media/yacine/My Book/datasets/consciousness/aec_wpli_source_localized_data/";
@@ -23,7 +43,7 @@ transform = 'log'; % this is used for the weighted_global_efficiency
 
 %% Write the header of the CSV file
 
-header = ["p_id", "frequency", "epoch","graph","window"];
+header = ["p_id", "frequency", "epoch", "graph", "window"];
 for r_i = 1:num_regions
    mean_header = strcat("mean_",string(r_i));
    header = [header, mean_header];
@@ -35,11 +55,19 @@ for r_i = 1:num_regions
 end
 
 for r_i = 1:num_regions
-    clust_coeff = strcat("clust_coeff_ ", string(r_i));
+    clust_coeff = strcat("wei_clust_coeff_ ", string(r_i));
     header = [header,clust_coeff];      
 end
 
-header = [header, "norm_avg_clust_coeff", "norm_g_eff", "community", "small_worldness"];
+header = [header, "wei_norm_avg_clust_coeff", "wei_norm_g_eff", "wei_community", "wei_small_worldness"];
+
+for r_i = 1:num_regions
+    clust_coeff = strcat("bin_clust_coeff_ ", string(r_i));
+    header = [header,clust_coeff];      
+end
+
+header = [header, "bin_norm_avg_clust_coeff", "bin_norm_g_eff", "bin_community", "bin_small_worldness"];
+
 
 % Overwrite the file
 delete(OUTPUT_PATH);
@@ -91,19 +119,40 @@ for f_i = 1:length(FREQUENCIES)
             aec_data{p_i} = aec_data{p_i}(1:min_window_length,:,:);
             
             % calculate the feature for both aec and pli
-            for w_i = 1:min_window_length
+            rows_aec = zeros(min_window_length, length(header));
+            rows_pli = zeros(min_window_length, length(header));
+            parfor w_i = 1:min_window_length
                 disp(strcat("Window : ", string(w_i)));
                 aec_graph = squeeze(aec_data{p_i}(w_i,:,:));
                 pli_graph = squeeze(pli_data{p_i}(w_i,:,:));
                 
-                X_aec = generate_binary_graph_feature_vector(aec_graph, num_null_network, bin_swaps, weight_frequency, t_level);
-                X_pli = generate_binary_graph_feature_vector(pli_graph, num_null_network, bin_swaps, weight_frequency, t_level);
+                % Functional connectivity features
+                mean_aec = mean(aec_graph,2);
+                std_aec = std(aec_graph,0,2);
+                
+                mean_pli = mean(pli_graph,2);
+                std_pli = std(pli_graph,0,2);
+                
+                % Weighted Graph Feature
+                X_aec_wei = generate_weighted_graph_feature_vector(aec_graph, num_null_network, bin_swaps, weight_frequency, transform);
+                X_pli_wei = generate_weighted_graph_feature_vector(pli_graph, num_null_network, bin_swaps, weight_frequency, transform);
+                
+                % Binarized Graph Feature
+                X_aec_bin = generate_binary_graph_feature_vector(aec_graph, num_null_network, bin_swaps, weight_frequency, t_level);
+                X_pli_bin = generate_binary_graph_feature_vector(pli_graph, num_null_network, bin_swaps, weight_frequency, t_level);
                 
                 % Write both of them into the csv file
-                dlmwrite(OUTPUT_PATH, [p_i, f_i, e_i, 0, w_i, X_aec'], '-append');
-                dlmwrite(OUTPUT_PATH, [p_i, f_i, e_i, 1, w_i, X_pli'], '-append');
-       
+                rows_aec(w_i, :) = [p_i, f_i, e_i, 0, w_i, mean_aec', std_aec', X_aec_wei', X_aec_bin'];
+                rows_pli(w_i, :) = [p_i, f_i, e_i, 1, w_i, mean_pli', std_pli', X_pli_wei', X_pli_bin'];
             end
+            
+            % Writting out to the file the feature calculated
+            for w_i = 1:min_window_length
+                dlmwrite(OUTPUT_PATH, rows_aec(w_i,:), '-append');
+                dlmwrite(OUTPUT_PATH, rows_pli(w_i,:), '-append');
+            end
+            
+            
        end
     end
 end
@@ -120,10 +169,7 @@ function [X] = generate_binary_graph_feature_vector(graph, num_null_network, bin
 % X is a 86x1 feature vector and the first 82 map to the source localized
 % regions
 %
-% graph here is a functional connectivity matrix
-    mean_graph = mean(graph,2);
-    std_graph = std(graph,0,2);
-    
+   
     % Threshold the matrix
     t_grap = threshold_matrix(graph,t_level);
     % Binarize the matrix
@@ -145,7 +191,7 @@ function [X] = generate_binary_graph_feature_vector(graph, num_null_network, bin
     [clust_coeff, norm_avg_clust_coeff] = undirected_binary_clustering_coefficient(b_graph,null_networks);
     
     %% Features vector construction
-    X = [mean_graph; std_graph; clust_coeff; norm_avg_clust_coeff; norm_g_eff;community;b_small_worldness];
+    X = [clust_coeff; norm_avg_clust_coeff; norm_g_eff;community;b_small_worldness];
 end
 
 function [X] = generate_weighted_graph_feature_vector(graph, num_null_network, bin_swaps, weight_frequency, transform)
@@ -163,11 +209,6 @@ function [X] = generate_weighted_graph_feature_vector(graph, num_null_network, b
 % regions
 %
 % graph here is a functional connectivity matrix
-
-    % Calculate the unbinarized features
-    % Mean 
-    mean_graph = mean(graph,2);
-    std_graph = std(graph,0,2);
     
     % Generate the null networks
     null_networks = generate_null_networks(graph, num_null_network, bin_swaps, weight_frequency);
@@ -188,5 +229,5 @@ function [X] = generate_weighted_graph_feature_vector(graph, num_null_network, b
     [clust_coeff, norm_avg_clust_coeff] = undirected_weighted_clustering_coefficient(graph,null_networks);
     
     %% Features vector construction
-    X = [mean_graph; std_graph; clust_coeff; norm_avg_clust_coeff; norm_g_eff; community; w_small_worldness];
+    X = [clust_coeff; norm_avg_clust_coeff; norm_g_eff; community; w_small_worldness];
 end
