@@ -15,8 +15,8 @@ module load matlab/2018a
 # Create temporary job info location
 mkdir -p /scratch/$USER/$SLURM_JOB_ID
 
-# Remove -singleCompThread below if you are using parallel commands:
-srun matlab -nodisplay -r "generate_features" # will run on at most 40 cores
+# will run on at most 80 cores
+srun matlab -nodisplay -r "generate_features" 
 
 # Cleanup
 rm -rf /scratch/$USER/$SLURM_JOB_ID

@@ -26,8 +26,8 @@ pc.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'))
 parpool(local_cluster)
 
 %% Experimental Variables
-DATA_PATH = "/media/yacine/My Book/datasets/consciousness/aec_wpli_source_localized_data/";
-OUTPUT_PATH = "/media/yacine/My Book/datasets/consciousness/aec_wpli_source_localized_data/features.csv";
+DATA_PATH = "/lustre03/project/6010672/yacine08/aec_vs_pli/data/";
+OUTPUT_PATH = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/features.csv";
 
 % we can only use alpha here since ec8 was only calculated for that
 FREQUENCIES = ["alpha"]; 
