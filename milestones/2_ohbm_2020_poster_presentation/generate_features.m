@@ -152,7 +152,6 @@ for f_i = 1:length(FREQUENCIES)
                 dlmwrite(OUTPUT_PATH, rows_pli(w_i,:), '-append');
             end
             
-            
        end
     end
 end

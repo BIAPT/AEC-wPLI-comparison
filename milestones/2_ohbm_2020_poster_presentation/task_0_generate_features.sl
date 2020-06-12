@@ -2,7 +2,7 @@
 #SBATCH --job-name=make-features
 #SBATCH --account=def-sblain # adjust this to match the accounting group you are using to submit jobs
 #SBATCH --time=0-1:00:00        # adjust this to match the walltime of your job (D-HH:MM:SS)
-#SBATCH --nodes=2     
+#SBATCH --nodes=1     
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=40      # adjust this if you are using parallel commands
 #SBATCH --mem=90000         # adjust this according to the memory requirement per node you need (this is MegaByte)
