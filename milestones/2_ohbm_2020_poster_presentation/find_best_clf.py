@@ -34,12 +34,6 @@ def print_summary(accuracies, group, df):
     print("Accuracies: ")
     for accuracy, p_id in zip(accuracies, p_ids):
         print(f"Participant {p_id}: accuracy = {accuracy}")
-        num_window_baseline = len(df[(df['id'] == p_id) & (df['is_hot'] == 0)].to_numpy())
-        num_window_pain = len(df[(df['id'] == p_id) & (df['is_hot'] == 1)].to_numpy())
-        print(f"Baseline = {num_window_baseline}")
-        print(f"Pain = {num_window_pain}")
-        print(f"Ratio Baseline/Pain = {num_window_baseline / num_window_pain}")
-        print("------")
 
     print(f"Mean accuracy: {np.mean(accuracies)}")
 
@@ -112,9 +106,6 @@ gs = GridSearchCV(pipe, search_space, cv=LeaveOneGroupOut(), n_jobs=-1)
 
 accuracies, f1s, cms, best_params = classify_loso_model_selection(X, y, group, gs)
 
-# Print out the summary in the console
-print_summary(accuracies, group, df)
-
 # Saving the performance metrics
 clf_data = {
     'accuracies': accuracies,
@@ -126,3 +117,6 @@ clf_data = {
 best_clf_file = open(best_clf_filename, 'ab')
 pickle.dump(clf_data, best_clf_file)
 best_clf_file.close()
+
+# Print out the summary in the console
+print_summary(accuracies, group, df)
