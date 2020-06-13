@@ -11,10 +11,9 @@ for graph in ${GRAPHS[@]}; do
         for feature in ${FEATURES[@]}; do 
             analysis_param="${graph}_${epoch}_${feature}"
             echo "${analysis_param}"
+            sbatch --export=ANALYSIS_PARAM=$analysis_param task_1_find_best_clf_template.sl
         done
 
     done
-
-    sbatch --export=ANALYSIS_PARAM=$analysis_param task_1_find_best_clf_template.sl
 
 done
