@@ -102,7 +102,7 @@ search_space = [{'clf': [LogisticRegression()],
                  'clf__n_estimators': np.linspace(200, 2000, 4, dtype=int),
                  'clf__max_depth': np.linspace(10, 100, 4),
                  'clf__min_samples_split': [3, 10],
-                 'clf__min_samples_leaf': [1, 4]}
+                 'clf__min_samples_leaf': [1, 4]},
 
                 {'clf': [DecisionTreeClassifier()],  # Actual Estimator
                  'clf__criterion': ['gini', 'entropy']}]
