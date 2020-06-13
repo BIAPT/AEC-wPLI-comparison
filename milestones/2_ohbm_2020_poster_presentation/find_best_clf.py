@@ -99,12 +99,10 @@ search_space = [{'clf': [LogisticRegression()],
                  'clf__C': [1, 10, 100, 1000]},
 
                 {'clf': [RandomForestClassifier()],
-                 'clf__n_estimators': np.linspace(200, 2000, 10, dtype=int),
-                 'clf__max_features': ['auto', 'sqrt'],
-                 'clf__max_depth': np.linspace(10, 110, 11),
-                 'clf__min_samples_split': [2, 5, 10],
-                 'clf__min_samples_leaf': [1, 2, 4],
-                 'clf__bootstrap': [True, False]},
+                 'clf__n_estimators': np.linspace(200, 2000, 4, dtype=int),
+                 'clf__max_depth': np.linspace(10, 100, 4),
+                 'clf__min_samples_split': [3, 10],
+                 'clf__min_samples_leaf': [1, 4],
 
                 {'clf': [DecisionTreeClassifier()],  # Actual Estimator
                  'clf__criterion': ['gini', 'entropy']}]
