@@ -16,4 +16,4 @@ source $SLURM_TMPDIR/env/bin/activate
 pip install --no-index --upgrade pip
 pip install --no-index scikit-learn
 pip install --no-index pandas
-python generate_bootstrap_distribution.py
+python generate_bootstrap_distribution.py $ANALYSIS_PARAM

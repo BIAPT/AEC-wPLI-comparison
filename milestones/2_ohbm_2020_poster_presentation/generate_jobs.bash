@@ -11,7 +11,7 @@ for graph in ${GRAPHS[@]}; do
         for feature in ${FEATURES[@]}; do 
             analysis_param="${graph}_${epoch}_${feature}"
             echo "${analysis_param}"
-            sbatch --export=ANALYSIS_PARAM=$analysis_param task_2a_generate_bootstrap_distribution_template.sl
+            sbatch --export=ANALYSIS_PARAM=$analysis_param $1
         done
 
     done
