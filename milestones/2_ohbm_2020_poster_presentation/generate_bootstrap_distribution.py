@@ -1,27 +1,18 @@
+import sys
 import pickle
-
-import pandas as pd
 import numpy as np
 
 from sklearn.pipeline import Pipeline
-from sklearn.base import BaseEstimator
-from sklearn.model_selection import GridSearchCV
-
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
-from sklearn.model_selection import LeaveOneGroupOut
 
 import config as cfg
 from ml_tools.classification import bootstrap_interval
 from utils import load_pickle, find_best_model, filter_dataframe
 
-
 # This will be given by the srun in the bash file
-arg = "pli_emf5_func-wei"
-analysis_param = arg
-
 # Get the argument
-#analysis_param = sys.argv[1]
+analysis_param = sys.argv[1]
 
 bootstrap_filename = cfg.OUTPUT_DIR + f"bootstrap_{analysis_param}.pickle"
 best_clf_filename = cfg.OUTPUT_DIR + f'best_clf_{analysis_param}.pickle'
@@ -41,7 +32,7 @@ pipe = Pipeline([
     ('SVM', clf)])
 
 # Training and bootstrap interval generation
-acc_distribution, acc_interval = bootstrap_interval(X, y, group, pipe, num_resample=10, p_value=0.05)
+acc_distribution, acc_interval = bootstrap_interval(X, y, group, pipe, num_resample=1000, p_value=0.05)
 
 # Save the data to disk
 bootstrap_file = open(bootstrap_filename, 'ab')
@@ -52,7 +43,7 @@ bootstrap_data = {
 pickle.dump(bootstrap_data, bootstrap_file)
 bootstrap_file.close()
 
-# Print out some high level sumarry
+# Print out some high level summary
 print("F1 Distribution:")
 print(acc_distribution)
 print(f"Mean: {np.mean(acc_distribution)} and std: {np.std(acc_distribution)}")

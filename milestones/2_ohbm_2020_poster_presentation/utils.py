@@ -108,19 +108,19 @@ def find_best_model(best_params):
 
     content = best_clf_params.split('_')
     if content[0] == "log":
-        C = content[1]
+        C = float(content[1])
         clf = LogisticRegression(penalty="l2", solver="lbfgs", max_iter=1000, C=C)
     elif content[0] == "svc":
-        C = content[1]
+        C = float(content[1])
         clf = LinearSVC(C=C)
     elif content[0] == "dec":
         criterion = content[1]
         clf = DecisionTreeClassifier(criterion=criterion)
     elif content[0] == "rand":
-        n_estimators = content[1]
-        max_depth = content[2]
-        min_samples_split = content[3]
-        min_samples_leaf = content[4]
+        n_estimators = int(content[1])
+        max_depth = int(float(content[2]))
+        min_samples_split = int(content[3])
+        min_samples_leaf = int(content[4])
         clf = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth,
                                      min_samples_split=min_samples_split, min_samples_leaf=min_samples_leaf)
     elif content[0] == "lda":
