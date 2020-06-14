@@ -78,9 +78,8 @@ def find_best_model(best_params):
 
         clf = param['clf']
         if isinstance(clf, LogisticRegression):
-            penalty = param['clf__penalty']
             C = param['clf__C']
-            key = f"log_{penalty}_{C}"
+            key = f"log_{C}"
         elif isinstance(clf, LinearSVC):
             C = param['clf__C']
             key = f"svc_{C}"
