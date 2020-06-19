@@ -140,7 +140,7 @@ search_space = [{'clf': [LogisticRegression()],
                  'clf__solver': ['svd', 'lsqr']},
 
                 {'clf': [LinearSVC()],
-                 'clf__C': [0.2, 0.5, 1, 10, 100]},
+                 'clf__C': [0.1, 0.4, 0.5, 1, 10]},
 
                 {'clf': [DecisionTreeClassifier()],  # Actual Estimator
                  'clf__criterion': ['gini', 'entropy']}]
