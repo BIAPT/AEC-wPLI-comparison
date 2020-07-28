@@ -17,7 +17,6 @@ from utils import DummyEstimator, print_summary, filter_dataframe, search_space
 
 # Get the argument
 analysis_param = sys.argv[1]
-
 best_clf_filename = cfg.OUTPUT_DIR + f'best_clf_{analysis_param}.pickle'
 
 # Parse the parameters

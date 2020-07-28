@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # File and Dir Path Config
-DF_FILE_PATH = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/features.csv" #"/home/yacine/Documents/BIAPT/features.csv"
+DF_FILE_PATH = "/home/yacine/Documents/BIAPT/features.csv" # "/lustre03/project/6010672/yacine08/aec_vs_pli/result/features.csv"
 OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/" #"/home/yacine/Documents/BIAPT/testing/"
 
 EPOCHS = {
