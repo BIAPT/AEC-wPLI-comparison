@@ -3,6 +3,12 @@
 % calculate the features for each participants from the source localized
 % data.
 
+%This will need to be broken down into two script:
+% - one that will generate aec
+% - one that will generate wpli
+% this way we can parallelize these on the cluster
+% But first we need to clean this out
+
 INPUT_DIR = "/media/yacine/My Book/datasets/consciousness/AEC vs wPLI/source localized data/";
 
 participant_path = strcat(INPUT_DIR, 'MDFA03/MDFA03_emergence_first.mat');
@@ -22,15 +28,10 @@ participant_path = strcat(INPUT_DIR, 'MDFA03/MDFA03_emergence_first.mat');
 % Requires "symmetric_orthogonalise.m", "leakage_reduction.mexa64", and
 % EEGlab package or alternative frequency filter (see line 72).
 
-clear all
-close all
-clc
-
-
 
 %% Load data
 
-load MDFA05_eyesclosed_1.mat
+load(participant_path);
 
 Value= Value([82 62 54 56 58 60 30 26 34 32 28 24 36 86 66 76 84 74 72 70 88 3 78 52 50 48 5 22 46 38 40 98 92 90 96 94 68 16 18 20 44 83 63 55 57 59 61 31 27 35 33 29 25 37 87 67 77 85 75 71 73 89 4 79 53 51 49 6 23 47 39 41 99 93 91 97 95 69 17 19 21 45],:);
 Atlas.Scouts = Atlas.Scouts([82 62 54 56 58 60 30 26 34 32 28 24 36 86 66 76 84 74 72 70 88 3 78 52 50 48 5 22 46 38 40 98 92 90 96 94 68 16 18 20 44 83 63 55 57 59 61 31 27 35 33 29 25 37 87 67 77 85 75 71 73 89 4 79 53 51 49 6 23 47 39 41 99 93 91 97 95 69 17 19 21 45]);
@@ -41,57 +42,39 @@ for ii = 1:82
 end
 
 % Sampling frequency
-f = 1/(Time(2)-Time(1));
+fd = 1/(Time(2)-Time(1));
 
 
 %%  Choose frequency band
-fband = 4;
-switch fband
-    
-    case 1
+fname = 'alpha';
+switch fname
+    case 'delta'
         lowpass = 4;
         highpass = 1;
-        fname = 'delta';
-        d = 10; % Downsampling factor
-    case 2
+    case 'theta'
         lowpass = 8;
         highpass = 4;
-        fname = 'theta';
-        d = 10;
-    case 3
+    case 'alpha'
         lowpass = 13;
         highpass = 8;
-        fname = 'alpha';
-        d = 5;
-    case 4
+    case 'beta'
         lowpass = 30;
         highpass = 13;
-        fname = 'beta';
-        d = 5;
-    case 5
+    case 'gamma'
         lowpass = 48;
         highpass = 30;
-        fname = 'gamma';
-        d = 4;
 end
 
 
-% Can downsample to improve speed of calculation
-% need at least 2*maxfrequency of interest (i.e. Nyquist)
-%Valued = resample(Value',1,d)';
-fd  =  f %/d; % New sampling frequency
 Valued=Value;
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Frequency filtering, requires eeglab or other frequency filter.
 Vfilt = eegfilt(Valued,fd,highpass,lowpass,0,0,0,'fir1');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 Vfilt = Vfilt';
 % number of time points and Regions of Interest
 [m,R] = size(Vfilt);  
-
 
 % cuts edge points from hilbert transform
 cut = 10;
