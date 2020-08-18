@@ -35,6 +35,7 @@ load(participant_path);
 
 Value= Value([82 62 54 56 58 60 30 26 34 32 28 24 36 86 66 76 84 74 72 70 88 3 78 52 50 48 5 22 46 38 40 98 92 90 96 94 68 16 18 20 44 83 63 55 57 59 61 31 27 35 33 29 25 37 87 67 77 85 75 71 73 89 4 79 53 51 49 6 23 47 39 41 99 93 91 97 95 69 17 19 21 45],:);
 Atlas.Scouts = Atlas.Scouts([82 62 54 56 58 60 30 26 34 32 28 24 36 86 66 76 84 74 72 70 88 3 78 52 50 48 5 22 46 38 40 98 92 90 96 94 68 16 18 20 44 83 63 55 57 59 61 31 27 35 33 29 25 37 87 67 77 85 75 71 73 89 4 79 53 51 49 6 23 47 39 41 99 93 91 97 95 69 17 19 21 45]);
+
 % Get ROI labels from atlas
 LABELS = cell(1,82);
 for ii = 1:82
@@ -66,73 +67,23 @@ switch fname
 end
 
 
-Valued=Value;
+Valued = Value;
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Frequency filtering, requires eeglab or other frequency filter.
 Vfilt = eegfilt(Valued,fd,highpass,lowpass,0,0,0,'fir1');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Vfilt = Vfilt';
+
 % number of time points and Regions of Interest
 [m,R] = size(Vfilt);  
 
 % cuts edge points from hilbert transform
 cut = 10;
 
-
-%%  Multivariate leakage correction over whole time course
-
-Timed = linspace(Time(1),Time(end),m);
-Vlk =symmetric_orthogonalise(Vfilt,true);
-
-
-%%  Plots of data before/after multivariate leakage correction
-plot(Timed,Vfilt(:,1)); hold on; plot(Timed,Vlk(:,1),'r')
-
-node = 50;
-
-figure(1); clf;
-subplot 221; imagesc(cov(Vfilt)); colorbar;
-title('Covariance of non-corrected data')
-
-subplot 222; imagesc(cov(Vlk)); colorbar;
-title('Covariance of multivariate corrected data')
-
-subplot 223; [Pxx,F] = pwelch(Vfilt(:,node),[],[],1024,fd);
-plot(F,Pxx); hold on;
-[Plk,F] = pwelch(Vlk(:,node),[],[],1024,fd);
-plot(F,Plk,'r'); xlim([highpass-2, lowpass+2]);
-xlabel('Hz'); title('Power Spectral Density after frequency filtering');
-legend('non-corrected data','multivariate correction')
-
-subplot 224;
-plot(Timed,Vfilt(:,node));
-hold on
-plot(Timed,Vlk(:,node),'r');
-legend('non-corrected data','multivariate correction')
-xlabel('Time (s)')
-title('Example time course after frequency filtering')
-
-set(gcf,'Name','Comparison of data before/after multivariate leakage correction','color','w')
-%% Amplitude envelope correlation
-
-ht = hilbert(Vlk);
-ht = ht(cut+1:end-cut,:);
-env = abs(ht);
-
-%%%%%%%%%%%%%%%
-
-AEC1 = corr(env);
-AEC1 = AEC1.*~eye(R);
-figure(2); clf; subplot 221
-imagesc(AEC1); colorbar;
-set(gca,'YTick',1:82,'YTickLabel',LABELS);
-title('AEC, multivariate correction')
-
 %% Connectivity estimated with sliding windows
 
-% Bandwidth
-B = lowpass-highpass;
 % Length of window
 T = 10;              % in seconds
 N = round(T*fd/2)*2; % in data points, needs to be multiple of 2 for 50% overlap
