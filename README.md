@@ -1,4 +1,4 @@
-# Envelope- and phase-based measures of functional connectivity are complementary in the classification of states of consciousness
+# AEC & wPLI Comparison
 This repository is for the study of AEC vs wPLI functional connectivity metric and their relation to the classification of consciousness. 
 
 ## Repository Structure
