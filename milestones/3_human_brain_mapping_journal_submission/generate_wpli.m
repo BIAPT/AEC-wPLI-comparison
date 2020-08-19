@@ -11,8 +11,8 @@
 
 INPUT_DIR = "/media/yacine/My Book/datasets/consciousness/AEC vs wPLI/source localized data/";
 SCALP_REGIONS = [82 62 54 56 58 60 30 26 34 32 28 24 36 86 66 76 84 74 72 70 88 3 78 52 50 48 5 22 46 38 40 98 92 90 96 94 68 16 18 20 44 83 63 55 57 59 61 31 27 35 33 29 25 37 87 67 77 85 75 71 73 89 4 79 53 51 49 6 23 47 39 41 99 93 91 97 95 69 17 19 21 45];
+NUM_REGIONS = length(SCALP_REGIONS);
 participant_path = strcat(INPUT_DIR, 'MDFA03/MDFA03_emergence_first.mat');
-
 
 
 %% TO REFACTOR
@@ -30,15 +30,14 @@ participant_path = strcat(INPUT_DIR, 'MDFA03/MDFA03_emergence_first.mat');
 
 
 %% Load data
-
 load(participant_path);
 
 Value= Value(SCALP_REGIONS,:);
-Atlas.Scouts = Atlas.Scouts([82 62 54 56 58 60 30 26 34 32 28 24 36 86 66 76 84 74 72 70 88 3 78 52 50 48 5 22 46 38 40 98 92 90 96 94 68 16 18 20 44 83 63 55 57 59 61 31 27 35 33 29 25 37 87 67 77 85 75 71 73 89 4 79 53 51 49 6 23 47 39 41 99 93 91 97 95 69 17 19 21 45]);
+Atlas.Scouts = Atlas.Scouts(SCALP_REGIONS);
 
 % Get ROI labels from atlas
-LABELS = cell(1,82);
-for ii = 1:82
+LABELS = cell(1,NUM_REGIONS);
+for ii = 1:NUM_REGIONS
     LABELS{ii} = Atlas.Scouts(ii).Label;
 end
 
@@ -67,12 +66,8 @@ switch fname
 end
 
 
-Valued = Value;
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Frequency filtering, requires eeglab or other frequency filter.
-Vfilt = eegfilt(Valued,fd,highpass,lowpass,0,0,0,'fir1');
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Vfilt = eegfilt(Value,fd,highpass,lowpass,0,0,0,'fir1');
 
 Vfilt = Vfilt';
 
@@ -81,62 +76,6 @@ Vfilt = Vfilt';
 
 % cuts edge points from hilbert transform
 cut = 10;
-
-%% Connectivity estimated with sliding windows
-
-% Length of window
-T = 10;              % in seconds
-N = round(T*fd/2)*2; % in data points, needs to be multiple of 2 for 50% overlap
-
-% Number of windows, with 50% overlap
-K = fix((m-N/2)/(N/2));
-
-aecp = zeros(R, R, K);
-
-% loop over time windows
-for k = 1:K
-    
-    ibeg = (N/2)*(k-1) + 1;
-    iwind = ibeg:ibeg+N-1;
-        
-    %% Pairwise leakage correction in window for AEC
-    % Loops around all possible ROI pairs
-    for jj = 1:R
-        y = Vfilt(iwind,jj);
-        ii =  [1:jj-1,jj+1:R];
-        for iii =  1:R-1
-            x = Vfilt(iwind,ii(iii));
-            % Orthogonalise x with respect to y
-           % xc = leakage_reduction(x,y);
-            
-            % If not using linux, leakage_reduction is equivalent to:
-             beta_leak = pinv(y)*x;
-             xc = x - y*beta_leak;            
-                       
-            ht = hilbert([xc,y]);
-            ht = ht(cut+1:end-cut,:);
-            ht = bsxfun(@minus,ht,mean(ht,1));
-            
-            % Envelope
-            env = abs(ht);
-            c = corr(env);
-            
-            aecp(ii(iii),jj,k) = c(1,2);
-        end
-    end
-    
-    fprintf('Calculated AEC for window %d/%d\n',k,K)
-end
-
-% Average amplitude correlations over all windows with pairwise
-% correction. Correction is asymmetric so we take the average of the
-% elements above and below the diagonal:
-% e.g. ( corr(env(1)', env(2)) +  corr(env(1),env(2)') )/2,
-% where (1) is an ROI and env' indicates a corrected envelope.
-aecp = (aecp + permute(aecp,[2,1,3]))/2; 
-
-% TO SAVE : aecp
-
 
 %% No correction + PLI calculation
 ht = hilbert(Vfilt);
@@ -150,11 +89,10 @@ theta = angle(ht);
 B = lowpass-highpass;
 
 % Window duration for PLI calculation
-T = 100/(2*B);                % ~100 effective points
+T = 10;
 
 N = round(T*fd/2)*2;
 K = fix((m-N/2-cut*2)/(N/2)); % number of windows, 50% overlap
-
 V = nchoosek(R,2);            % number of ROI pairs
 
 pli = zeros(V,K);
@@ -185,11 +123,3 @@ PLI = zeros(R);
 % Average over windows
 PLI(ind) = mean(pli,2);
 PLI = PLI + PLI';
-
-figure(2); subplot 122
-imagesc(PLI);colorbar; caxis([min(PLI(~eye(R))), max(PLI(~eye(R)))])
-set(gca,'YTick',1:82,'YTickLabel',LABELS);
-set(gca,'XTick',1:82,'XTickLabel',LABELS);
-title(sprintf('PLI, with %.1fs windows',T))
-
-set(gcf,'Name','Connectivity matrices','color','w')
