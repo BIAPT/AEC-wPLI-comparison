@@ -50,7 +50,7 @@ high_frequency = 13;
 
 % Size of the cuts for the data
 window_size = 10; % in seconds
-step_size = 20; % in seconds
+step_size = 0.1; % in seconds
 
 % cuts edge points from hilbert transform
 cut = 10;
