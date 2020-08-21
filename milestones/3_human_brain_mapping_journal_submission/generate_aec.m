@@ -3,15 +3,28 @@
 % calculate the features for each participants from the source localized
 % data.
 
-%% Compute Canada Setup
-NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
+%% Path Setup
+% Local Source
+%{
+INPUT_DIR = "/media/yacine/My Book/datasets/consciousness/AEC vs wPLI/source localized data/";
+OUTPUT_DIR = "/media/yacine/My Book/test_result/";
 NUM_CPU = 2;
+%}
 
+% Remote Source
+
+INPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/data/source_localized_data/";
+OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/graphs/";
+NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
+
+distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happening in the cluster
 % Add NA library to our path so that we can use it
 addpath(genpath(NEUROALGO_PATH));
 
-% Disable this feature
-%distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happening in the cluster
+NUM_CPU = 40;
+
+
+%% Compute Canada Setup
 
 % Create a "local" cluster object
 local_cluster = parcluster('local');
@@ -23,13 +36,8 @@ pc.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'));
 parpool(local_cluster, NUM_CPU)
 
 %% Experiment Variables
-INPUT_DIR = "/media/yacine/My Book/datasets/consciousness/AEC vs wPLI/source localized data/";
-OUTPUT_DIR = "/media/yacine/My Book/test_result/";
-
-% TODO: P_IDS + EPOCHS
 P_IDS = {'MDFA03', 'MDFA05', 'MDFA06', 'MDFA07', 'MDFA10', 'MDFA11', 'MDFA12', 'MDFA15', 'MDFA17'};
-EPOCHS = {'emergence_first', 'emergence_last', 'eyesclosed_1', 'eyesclosed_3', 'eyesclosed_4', ...
-    'eyesclosed_5', 'eyesclosed_6', 'eyesclosed_7', 'eyesclosed_8'};
+EPOCHS = {'eyesclosed_1', 'emergence_first', 'emergence_last', 'eyesclosed_8'};
 
 % indice of the scalp regions
 SCALP_REGIONS = [82 62 54 56 58 60 30 26 34 32 28 24 36 86 66 76 84 74 72 70 88 3 78 52 50 48 5 22 46 38 40 98 92 90 96 94 68 16 18 20 44 83 63 55 57 59 61 31 27 35 33 29 25 37 87 67 77 85 75 71 73 89 4 79 53 51 49 6 23 47 39 41 99 93 91 97 95 69 17 19 21 45];
@@ -42,7 +50,7 @@ HP = 8;
 
 % Size of the cuts for the data
 window_size = 10; % in seconds
-step_size = 10; % in seconds
+step_size = 0.1; % in seconds
 
 % cuts edge points from hilbert transform
 cut = 10;
@@ -65,7 +73,7 @@ for p = 1:length(P_IDS)
         %% Load data
         load(participant_in_path);
 
-        Value= Value(SCALP_REGIONS,:);
+        Value = Value(SCALP_REGIONS,:);
         Atlas.Scouts = Atlas.Scouts(SCALP_REGIONS);
 
         % Get ROI labels from atlas
@@ -74,7 +82,7 @@ for p = 1:length(P_IDS)
             LABELS{ii} = Atlas.Scouts(ii).Label;
         end
 
-        % Sampling frequency
+        % Sampling frequency : need to round
         fd = 1/(Time(2)-Time(1));
 
         %% Filtering
@@ -98,7 +106,7 @@ for p = 1:length(P_IDS)
         parfor win_i = 1:num_window
            disp(strcat("AEC at window: ",string(win_i)," of ", string(num_window))); 
            segment_data = squeeze(windowed_data(win_i,:,:));
-           aec(:,:, win_i) = calculate_pairwise_aec(segment_data, NUM_REGIONS, cut);
+           aec(:,:, win_i) = aec_pairwise_corrected(segment_data, NUM_REGIONS, cut);
         end
 
         % Average amplitude correlations over all windows with pairwise
@@ -136,8 +144,10 @@ function [windowed_data, num_window] = create_sliding_window(data, window_size, 
     
     [length_data, num_region] = size(data);
     
-    window_size = window_size*sampling_rate; % in points
-    step_size = step_size*sampling_rate; % in points
+    % Need to round from seconds -> points conversion since points are
+    % integer valued
+    window_size = round(window_size*sampling_rate); % in points
+    step_size = round(step_size*sampling_rate); % in points
     
     num_window = length(1:step_size:(length_data - window_size));
     
@@ -148,51 +158,4 @@ function [windowed_data, num_window] = create_sliding_window(data, window_size, 
         index = index + 1;
     end
     
-end
-
-function [aec] = calculate_pairwise_aec(data, num_regions, cut)
-%% CALCULATE PAIRWISE AEC helper function to calculate the pairwise corrected aec
-%
-% input:
-% data: the data segment to calculate pairwise corrected aec on
-% num_regions: number of regions
-% cut: the amount we need to remove from the hilber transform
-%
-% output:
-% aec: a num_region*num_region matrix which has the amplitude envelope
-% correlation between two regions
-    
-    aec = zeros(num_regions, num_regions);
-        
-    %% Pairwise leakage correction in window for AEC
-    % Loops around all possible ROI pairs
-    for region_i = 1:num_regions
-        y = data(:, region_i);
-        for region_j =  1:num_regions
-            
-            % Skip the correlation between itself
-            if region_i == region_j
-               continue 
-            end
-            
-            x = data(:, region_j);
-            
-            % Leakage Reduction
-            beta_leak = pinv(y)*x;
-            xc = x - y*beta_leak;            
-                       
-            ht = hilbert([xc,y]);
-            ht = ht(cut+1:end-cut,:);
-            ht = bsxfun(@minus,ht,mean(ht,1));
-            
-            % Envelope
-            env = abs(ht);
-            c = corr(env);
-            
-            aec(region_i,region_j) = c(1,2);
-        end
-    end
-    
-    % Set the diagonal to 0 
-    aec(:,:) = aec(:,:).*~eye(num_regions);
 end
