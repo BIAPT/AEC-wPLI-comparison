@@ -1,18 +1,18 @@
-%% Yacine Mahdid August 21 2020
-% This script goal is to generate the wPLI matrices that are needed to
+%% Yacine Mahdid August 18 2020
+% This script goal is to generate the AEC matrices that are needed to
 % calculate the features for each participants from the source localized
 % data.
 
 %% Path Setup
 % Local Source
-%{
+%
 INPUT_DIR = "/media/yacine/My Book/datasets/consciousness/AEC vs wPLI/source localized data/";
 OUTPUT_DIR = "/media/yacine/My Book/test_result/";
 NUM_CPU = 2;
 %}
 
 % Remote Source
-
+%{
 INPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/data/source_localized_data/";
 OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/graphs/";
 NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
@@ -22,7 +22,7 @@ distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happ
 addpath(genpath(NEUROALGO_PATH));
 
 NUM_CPU = 40;
-
+%}
 
 %% Compute Canada Setup
 
@@ -43,20 +43,20 @@ EPOCHS = {'eyesclosed_1', 'emergence_first', 'emergence_last', 'eyesclosed_8'};
 SCALP_REGIONS = [82 62 54 56 58 60 30 26 34 32 28 24 36 86 66 76 84 74 72 70 88 3 78 52 50 48 5 22 46 38 40 98 92 90 96 94 68 16 18 20 44 83 63 55 57 59 61 31 27 35 33 29 25 37 87 67 77 85 75 71 73 89 4 79 53 51 49 6 23 47 39 41 99 93 91 97 95 69 17 19 21 45];
 NUM_REGIONS = length(SCALP_REGIONS);
 
-% wPLI Parameters:
+% AEC Parameters:
 % Alpha bandpass
 low_frequency = 8;
 high_frequency = 13;
 
 % Size of the cuts for the data
 window_size = 10; % in seconds
-step_size = 0.1; % in seconds
+step_size = 20; % in seconds
 
-p_value = 0.05;
-num_surrogates = 20;
+% cuts edge points from hilbert transform
+cut = 10;
 
 % Type of graph to calculate
-graph = 'wpli';
+graph = 'aec';
 
 % Participant Path (will need to iterate at the end over all the files)
 for p = 1:length(P_IDS)
@@ -101,21 +101,24 @@ for p = 1:length(P_IDS)
 
         %% Iterate over each window and calculate pairwise corrected aec
         result = struct();
-        pli = zeros(NUM_REGIONS, NUM_REGIONS, num_window);
+        aec = zeros(NUM_REGIONS, NUM_REGIONS, num_window);
 
         parfor win_i = 1:num_window
-           disp(strcat("wPLI at window: ",string(win_i)," of ", string(num_window))); 
+           disp(strcat("AEC at window: ",string(win_i)," of ", string(num_window))); 
            segment_data = squeeze(windowed_data(win_i,:,:));
-           pli(:,:, win_i) = wpli(segment_data', num_surrogates, p_value);
+           aec(:,:, win_i) = aec_pairwise_corrected(segment_data, NUM_REGIONS, cut);
         end
 
-        result.wpli = pli;
+        % Average amplitude correlations over all windows with pairwise
+        % correction. Correction is asymmetric so we take the average of the
+        % elements above and below the diagonal:
+        % e.g. ( corr(env(1)', env(2)) +  corr(env(1),env(2)') )/2,
+        % where (1) is an ROI and env' indicates a corrected envelope.
+        result.aec = (aec + permute(aec,[2,1,3]))/2; 
 
         % Bundling some metadata that could be useful along with the graph
         result.window_size = window_size;
         result.step_size = step_size;
-        result.p_value = p_value;
-        resut.num_surrogates = num_surrogates;
         result.labels = LABELS;
 
         % Save the result structure at the right spot
