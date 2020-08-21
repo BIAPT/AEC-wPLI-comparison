@@ -5,13 +5,14 @@
 
 %% Path Setup
 % Local Source
+%{
 INPUT_DIR = "/media/yacine/My Book/datasets/consciousness/AEC vs wPLI/source localized data/";
 OUTPUT_DIR = "/media/yacine/My Book/test_result/";
 NUM_CPU = 2;
-
+%}
 
 % Remote Source
-%{
+
 INPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/data/source_localized_data/";
 OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/graphs/";
 NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
@@ -21,7 +22,7 @@ distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happ
 addpath(genpath(NEUROALGO_PATH));
 
 NUM_CPU = 40;
-%}
+
 
 %% Compute Canada Setup
 
