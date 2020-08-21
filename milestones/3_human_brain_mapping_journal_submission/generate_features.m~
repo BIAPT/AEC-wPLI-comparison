@@ -117,27 +117,39 @@ for p_i = 1:length(P_IDS)
            
            parfor w_i = 1:min_window_length
                 disp(strcat("Window : ", string(w_i)));
-                single_graph = squeeze(graph_data(:,:,w_i));
+                aec_graph = squeeze(aec_data{p_i}(w_i,:,:));
+                pli_graph = squeeze(pli_data{p_i}(w_i,:,:));
 
                 % Functional connectivity features
-                mean_graph = mean(single_graph,2);
-                std_graph = std(single_graph,0,2);
+                mean_aec = mean(aec_graph,2);
+                std_aec = std(aec_graph,0,2);
+
+                mean_pli = mean(pli_graph,2);
+                std_pli = std(pli_graph,0,2);
 
                 % Weighted Graph Feature
-                X_graph_wei = generate_weighted_graph_feature_vector(single_graph, num_null_network, bin_swaps, weight_frequency, transform);
-                
+                X_aec_wei = generate_weighted_graph_feature_vector(aec_graph, num_null_network, bin_swaps, weight_frequency, transform);
+                X_pli_wei = generate_weighted_graph_feature_vector(pli_graph, num_null_network, bin_swaps, weight_frequency, transform);
+
                 % Binarized Graph Feature
-                X_graph_bin = generate_binary_graph_feature_vector(single_graph, num_null_network, bin_swaps, weight_frequency, t_level);
-               
+                X_aec_bin = generate_binary_graph_feature_vector(aec_graph, num_null_network, bin_swaps, weight_frequency, t_level);
+                X_pli_bin = generate_binary_graph_feature_vector(pli_graph, num_null_network, bin_swaps, weight_frequency, t_level);
+
                 % Write both of them into the csv file
-                rows_graph(w_i, :) = [p_i, f_i, e_i, g_i, w_i, mean_graph', std_graph', X_graph_wei', X_graph_bin'];
+                rows_aec(w_i, :) = [p_i, f_i, e_i, 0, w_i, mean_aec', std_aec', X_aec_wei', X_aec_bin'];
+                rows_pli(w_i, :) = [p_i, f_i, e_i, 1, w_i, mean_pli', std_pli', X_pli_wei', X_pli_bin'];
             end
 
             % Writting out to the file the feature calculated
             for w_i = 1:min_window_length
-                dlmwrite(OUTPUT_PATH, rows_graph(w_i,:), '-append');
+                dlmwrite(OUTPUT_PATH, rows_aec(w_i,:), '-append');
+                dlmwrite(OUTPUT_PATH, rows_pli(w_i,:), '-append');
             end
+        
+        
         end
+       
+            
     end
 end
 
