@@ -5,14 +5,13 @@
 
 %% Path Setup
 % Local Source
-%{
 INPUT_DIR = "/media/yacine/My Book/datasets/consciousness/AEC vs wPLI/source localized data/";
 OUTPUT_DIR = "/media/yacine/My Book/test_result/";
 NUM_CPU = 2;
-%}
+
 
 % Remote Source
-
+%{
 INPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/data/source_localized_data/";
 OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/graphs/";
 NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
@@ -22,7 +21,7 @@ distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happ
 addpath(genpath(NEUROALGO_PATH));
 
 NUM_CPU = 40;
-
+%}
 
 %% Compute Canada Setup
 
@@ -45,12 +44,12 @@ NUM_REGIONS = length(SCALP_REGIONS);
 
 % AEC Parameters:
 % Alpha bandpass
-LP = 13;
-HP = 8;
+low_frequency = 8;
+high_frequency = 13;
 
 % Size of the cuts for the data
 window_size = 10; % in seconds
-step_size = 0.1; % in seconds
+step_size = 20; % in seconds
 
 % cuts edge points from hilbert transform
 cut = 10;
@@ -87,7 +86,7 @@ for p = 1:length(P_IDS)
 
         %% Filtering
         % Frequency filtering, requires eeglab or other frequency filter.
-        Vfilt = eegfilt(Value,fd,HP,LP,0,0,0,'fir1');
+        Vfilt = filter_bandpass(Value, fd, low_frequency, high_frequency);
         Vfilt = Vfilt';
 
         % number of time points and Regions of Interest
