@@ -7,14 +7,14 @@
 
 %% Path Setup
 % Local Source
-%
+%{
 DATA_PATH = "/media/yacine/My Book/test_result/";
 OUTPUT_PATH = "/media/yacine/My Book/features.csv";
 NUM_CPU = 2;
 %}
 
 % Remote Source
-%{
+%
 DATA_PATH = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/graphs/";
 OUTPUT_PATH = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/features.csv";
 NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
@@ -40,7 +40,8 @@ parpool(local_cluster, NUM_CPU)
 % we can only use alpha here since ec8 was only calculated for that
 P_IDS = {'MDFA03', 'MDFA05', 'MDFA06', 'MDFA07', 'MDFA10', 'MDFA11', 'MDFA12', 'MDFA15', 'MDFA17'};
 EPOCHS = {'eyesclosed_1', 'emergence_first', 'emergence_last', 'eyesclosed_8'};
-GRAPHS = {'aec','wpli'}
+GRAPHS = {'aec','wpli'};
+FREQUENCIES = {'alpha'};
 
 % Graph theory paramters
 num_regions = 82; % Number of source localized regions
@@ -92,50 +93,54 @@ fclose(fileId);
 %% Write the body of the CSV file containing the data
 % We iterate over all the possible permutation and create our filename to
 % load
-for p_i = 1:length(P_IDS)
-    participant = P_IDS(p_i);
-    disp(strcat("Participant: ",participant));
-    for e_i = 1:length(EPOCHS)
-        % Get our variables
-        epoch = EPOCHS(e_i);
-        disp(strcat("Epochs: ",epoch));
+for f_i = 1:length(FREQUENCIES)
+    frequency = FREQUENCIES{f_i};
+    disp(strcat("Frequency: ", frequency));
+    for p_i = 1:length(P_IDS)
+        participant = P_IDS(p_i);
+        disp(strcat("Participant: ",participant));
+        for e_i = 1:length(EPOCHS)
+            % Get our variables
+            epoch = EPOCHS(e_i);
+            disp(strcat("Epochs: ",epoch));
 
-        for g_i = 1:length(GRAPHS)
-           graph = GRAPHS{g_i}; 
-           
-           graph_filename = strcat(DATA_PATH,participant,"_",epoch,"_",graph,".mat");
-           graph_data = load(aec_filename);
-           
-           if strcmp(graph, "aec")
-                graph_data = graph_data.result.aec;              
-           else
-                graph_data = graph_data.result.wpli;
-           end
+            for g_i = 1:length(GRAPHS)
+               graph = GRAPHS{g_i}; 
 
-           [~,~,num_window] = size(graph_data);
-           rows_graph = zeros(num_window, length(header));
-           
-           parfor w_i = 1:min_window_length
-                disp(strcat("Window : ", string(w_i)));
-                single_graph = squeeze(graph_data(:,:,w_i));
+               graph_filename = strcat(DATA_PATH,participant,"_",epoch,"_",graph,".mat");
+               graph_data = load(graph_filename);
 
-                % Functional connectivity features
-                mean_graph = mean(single_graph,2);
-                std_graph = std(single_graph,0,2);
+               if strcmp(graph, "aec")
+                    graph_data = graph_data.result.aec;              
+               else
+                    graph_data = graph_data.result.wpli;
+               end
 
-                % Weighted Graph Feature
-                X_graph_wei = generate_weighted_graph_feature_vector(single_graph, num_null_network, bin_swaps, weight_frequency, transform);
-                
-                % Binarized Graph Feature
-                X_graph_bin = generate_binary_graph_feature_vector(single_graph, num_null_network, bin_swaps, weight_frequency, t_level);
-               
-                % Write both of them into the csv file
-                rows_graph(w_i, :) = [p_i, f_i, e_i, g_i, w_i, mean_graph', std_graph', X_graph_wei', X_graph_bin'];
-            end
+               [~,~,num_window] = size(graph_data);
+               rows_graph = zeros(num_window, length(header));
 
-            % Writting out to the file the feature calculated
-            for w_i = 1:min_window_length
-                dlmwrite(OUTPUT_PATH, rows_graph(w_i,:), '-append');
+               parfor w_i = 1:num_window
+                    disp(strcat("Window : ", string(w_i)));
+                    single_graph = squeeze(graph_data(:,:,w_i));
+
+                    % Functional connectivity features
+                    mean_graph = mean(single_graph,2);
+                    std_graph = std(single_graph,0,2);
+
+                    % Weighted Graph Feature
+                    X_graph_wei = generate_weighted_graph_feature_vector(single_graph, num_null_network, bin_swaps, weight_frequency, transform);
+
+                    % Binarized Graph Feature
+                    X_graph_bin = generate_binary_graph_feature_vector(single_graph, num_null_network, bin_swaps, weight_frequency, t_level);
+
+                    % Write both of them into the csv file
+                    rows_graph(w_i, :) = [p_i, f_i, e_i, g_i, w_i, mean_graph', std_graph', X_graph_wei', X_graph_bin'];
+                end
+
+                % Writting out to the file the feature calculated
+                for w_i = 1:num_window
+                    dlmwrite(OUTPUT_PATH, rows_graph(w_i,:), '-append');
+                end
             end
         end
     end
