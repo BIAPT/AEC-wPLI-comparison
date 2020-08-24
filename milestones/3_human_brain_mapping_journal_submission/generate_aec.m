@@ -5,14 +5,14 @@
 
 %% Path Setup
 % Local Source
-%
+%{
 INPUT_DIR = "/media/yacine/My Book/datasets/consciousness/AEC vs wPLI/source localized data/";
 OUTPUT_DIR = "/media/yacine/My Book/test_result/";
 NUM_CPU = 2;
 %}
 
 % Remote Source
-%{
+%
 INPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/data/source_localized_data/";
 OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/graphs/";
 NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
@@ -37,7 +37,7 @@ parpool(local_cluster, NUM_CPU)
 
 %% Experiment Variables
 P_IDS = {'MDFA03', 'MDFA05', 'MDFA06', 'MDFA07', 'MDFA10', 'MDFA11', 'MDFA12', 'MDFA15', 'MDFA17'};
-EPOCHS = {'eyesclosed_1', 'emergence_first', 'emergence_last', 'eyesclosed_8'};
+EPOCHS = {'eyesclosed_1', 'induction', 'emergence_first', 'emergence_last', 'eyesclosed_8'};
 
 % indice of the scalp regions
 SCALP_REGIONS = [82 62 54 56 58 60 30 26 34 32 28 24 36 86 66 76 84 74 72 70 88 3 78 52 50 48 5 22 46 38 40 98 92 90 96 94 68 16 18 20 44 83 63 55 57 59 61 31 27 35 33 29 25 37 87 67 77 85 75 71 73 89 4 79 53 51 49 6 23 47 39 41 99 93 91 97 95 69 17 19 21 45];
@@ -65,7 +65,6 @@ for p = 1:length(P_IDS)
         epoch = EPOCHS{e};
         
         fprintf("Analyzing participant '%s' at epoch '%s'\n", p_id, epoch);
-        
         
         participant_in_path = strcat(INPUT_DIR, p_id, filesep, p_id, '_', epoch, '.mat');
         participant_out_path = strcat(OUTPUT_DIR, p_id, '_', epoch, '_', graph, '.mat');
