@@ -38,6 +38,8 @@ for g_i = 1:length(GRAPHS)
         avg_graphs = zeros(NUM_REGIONS, NUM_REGIONS, length(P_IDS));
         for p_i = 1:length(P_IDS)
             participant = P_IDS{p_i};
+            
+            disp(strcat("At ", graph, " ", epoch, " ", participant));
 
             % Load the data
             filename = strcat(graph_path, participant, "_", epoch, "_", graph, ".mat");
@@ -69,8 +71,8 @@ for g_i = 1:length(GRAPHS)
         
         % Generate the figure for connectivity amtrix
         output_filename = strcat(output_path, epoch, "_", graph, ".png");
+        
         figure;
-        axis ([0,100,0,50,0,100])
         imagesc(avg_participant_graph(:,:,e_i));
         caxis([mean_connectivity - 2*std_connectivity, mean_connectivity + 2*std_connectivity]);
         xticklabels(labels);
@@ -81,6 +83,8 @@ for g_i = 1:length(GRAPHS)
         title(strcat("Average Participant ", graph, " at ", epoch));
         colormap('jet');
         colorbar;
+        set(gcf, 'Position',  [100, 100, 800, 600])
+        
         saveas(gcf, output_filename)
         close(gcf);
         

@@ -1,83 +1,83 @@
 region,index,label
-'Rectus L',1,Frontal
-'Olfactory L',2,Frontal
-'OFCant L',3,Frontal
-'OFClat L',4,Frontal
-'OFCmed L',5,Frontal
-'OFCpost L',6,Frontal
-'Frontal_Med_Orb L',7,Frontal
-'Frontal_Inf_Orb_2 L',8,Frontal
-'Frontal_Sup_2 L',9,Frontal
-'Frontal_Mid_2 L',10,Frontal
-'Frontal_Inf_Tri L',11,Frontal
-'Frontal_Inf_Oper L',12,Frontal
-'Frontal_Sup_Medial L',13,Frontal
-'Supp_Motor_Area L',14,Central
-'Paracentral_Lobule L',15,Central
-'Precentral L',16,Central
-'Rolandic_Oper L',17,Central
-'Postcentral L',18,Central
-'Parietal_Sup L',19,Parietal
-'Parietal_Inf L',20,Parietal
-'SupraMarginal L',21,Parietal
-'Angular L',22,Parietal
-'Precuneus L',23,Parietal
-'Occipital_Sup L',24,Occipital
-'Occipital_Mid L',25,Occipital
-'Occipital_Inf L',26,Occipital
-'Calcarine L',27,Occipital
-'Cuneus L',28,Occipital
-'Lingual L',29,Occipital
-'Fusiform L',30,Temporal
-'Heschl L',31,Temporal
-'Temporal_Sup L',32,Temporal
-'Temporal_Mid L',33,Temporal
-'Temporal_Inf L',34,Temporal
-'Temporal_Pole_Sup L',35,Temporal
-'Temporal_Pole_Mid L',36,Temporal
-'ParaHippocampal L',37,Temporal
-'Cingulate_Ant L',38,Medial
-'Cingulate_Mid L',39,Medial
-'Cingulate_Post L',40,Medial
-'Insula L',41,Medial
-'Rectus R',42,Frontal
-'Olfactory R',43,Frontal
-'OFCant R',44,Frontal
-'OFClat R',45,Frontal
-'OFCmed R',46,Frontal
-'OFCpost R',47,Frontal
-'Frontal_Med_Orb R',48,Frontal
-'Frontal_Inf_Orb_2 R',49,Frontal
-'Frontal_Sup_2 R',50,Frontal
-'Frontal_Mid_2 R',51,Frontal
-'Frontal_Inf_Tri R',52,Frontal
-'Frontal_Inf_Oper R',53,Frontal
-'Frontal_Sup_Medial R',54,Frontal
-'Supp_Motor_Area R',55,Central
-'Paracentral_Lobule R',56,Central
-'Precentral R',57,Central
-'Rolandic_Oper R',58,Central
-'Postcentral R',59,Central
-'Parietal_Inf R',60,Parietal
-'Parietal_Sup R',61,Parietal
-'SupraMarginal R',62,Parietal
-'Angular R',63,Parietal
-'Precuneus R',64,Parietal
-'Occipital_Sup R',65,Occipital
-'Occipital_Mid R',66,Occipital
-'Occipital_Inf R',67,Occipital
-'Calcarine R',68,Occipital
-'Cuneus R',69,Occipital
-'Lingual R',70,Temporal
-'Fusiform R',71,Temporal
-'Heschl R',72,Temporal
-'Temporal_Sup R',73,Temporal
-'Temporal_Mid R',74,Temporal
-'Temporal_Inf R',75,Temporal
-'Temporal_Pole_Sup R',76,Temporal
-'Temporal_Pole_Mid R',77,Temporal
-'ParaHippocampal R',78,Temporal
-'Cingulate_Ant R',79,Medial
-'Cingulate_Mid R',80,Medial
-'Cingulate_Post R',81,Medial
-'Insula R',82,Medial
+'Rectus L',1,Left Frontal
+'Olfactory L',2,Left Frontal
+'OFCant L',3,Left Frontal
+'OFClat L',4,Left Frontal
+'OFCmed L',5,Left Frontal
+'OFCpost L',6,Left Frontal
+'Frontal_Med_Orb L',7,Left Frontal
+'Frontal_Inf_Orb_2 L',8,Left Frontal
+'Frontal_Sup_2 L',9,Left Frontal
+'Frontal_Mid_2 L',10,Left Frontal
+'Frontal_Inf_Tri L',11,Left Frontal
+'Frontal_Inf_Oper L',12,Left Frontal
+'Frontal_Sup_Medial L',13,Left Frontal
+'Supp_Motor_Area L',14,Left Central
+'Paracentral_Lobule L',15,Left Central
+'Precentral L',16,Left Central
+'Rolandic_Oper L',17,Left Central
+'Postcentral L',18,Left Central
+'Parietal_Sup L',19,Left Parietal
+'Parietal_Inf L',20,Left Parietal
+'SupraMarginal L',21,Left Parietal
+'Angular L',22,Left Parietal
+'Precuneus L',23,Left Parietal
+'Occipital_Sup L',24,Left Occipital
+'Occipital_Mid L',25,Left Occipital
+'Occipital_Inf L',26,Left Occipital
+'Calcarine L',27,Left Occipital
+'Cuneus L',28,Left Occipital
+'Lingual L',29,Left Occipital
+'Fusiform L',30,Left Temporal
+'Heschl L',31,Left Temporal
+'Temporal_Sup L',32,Left Temporal
+'Temporal_Mid L',33,Left Temporal
+'Temporal_Inf L',34,Left Temporal
+'Temporal_Pole_Sup L',35,Left Temporal
+'Temporal_Pole_Mid L',36,Left Temporal
+'ParaHippocampal L',37,Left Temporal
+'Cingulate_Ant L',38,Left Medial
+'Cingulate_Mid L',39,Left Medial
+'Cingulate_Post L',40,Left Medial
+'Insula L',41,Left Medial
+'Rectus R',42,Right Frontal
+'Olfactory R',43,Right Frontal
+'OFCant R',44,Right Frontal
+'OFClat R',45,Right Frontal
+'OFCmed R',46,Right Frontal
+'OFCpost R',47,Right Frontal
+'Frontal_Med_Orb R',48,Right Frontal
+'Frontal_Inf_Orb_2 R',49,Right Frontal
+'Frontal_Sup_2 R',50,Right Frontal
+'Frontal_Mid_2 R',51,Right Frontal
+'Frontal_Inf_Tri R',52,Right Frontal
+'Frontal_Inf_Oper R',53,Right Frontal
+'Frontal_Sup_Medial R',54,Right Frontal
+'Supp_Motor_Area R',55,Right Central
+'Paracentral_Lobule R',56,Right Central
+'Precentral R',57,Right Central
+'Rolandic_Oper R',58,Right Central
+'Postcentral R',59,Right Central
+'Parietal_Inf R',60,Right Parietal
+'Parietal_Sup R',61,Right Parietal
+'SupraMarginal R',62,Right Parietal
+'Angular R',63,Right Parietal
+'Precuneus R',64,Right Parietal
+'Occipital_Sup R',65,Right Occipital
+'Occipital_Mid R',66,Right Occipital
+'Occipital_Inf R',67,Right Occipital
+'Calcarine R',68,Right Occipital
+'Cuneus R',69,Right Occipital
+'Lingual R',70,Right Temporal
+'Fusiform R',71,Right Temporal
+'Heschl R',72,Right Temporal
+'Temporal_Sup R',73,Right Temporal
+'Temporal_Mid R',74,Right Temporal
+'Temporal_Inf R',75,Right Temporal
+'Temporal_Pole_Sup R',76,Right Temporal
+'Temporal_Pole_Mid R',77,Right Temporal
+'ParaHippocampal R',78,Right Temporal
+'Cingulate_Ant R',79,Right Medial
+'Cingulate_Mid R',80,Right Medial
+'Cingulate_Post R',81,Right Medial
+'Insula R',82,Right Medial
