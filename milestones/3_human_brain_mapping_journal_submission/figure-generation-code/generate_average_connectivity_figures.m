@@ -69,7 +69,7 @@ for g_i = 1:length(GRAPHS)
     for e_i = 1:length(EPOCHS)
         epoch = EPOCHS{e_i};
         
-        % Generate the figure for connectivity amtrix
+        % Generate the figure for connectivity matrix
         output_filename = strcat(output_path, epoch, "_", graph, ".png");
         
         figure;
@@ -89,6 +89,7 @@ for g_i = 1:length(GRAPHS)
         close(gcf);
         
     end
+    
     
     % Generate the figure for connectivity matrix
     %{
