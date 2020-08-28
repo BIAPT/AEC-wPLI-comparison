@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #SBATCH --job-name=make-feature
 #SBATCH --account=def-sblain # adjust this to match the accounting group you are using to submit jobs
-#SBATCH --time=0-10:00:00        # adjust this to match the walltime of your job (D-HH:MM:SS)
+#SBATCH --time=0-20:00:00        # adjust this to match the walltime of your job (D-HH:MM:SS)
 #SBATCH --nodes=1     
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=40      # adjust this if you are using parallel commands
