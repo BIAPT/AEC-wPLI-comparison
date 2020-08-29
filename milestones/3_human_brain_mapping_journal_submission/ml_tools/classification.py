@@ -77,7 +77,7 @@ def classify_loso_model_selection(X, y, group, gs):
 
     accuracies = []
     f1s = []
-    cms = np.zeros((2, 2))
+    cms = []
 
     best_params = []
 
@@ -100,7 +100,7 @@ def classify_loso_model_selection(X, y, group, gs):
 
         accuracies.append(accuracy)
         f1s.append(f1)
-        cms = np.add(cms, cm)
+        cms.append(cm)
 
         best_params.append(gs.best_params_)
 
