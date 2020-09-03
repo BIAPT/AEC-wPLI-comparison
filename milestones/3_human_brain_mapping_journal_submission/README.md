@@ -24,4 +24,13 @@ This modified version of the code is improved with the comments from our reviewe
 ## Step 3: Run the model selection with LOSO cross validation
 - Open the config.py file and make sure that the input and output are correct for your HPC setup.
 - Open the generate_jobs.bash file and define which epoch, graph and feature category you want to select
-- ... TODO
+- Then ssh into the beluga cluster by doing `ssh [username]@beluga.computecanada.ca` navigate into the repository there.
+- Then run `gerate_jobs.bash task_2_find_best_clf.sl` this will schedule for you all of the epoch / graphs to run. By default it will run 1 nodes per analysis with 40 cores.
+
+## Step 4: Run the Bootstrap Interval and the Permutation Testing
+- Similarly than in step 3 you go into the repository in the cluster and then run: `gerate_jobs.bash task_3a_generate_bootstrap_distribution.sl`
+- At the same time you can run`gerate_jobs.bash task_3b_generate_permutations_tests.sl` as the analysis is taking as input the best_clf obtained from Step 3 and the features.csv obtained from Step 2. These two analysis won't step on each other once started and it will greatly speed up to have them run in parallele.
+
+## Step 5: Collect the Result and Generate Figures
+- Once done you should collect the result from the server and move them using Globus onto your laptop. Most of the result are not big in size, they just take some time to generate. By having them in your laptop it will make the generation of figure easier and more pleasant as you will be able to get direct visual feedback from the Jupyter Notebook.
+- ...TODO
