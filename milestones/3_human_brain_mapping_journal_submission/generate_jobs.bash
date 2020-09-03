@@ -3,8 +3,8 @@
 # We assume running this from the script directory
 EPOCHS=("emf5" "eml5")
 GRAPHS=("aec" "pli")
-FEATURES=("func" "wei" "bin" "func-wei" "func-bin")
-
+#FEATURES=("func" "wei" "bin" "func-wei" "func-bin")
+FEATURES=("func")
 
 for graph in ${GRAPHS[@]}; do
     for epoch in ${EPOCHS[@]}; do
