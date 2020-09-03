@@ -17,3 +17,6 @@ This modified version of the code is improved with the comments from our reviewe
 **Word of Caution:** The speed up that you can gain from the parallelization really depends on what is the availability of the cluster. If you try to use up to 960 cores you might wait a long time before it becomes available (I've waited 8+h and still wasn't scheduled). However, if you use only 40 cores on 1 node you will most likely get scheduled right away. There is a balance to strike and it is still not obvious what is the best course of action. Sometime you get lucky sometime you don't.
 
 ## Step 2: Generate the Feature Dataframe
+- Navigate into the folder `task_1_generate_features`. Once there open the ccSBATCH.m and modify the parameters to match the resource you want to use and your account on compute canada. 
+- Open the file `generate_features.m` and modify the input/output folder to match what you have in step 1. You can also change the parameter of the analysis if needs be.
+- Once ready you can run the following commands: `ccSBATCH.submitTo(cluster)` assuming the cluster variable is already assigned as show in step 1.
