@@ -19,23 +19,10 @@ DATA_PATH = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/graphs/";
 OUTPUT_PATH = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/features.csv";
 NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
 
-distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happening in the cluster
 % Add NA library to our path so that we can use it
 addpath(genpath(NEUROALGO_PATH));
 
-NUM_CPU = 40;
 %}
-
-%% Compute Canada Setup
-
-% Create a "local" cluster object
-local_cluster = parcluster('local');
-
-% Modify the JobStorageLocation to $SLURM_TMPDIR
-pc.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'));
-
-% Start the parallel pool
-parpool(local_cluster, NUM_CPU)
 
 % we can only use alpha here since ec8 was only calculated for that
 P_IDS = {'MDFA03', 'MDFA05', 'MDFA06', 'MDFA07', 'MDFA10', 'MDFA11', 'MDFA12', 'MDFA15', 'MDFA17'};
@@ -45,7 +32,7 @@ FREQUENCIES = {'alpha'};
 
 % Graph theory paramters
 num_regions = 82; % Number of source localized regions
-num_null_network = 100; % Number of null network to create 
+num_null_network = 100; % Number of null network to create % IVE SET IT TO 2 BECAUSE WE NEED TO GO FAST NOW NOTE!
 bin_swaps = 10;  % used to create the null network
 weight_frequency = 0.1; % used to create the null network
 t_level = 0.1; % Threshold level (keep 10%)

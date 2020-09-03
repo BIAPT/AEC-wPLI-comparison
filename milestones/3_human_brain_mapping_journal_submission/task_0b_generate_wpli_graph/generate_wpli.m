@@ -17,23 +17,8 @@ INPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/data/source_localized
 OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/graphs/";
 NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
 
-distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happening in the cluster
 % Add NA library to our path so that we can use it
 addpath(genpath(NEUROALGO_PATH));
-
-NUM_CPU = 40;
-
-
-%% Compute Canada Setup
-
-% Create a "local" cluster object
-local_cluster = parcluster('local');
-
-% Modify the JobStorageLocation to $SLURM_TMPDIR
-pc.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'));
-
-% Start the parallel pool
-parpool(local_cluster, NUM_CPU)
 
 %% Experiment Variables
 P_IDS = {'MDFA03', 'MDFA05', 'MDFA06', 'MDFA07', 'MDFA10', 'MDFA11', 'MDFA12', 'MDFA15', 'MDFA17'};
@@ -50,7 +35,7 @@ high_frequency = 13;
 
 % Size of the cuts for the data
 window_size = 10; % in seconds
-step_size = 0.1; % in seconds
+step_size = 1; % in seconds
 
 p_value = 0.05;
 num_surrogates = 20;
