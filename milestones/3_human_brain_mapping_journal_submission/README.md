@@ -20,3 +20,8 @@ This modified version of the code is improved with the comments from our reviewe
 - Navigate into the folder `task_1_generate_features`. Once there open the ccSBATCH.m and modify the parameters to match the resource you want to use and your account on compute canada. 
 - Open the file `generate_features.m` and modify the input/output folder to match what you have in step 1. You can also change the parameter of the analysis if needs be.
 - Once ready you can run the following commands: `ccSBATCH.submitTo(cluster)` assuming the cluster variable is already assigned as show in step 1.
+
+## Step 3: Run the model selection with LOSO cross validation
+- Open the config.py file and make sure that the input and output are correct for your HPC setup.
+- Open the generate_jobs.bash file and define which epoch, graph and feature category you want to select
+- ... TODO
