@@ -45,7 +45,7 @@ def filter_dataframe(graph, epoch, feature_group):
     df = pd.read_csv(cfg.DF_FILE_PATH)
 
     # Keep only the Graph of interest
-    df = df[df.graph == cfg.GRAPHS.index(graph)]
+    df = df[df.graph == (cfg.GRAPHS.index(graph)+1)]
 
     # Keep only the epoch of interest
     df = df[(df.epoch == cfg.EPOCHS[epoch]) | (df.epoch == cfg.EPOCHS['ec1'])]
