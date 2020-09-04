@@ -10,10 +10,10 @@ This modified version of the code from the second milestone is improved with the
 
 ## Step 0: Generate the AEC and wPLI Graphs
 - Open MATLAB2020a and navigate to the folder `step_0_generate_graphs/`.
-- Move to the `step_0a_generate_aec_graph` subfolder. Once there open the ccSBATCH.m and modify the parameters to match the resource you want to use and your account on compute canada.
+- Move to the `generate_aec_graphs` subfolder. Once there open the ccSBATCH.m and modify the parameters to match the resource you want to use and your account on compute canada.
 - Open the `generate_aec.m` file and modify the parameter relating to your cluster setup. There are some path that needs to be modified in order for the input/output to make sense in your section of the cluster.
 - Once ready you can run the following commands: `cluster = parcluster('beluga'); ccSBATCH.submitTo(cluster)`, this will send the job to your cluster
-- Repeat the same procedure for `step_0b_generate_wpli_graph`. You do not have to wait for the AEC graph to be done before you start running the wPLI computation. Both code use the same EEG source localized data as input, but they do not step on each other while calculating the graphs.
+- Repeat the same procedure for `generate_wpli_graphs`. You do not have to wait for the AEC graph to be done before you start running the wPLI computation. Both code use the same EEG source localized data as input, but they do not step on each other while calculating the graphs.
 
 **Word of Caution:** The speed up that you can gain from the parallelization really depends on what is the availability of the cluster. If you try to use up to 960 cores you might wait a long time before it becomes available (I've waited 8+h and still wasn't scheduled). However, if you use only 40 cores on 1 node you will most likely get scheduled right away. There is a balance to strike and it is still not obvious what is the best course of action. Sometime you get lucky sometime you don't.
 
@@ -26,15 +26,15 @@ This modified version of the code from the second milestone is improved with the
 - Open the config.py file and make sure that the input and output are correct for your HPC setup.
 - Open the generate_jobs.bash file and define which epoch, graph and feature category you want to select
 - Then ssh into the beluga cluster by doing `ssh [username]@beluga.computecanada.ca` navigate into the repository there.
-- Then run `gerate_jobs.bash step_2_losso_classification.sl` this will schedule for you all of the epoch / graphs to run. By default it will run 1 nodes per analysis with 40 cores.
+- Then run `gerate_jobs.bash step_2_losso_classification/job.sl` this will schedule for you all of the epoch / graphs to run. By default it will run 1 nodes per analysis with 40 cores.
 
 ## Step 3: Run the Bootstrap Interval and the Permutation Testing
-- Similarly than in step 3 you go into the repository in the cluster and then run: `gerate_jobs.bash step_3a_generate_bootstrap_distribution.sl`
-- At the same time you can run`gerate_jobs.bash step_3b_generate_permutations_tests.sl` as the analysis is taking as input the best_clf obtained from Step 2 and the features.csv obtained from Step 2. These two analysis won't step on each other once started and it will greatly speed up to have them run in parallele.
+- Similarly than in step 3 you go into the repository in the cluster and then run: `gerate_jobs.bash step_3_characterize_classification/generate_bootstrap_distribution/job.sl`
+- At the same time you can run`gerate_jobs.bash step_3_characterize_classification/generate_permutations_tests/job.sl` as the analysis is taking as input the best_clf obtained from Step 2 and the features.csv obtained from Step 2. These two analysis won't step on each other once started and it will greatly speed up to have them run in parallele.
 
 ## Step 4: Collect the Result and Generate Figures
 - Once done you should collect the result from the server and move them using Globus onto your laptop. Most of the result are not big in size, they just take some time to generate. By having them in your laptop it will make the generation of figure easier and more pleasant as you will be able to get direct visual feedback from the Jupyter Notebook.
 - ...TODO
 
 ## Notes:
-- The `.sl` that can be found in the step_0 and step_1 are not necessary if you have MATLAB2020a and you setup the parallel engine properly. However, if you don't want or can't use the engine then you can manually `sbatch` the file on the cluster as a fallback.
+- The `job.sl` that can be found in the step_0 and step_1 are not necessary if you have MATLAB2020a and you setup the parallel engine properly. However, if you don't want or can't use the engine then you can manually `sbatch` the file on the cluster as a fallback.
