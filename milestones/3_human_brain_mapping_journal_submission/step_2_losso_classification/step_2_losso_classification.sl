@@ -16,4 +16,4 @@ source $SLURM_TMPDIR/env/bin/activate
 pip install --no-index --upgrade pip
 pip install --no-index scikit-learn
 pip install --no-index pandas
-python find_best_clf.py $ANALYSIS_PARAM
+python losso_classification.py $ANALYSIS_PARAM

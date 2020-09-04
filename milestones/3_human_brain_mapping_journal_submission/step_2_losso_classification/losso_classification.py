@@ -10,6 +10,16 @@ from sklearn.impute import SimpleImputer
 
 from sklearn.model_selection import LeaveOneGroupOut
 
+import os
+import sys
+
+# Add the directory containing your module to the Python path (wants absolute paths)
+# Here we add to the path everything in the top level
+scriptpath = "../" 
+sys.path.append(os.path.abspath(scriptpath))
+
+from utils import load_pickle, find_best_model
+
 from ml_tools.classification import classify_loso_model_selection
 import config as cfg
 

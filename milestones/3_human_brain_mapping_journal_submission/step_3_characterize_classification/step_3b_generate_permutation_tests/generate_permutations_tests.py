@@ -6,6 +6,14 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 
+import os
+import sys
+
+# Add the directory containing your module to the Python path (wants absolute paths)
+# Here we add to the path everything in the top level
+scriptpath = "../../" 
+sys.path.append(os.path.abspath(scriptpath))
+
 import config as cfg
 from ml_tools.classification import permutation_test
 from utils import load_pickle, find_best_model, filter_dataframe
