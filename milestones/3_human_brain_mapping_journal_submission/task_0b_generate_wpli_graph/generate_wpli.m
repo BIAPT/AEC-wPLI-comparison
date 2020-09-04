@@ -35,7 +35,7 @@ high_frequency = 13;
 
 % Size of the cuts for the data
 window_size = 10; % in seconds
-step_size = 1; % in seconds
+step_size = 5; % in seconds
 
 p_value = 0.05;
 num_surrogates = 20;

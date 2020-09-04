@@ -32,7 +32,7 @@ FREQUENCIES = {'alpha'};
 
 % Graph theory paramters
 num_regions = 82; % Number of source localized regions
-num_null_network = 100; % Number of null network to create % IVE SET IT TO 2 BECAUSE WE NEED TO GO FAST NOW NOTE!
+num_null_network = 2; % Number of null network to create % IVE SET IT TO 2 BECAUSE WE NEED TO GO FAST NOW NOTE!
 bin_swaps = 10;  % used to create the null network
 weight_frequency = 0.1; % used to create the null network
 t_level = 0.1; % Threshold level (keep 10%)
