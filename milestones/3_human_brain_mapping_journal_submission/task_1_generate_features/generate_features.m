@@ -126,7 +126,7 @@ for f_i = 1:length(FREQUENCIES)
 
                 % Writting out to the file the feature calculated
                 for w_i = 1:num_window
-                    dlmwrite(OUTPUT_PATH, rows_graph(w_i,:), '-append');
+                    dlmwrite(OUTPUT_PATH, rows_graph(w_i, :), '-append');
                 end
             end
         end

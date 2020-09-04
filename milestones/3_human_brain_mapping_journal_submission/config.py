@@ -6,10 +6,9 @@ OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/" #"/home/yac
 
 EPOCHS = {
     "ec1": 1,
-    "if5": 2,
-    "emf5": 3,
-    "eml5": 4,
-    "ec8": 5
+    "emf5": 2,
+    "eml5": 3,
+    "ec8": 4
 }
 
 GRAPHS = ["aec", "pli"]
