@@ -50,6 +50,7 @@ def filter_dataframe(graph, epoch, feature_group):
     # Keep only the epoch of interest
     df = df[(df.epoch == cfg.EPOCHS[epoch]) | (df.epoch == cfg.EPOCHS['ec1'])]
 
+    print(f"Epoch: {epoch} with id {cfg.EPOCHS[epoch]}")
     # Keep only the features of interest
     df.drop(df.filter(regex=cfg.FILTER_REGEX[feature_group]), axis=1, inplace=True)
 
