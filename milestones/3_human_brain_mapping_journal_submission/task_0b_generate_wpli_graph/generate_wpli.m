@@ -89,8 +89,10 @@ for p = 1:length(P_IDS)
 
         parfor win_i = 1:num_window
            disp(strcat("wPLI at window: ",string(win_i)," of ", string(num_window))); 
+           
            segment_data = squeeze(windowed_data(win_i,:,:));
            pli(:,:, win_i) = wpli(segment_data', num_surrogates, p_value);
+           
         end
 
         result.wpli = pli;
@@ -139,4 +141,42 @@ function [windowed_data, num_window] = create_sliding_window(data, window_size, 
         index = index + 1;
     end
     
+end
+
+function [matrix] = old_wpli(Vfilt, cut, fd, R)
+    ht = hilbert(Vfilt);
+    ht = ht(cut+1:end-cut,:);
+    ht = bsxfun(@minus,ht,mean(ht,1));
+    % Phase information
+    theta = angle(ht);
+
+    % Bandwidth
+    B = 13-8;
+    % Window duration for PLI calculation
+    T = 100/(2*B);                % ~100 effective points
+    N = round(T*fd/2)*2;
+    K = fix((m-N/2-cut*2)/(N/2)); % number of windows, 50% overlap
+    V = nchoosek(R,2);            % number of ROI pairs
+    pli = zeros(V,K);
+
+    % Loop over time windows
+    for k = 1:K
+
+        ibeg = (N/2)*(k-1) + 1;
+        iwind = ibeg:ibeg+N-1;
+
+        % loop over all possible ROI pairs
+        for jj = 2:R
+            ii = 1:jj-1;
+            indv = ii + sum(1:jj-2);
+            % Phase difference
+            RP = bsxfun(@minus,theta(iwind,jj),theta(iwind, ii));
+            srp = sin(RP);
+            pli(indv,k) = abs(sum(sign(srp),1))/N;
+
+        end
+    end
+
+    % Convert to a square matrix
+    ind = logical(triu(ones(R),1));
 end

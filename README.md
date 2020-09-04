@@ -1,11 +1,13 @@
 # AEC & wPLI Comparison
-This repository is for the study of AEC vs wPLI functional connectivity metric and their relation to the classification of consciousness. 
+This repository is for the study of AEC and wPLI functional connectivity metric and their relation to the classification of consciousness. The code found here has been iteratively improved and each iteration representing a milestone in the analysis journey. 
+- **Milestone #0 First Attempt at Classification** : This is the first minimal viable analysis that was bootstraped with the data we had and initial iteration of the analysis techniques.
+- **Milestone #1 MAIN 2019 Poster Presentation** : This is the first outreach initiative for this analysis. We augmented the fist attempt with a graph theory analysis. The abstract that was submitted was selected for a [2 min student talk](https://youtu.be/5s_JU07t8wU).
+- **Milestone #2 OHBM 2020 Poster Presentation** : The analysis presented at the MAIN 2019 conference was augmented and pushed even further. The conference was remote so we could present the result in a video. Two were produced: a [short one](https://youtu.be/f5gJQHxkVOU) of about 3 minute and a [longer one](https://youtu.be/QSb7TimKjGM) of about 25 minutes.
+- **Milestone #3 Human Brain Mapping Journal Submission** : The analysis is currently in the process of being improved in order to be submitted at the Human Brain Mapping journal.
+
+Supporting documents like abstract, paper or posters can be found in each of the milestone under the `/doc` directory.
 
 ## Repository Structure
-In this repository we have adopted a iterative milestone approach. Meaning that the code was built and improved by trying to hit a clear objecive than make the analysis better. The most up to date analysis is the one with the highest integer prefix, but all previous iteration are present to ensure that all prior experiments are available without going back into the git history.
+In this repository we have adopted a iterative milestone approach. Meaning that the code was built and improved by trying to hit a clear objecive that make the analysis better. The most up to date analysis is the one with the highest integer prefix, but all previous iteration are present to ensure that all prior experiments are available without going back into the git history.
 
-### Milestones
-0. First Attempt at Classification: this is the code used to generate the result for the first draft of the paper sent out for review.
-1. MAIN 2019 Poster Presentation: this analysis was presentated at the Montreal Artificial Intelligence Neuroscience conference. We looked at adding graph features to the classification to see if they helped improved the performance.
-2. OHBM 2020 Poster Presentation : this analysis was presented at OHBM and was focused on the binarized vs non-binarized graph. This work build upon what was presented at the MAIN conference.
-3. Human Brain Mapping Journal Submission: this analysis build on the one presented at OHBM in terms of methodology, but will be solely focused on the functional connectivity metrics.
+Each milestone code contains a README.md file that explains in greater details how the analysis function and how to make it run.

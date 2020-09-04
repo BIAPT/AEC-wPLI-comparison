@@ -10,8 +10,8 @@
 %% Global Experiment Variables
 
 % paths
-graph_path = "/home/yacine/Documents/BIAPT/graphs/";
-output_path = "/home/yacine/Documents/BIAPT/aec_vs_pli_result/";
+graph_path = "/home/yacine/Documents/BIAPT/AEC vs wPLI/data/step_size_5_sec/graphs/";
+output_path = "/home/yacine/Documents/BIAPT/AEC vs wPLI/result/step_size_5_seconds/";
 
 % Variables
 P_IDS = {'MDFA03', 'MDFA05', 'MDFA06', 'MDFA07', 'MDFA10', 'MDFA11', 'MDFA12', 'MDFA15', 'MDFA17'};
