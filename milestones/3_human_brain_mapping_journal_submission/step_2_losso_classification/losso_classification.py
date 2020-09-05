@@ -16,7 +16,7 @@ from sklearn.impute import SimpleImputer
 
 # Add the directory containing your module to the Python path (wants absolute paths)
 # Here we add to the path everything in the top level
-scriptpath = "../" 
+scriptpath = "." 
 sys.path.append(os.path.abspath(scriptpath))
 
 # Add debugging statement
