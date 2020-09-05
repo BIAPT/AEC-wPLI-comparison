@@ -1,6 +1,8 @@
 # Human Brain Mapping Submission
 This modified version of the code from the second milestone is improved with the comments from our reviewers. Below you will find explanation on how to run the analysis.
 
+Sometime there is an issue in the analysis or something a bit more experimental needs to be tried out. These kind of analysis can be found in the experiment folder and are explained in more details in the experiments section of the README.
+
 ## Preparation
 - Make sure to have a compute canada account on the Beluga cluster.
 - Install MATLAB 2020a with the Parallel Toolbox
@@ -35,6 +37,13 @@ This modified version of the code from the second milestone is improved with the
 ## Step 4: Collect the Result and Generate Figures
 - Once done you should collect the result from the server and move them using Globus onto your laptop. Most of the result are not big in size, they just take some time to generate. By having them in your laptop it will make the generation of figure easier and more pleasant as you will be able to get direct visual feedback from the Jupyter Notebook.
 - ...TODO
+
+## Experiments
+
+### ex_1_pli_generation_comparison 
+**Context:** We have two type of ways of generating the pli matrices. The first way that was coded by Dr. Lucrezia Liuzzi and has been incorporated in the first three milestone (0, 1 and 2). However, upon inspection we saw that it was not the usual way we in the BIAPT lab were calculating wPLI. Therefore we switched the code generation. However, this was done at the same time that a series of changes took place in the code. All of these change made so that we couldn't reproduce the result we previously saw with the pli code from Dr. Lucrezia Liuzzi. The goal of this experiment is to check what are the impact on the classification if we generate the graphs using either methods leaving everything else constant.
+
+**Result**:
 
 ## Notes:
 - The `job.sl` that can be found in the step_0 and step_1 are not necessary if you have MATLAB2020a and you setup the parallel engine properly. However, if you don't want or can't use the engine then you can manually `sbatch` the file on the cluster as a fallback.
