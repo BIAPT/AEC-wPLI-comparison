@@ -29,8 +29,8 @@ This modified version of the code from the second milestone is improved with the
 - Then run `gerate_jobs.bash step_2_losso_classification/job.sl` this will schedule for you all of the epoch / graphs to run. By default it will run 1 nodes per analysis with 40 cores.
 
 ## Step 3: Run the Bootstrap Interval and the Permutation Testing
-- Similarly than in step 3 you go into the repository in the cluster and then run: `gerate_jobs.bash step_3_characterize_classification/generate_bootstrap_distribution/job.sl`
-- At the same time you can run`gerate_jobs.bash step_3_characterize_classification/generate_permutations_tests/job.sl` as the analysis is taking as input the best_clf obtained from Step 2 and the features.csv obtained from Step 2. These two analysis won't step on each other once started and it will greatly speed up to have them run in parallele.
+- Similarly than in step 3 you go into the repository in the cluster and then run: `gerate_jobs.bash step_3_characterize_classification/job_a.sl`
+- At the same time you can run`gerate_jobs.bash step_3_characterize_classification/job_b.sl` as the analysis is taking as input the best_clf obtained from Step 2 and the features.csv obtained from Step 2. These two analysis won't step on each other once started and it will greatly speed up to have them run in parallele.
 
 ## Step 4: Collect the Result and Generate Figures
 - Once done you should collect the result from the server and move them using Globus onto your laptop. Most of the result are not big in size, they just take some time to generate. By having them in your laptop it will make the generation of figure easier and more pleasant as you will be able to get direct visual feedback from the Jupyter Notebook.
