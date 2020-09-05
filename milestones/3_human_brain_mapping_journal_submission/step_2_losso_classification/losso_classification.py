@@ -20,7 +20,7 @@ scriptpath = "../"
 sys.path.append(os.path.abspath(scriptpath))
 
 # Import common functionalities
-import commons
+from . import commons
 from commons import load_pickle, find_best_model
 from commons import classify_loso_model_selection
 from commons import DummyEstimator, print_summary, filter_dataframe, search_space
