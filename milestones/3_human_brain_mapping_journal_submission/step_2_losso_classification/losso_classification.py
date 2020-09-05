@@ -1,34 +1,34 @@
+# General import
+import os
 import sys
+
+# Data science import
 import pickle
 import numpy as np 
 
+# Sklearn import
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import LeaveOneGroupOut
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
-
-from sklearn.model_selection import LeaveOneGroupOut
-
-import os
-import sys
 
 # Add the directory containing your module to the Python path (wants absolute paths)
 # Here we add to the path everything in the top level
 scriptpath = "../" 
 sys.path.append(os.path.abspath(scriptpath))
 
-from utils import load_pickle, find_best_model
-
-from ml_tools.classification import classify_loso_model_selection
-import config as cfg
-
-from utils import DummyEstimator, print_summary, filter_dataframe, search_space
+# Import common functionalities
+import commons
+from commons import load_pickle, find_best_model
+from commons import classify_loso_model_selection
+from commons import DummyEstimator, print_summary, filter_dataframe, search_space
 
 # Get the argument
 analysis_param = sys.argv[1]
 
-best_clf_filename = cfg.OUTPUT_DIR + f'best_clf_{analysis_param}.pickle'
+best_clf_filename = commons.OUTPUT_DIR + f'best_clf_{analysis_param}.pickle'
 
 # Parse the parameters
 (graph, epoch, feature_group) = analysis_param.split("_")
