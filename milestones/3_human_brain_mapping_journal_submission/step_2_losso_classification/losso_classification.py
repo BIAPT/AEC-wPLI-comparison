@@ -19,8 +19,11 @@ from sklearn.impute import SimpleImputer
 scriptpath = "../" 
 sys.path.append(os.path.abspath(scriptpath))
 
+# Add debugging statement
+print(sys.path)
+
 # Import common functionalities
-from . import commons
+import commons
 from commons import load_pickle, find_best_model
 from commons import classify_loso_model_selection
 from commons import DummyEstimator, print_summary, filter_dataframe, search_space
