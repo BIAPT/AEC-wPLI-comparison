@@ -16,4 +16,4 @@ source $SLURM_TMPDIR/env/bin/activate
 pip install --no-index --upgrade pip
 pip install --no-index scikit-learn
 pip install --no-index pandas
-python losso_classification.py $ANALYSIS_PARAM
+python step_2_losso_classification/losso_classification.py $ANALYSIS_PARAM
