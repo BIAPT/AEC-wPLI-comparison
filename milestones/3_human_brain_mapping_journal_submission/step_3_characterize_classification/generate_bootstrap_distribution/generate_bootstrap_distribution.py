@@ -13,7 +13,9 @@ from sklearn.impute import SimpleImputer
 
 # Add the directory containing your module to the Python path (wants absolute paths)
 # Here we add to the path everything in the top level
-scriptpath = "../../" 
+# Since the code will be called from generate_jobs.bash the path that needs to be added is the 
+# one from the bash script (top level)
+scriptpath = "." 
 sys.path.append(os.path.abspath(scriptpath))
 
 # Common import across analysis
