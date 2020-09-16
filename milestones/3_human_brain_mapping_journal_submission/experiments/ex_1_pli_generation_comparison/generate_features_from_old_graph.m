@@ -16,7 +16,7 @@ OUTPUT_PATH = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/features.csv
 
 % we can only use alpha here since ec8 was only calculated for that
 FREQUENCIES = ["alpha"]; 
-EPOCHS = ["ec1", "if5", "emf5", "eml5", "ec8"];
+EPOCHS = ["ec1", "emf5", "eml5", "ec8"];
 
 % Graph theory paramters
 num_regions = 82; % Number of source localized regions

@@ -2,7 +2,7 @@ classdef ccSBATCH
     % Compute Canada SBATCH submission arguments
     properties
         % Local script, remote working directory (home, by default)
-        localScript = 'generate_features_from_old_graph';
+        localScript = 'generate_pli_surrogate_graph';
         workingDirectory = '.';
 
         % You must specify a compute account (def, rrg, rpp or ctb type)
@@ -18,11 +18,11 @@ classdef ccSBATCH
         memPerCPU = '9000'
 
         % Requested walltime
-        walltime = '10:00:00'
+        walltime = '1:00:00'
 
         % You may use otherOptions to append a string to the qsub command
         % e.g.
-        otherOptions = '--mail-user=yacine.mahdid@mail.mcgill.ca --mail-type=ALL --job-name=exp-1-pli-old'
+        otherOptions = '--mail-user=yacine.mahdid@mail.mcgill.ca --mail-type=ALL --job-name=pli-liuzzi-up'
         
     end
     
