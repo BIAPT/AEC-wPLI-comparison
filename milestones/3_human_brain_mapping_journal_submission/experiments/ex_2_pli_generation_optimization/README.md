@@ -1,0 +1,2 @@
+# PLI Generation Optimization
+In this second experiment we are optimizing the code from the first experiment to find out what is the best way of running the analysis on the cluster without having to wait a day to run the code. The initial foray using MATLAB2020a Parallele Engine was wonky at best. We need to cut the analysis into smaller independant pieces and run them simultaneously using a slurm file. This is what we will  be attempting.

@@ -18,6 +18,7 @@ The result we were trying to hit is the following in a binary classification bet
 
 ### Experiments Attempted
 - BIAPT wPLI based graph generation
+- Feature generation from old graph
 - Lucrezia Liuzzi PLI without surrogates correction
 - Jason version (i.e. Lucrezia + wPLI surrogates correction)
 - Jason version with modification 1 : surrogates on smaller window
@@ -52,6 +53,17 @@ This version yield the following result:
 | B/U  | 85% | 69% |
 | B/PR | 68% | 68% |
 
+## Feature generation from old graph
+see: `generate_features_from_old_graph.m`
+
+In this analysis we tried to reassure ourselves that everything in the machine learning pipeline was working properly by generating the features.csv matrix from the matrix that Jason generated. We were able to re-generate the exact number we've outlined in the paper. This means that the problem lies in the generation of the (w)PLI graphs.
+
+It yield:
+
+|      | AEC | PLI |
+|------|-----|-----|
+| B/U  | 85% | 78% |
+| B/PR | 68% | 78% |
 
 ## Lucrezia Liuzzi PLI (no surrogate)
 see: `generate_liuzzi_pli.m`
