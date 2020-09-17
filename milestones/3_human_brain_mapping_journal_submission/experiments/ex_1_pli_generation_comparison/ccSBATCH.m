@@ -2,14 +2,14 @@ classdef ccSBATCH
     % Compute Canada SBATCH submission arguments
     properties
         % Local script, remote working directory (home, by default)
-        localScript = 'generate_pli_surrogate_graph';
+        localScript = 'generate_pli_surrogate_graph_mod_1';
         workingDirectory = '.';
 
         % You must specify a compute account (def, rrg, rpp or ctb type)
         account = 'def-sblain';
 
         % Nodes, cpus per task, GPUs per node
-        nodes = 1;
+        nodes = 20;
         ntasksPerNode = 1;  % Must stay at 1
         cpusPerTask = 40;   % To allow speedup on entire nodes
         gpusPerNode = 0;
@@ -18,7 +18,7 @@ classdef ccSBATCH
         memPerCPU = '9000'
 
         % Requested walltime
-        walltime = '1:00:00'
+        walltime = '4:00:00'
 
         % You may use otherOptions to append a string to the qsub command
         % e.g.

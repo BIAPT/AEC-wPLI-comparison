@@ -1,5 +1,5 @@
 %% Yacine Mahdid 10 Septembre 2020
-% This is Dr. Liuzzi way of calculating PLI + surrogates
+% This is Dr. Liuizzi way of calculating PLI + surrogates on the whole EEG
 
 %% Path Setup
 % Local Source
@@ -11,7 +11,7 @@ OUTPUT_DIR = "/media/yacine/My Book/test_result/ex_1_pli_generation_comparison/p
 % Remote Source
 %
 INPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/data/source_localized_data/";
-OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/ex_1_pli_generation_comparison/pli_surrogate_graphs/";
+OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/ex_1_pli_generation_comparison/pli_surrogate_graphs_mod_1/";
 NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
 
 % Add NA library to our path so that we can use it
@@ -113,7 +113,7 @@ for p = 1:length(P_IDS)
             pli_temp =  calculate_pli(theta_win, ind, V, R, N);
             
             % Correct it using surrogate analysis (FAULTY VERSION)
-            pli_temp_corr = surrogate_analysis(theta_win, ind, V, R, N, pli_temp); 
+            pli_temp_corr = surrogate_analysis(theta, ind, V, R, N, pli_temp); 
             pli(:, :, k) = pli_temp_corr;
         end
         
@@ -150,14 +150,14 @@ function [pli_temp] = calculate_pli(theta_win, ind, V, R, N)
         pli_temp = pli_temp + pli_temp';
 end
 
-function [PLIcorr] = surrogate_analysis(theta_win, ind, V, R, N, pli_temp)
+function [PLIcorr] = surrogate_analysis(theta, ind, V, R, N, pli_temp)
 %% SURROGATE ANALYSIS this is a better way of correcting pli
 
 
 %Calculating the surrogate
     display('Calculating surrogate:');
     parfor j = 1:20
-        PLI_surr(j,:,:) = calculate_pli_surrogate(theta_win, ind, V, R, N);
+        PLI_surr(j,:,:) = calculate_pli_surrogate(theta, ind, V, R, N);
     end
 
     %Here we compare the calculated dPLI versus the surrogate
@@ -180,14 +180,14 @@ function [PLIcorr] = surrogate_analysis(theta_win, ind, V, R, N, pli_temp)
             
 end
 
-function pli_temp = calculate_pli_surrogate(theta_win, ind, V, R, N)
+function pli_temp = calculate_pli_surrogate(theta, ind, V, R, N)
 % Given a multivariate data, returns phase lag index matrix
 % Modified the mfile of 'phase synchronization'
 
-    num_pts = length(theta_win);
+    num_pts = length(theta);
     splice = randi(num_pts);  % determines random place in signal where it will be spliced
 
-    a_sig_splice = [theta_win(splice:num_pts,:); theta_win(1:splice-1,:)];  % %This is the randomized signal
+    a_sig_splice = [theta(splice:num_pts,:); theta(1:splice-1,:)];  % %This is the randomized signal
     
     pli_vector = zeros(V,1);
     % loop over all possible ROI pairs
@@ -195,7 +195,7 @@ function pli_temp = calculate_pli_surrogate(theta_win, ind, V, R, N)
         ii = 1:jj-1;
         indv = ii + sum(1:jj-2);
         % Phase difference
-        RP = bsxfun(@minus, theta_win(:, jj), a_sig_splice(:, ii));
+        RP = bsxfun(@minus, theta(:, jj), a_sig_splice(:, ii));
         srp = sin(RP);
         pli_vector(indv) = abs(sum(sign(srp),1))/N;
     end
