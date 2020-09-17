@@ -21,8 +21,10 @@ The result we were trying to hit is the following in a binary classification bet
 - Lucrezia Liuzzi PLI without surrogates correction
 - Jason version (i.e. Lucrezia + wPLI surrogates correction)
 - Jason version with modification 1 : surrogates on smaller window
-- Jason version with modification 2 : surrogates without mean substraction
+- Jason version with modification 2 : surrogates without mean substraction (**ABORTED**)
 - Jason version with modification 3 : surrogates without mean substraction and with smaller window size
+- Lucrezia Liuzzi PLI + surrogates
+- Lucrezia Liuzzi PLI + surrogates + whole segment (**ABORTED**)
 
 ## BIAPT wPLI generation
 see: `generate_biapt_wpli.m`
@@ -300,4 +302,17 @@ In this version we are using the PLI definition without the weighting along with
 This is still lower than what we were expecting, however it is better than the `Jason version first modification` which was faulty + on only small window. Increasing the window for the surrogates to the whole window might help here. Will need to test it out.
 
 ## Lucrezia Liuzzi PLI + surrogates + whole segment
-**TODO**
+see `genetate_pli_surrogate_graph_mod_1.m`
+
+In this version it's the same idea as the previous one **Lucrezia Liuzzi PLI + surrogates** however we will be doing the surrogate analysis of significance on the whole EEG recording everytime.
+
+**ABORTED** It took way too long to run.
+
+
+# Conclusion
+The general conclusion that we can take for this serie of analysis is that:
+- We are able to get comparatively similar values with Jason + surrogates and Lucrezia + surrogates for the small windows. However, they are still not comparable to the result we had previously.
+- Running the surrogates correction on the whole recording seems to improve the accuracy for unknown reasons. It might be due that we are creating a much more stable random surrogate (?).
+- Using a beefed up setup with multiple nodes and more than 40 cores is **not the way to go**. Surprisingly, it takes way more time to get the ressource than if we just ran the analysis with 1 node and 40 cores. A more modular approach to the codebase would improve the analysis speed because this is too prohibitive in terms of iteration.
+
+The next step for this is to find a way with matlab to generate the result using as much parallele analysis as possible while only using 1 node and 40 cores per analysis. This way we will have higher priority in the cluster.

@@ -43,6 +43,13 @@ Sometime there is an issue in the analysis or something a bit more experimental 
 ### ex_1_pli_generation_comparison 
 **Context:** We have two type of ways of generating the pli matrices. The first way that was coded by Dr. Lucrezia Liuzzi and has been incorporated in the first three milestone (0, 1 and 2). However, upon inspection we saw that it was not the usual way we in the BIAPT lab were calculating wPLI. Therefore we switched the code generation. However, this was done at the same time that a series of changes took place in the code. All of these change made so that we couldn't reproduce the result we previously saw with the pli code from Dr. Lucrezia Liuzzi. The goal of this experiment is to check what are the impact on the classification if we generate the graphs using either methods leaving everything else constant.
 
+**Conclusion:** we found out the errors in the analysis and were able to make a similar analysis using only PLI + surrogates. However, due to the setup of the code it is difficult to run the analysis on the cluster to the full extent that we need. This will be room for another experiment.
+
+### ex_2_pli_generation_optimization
+**Context:** In the previous analysis we were not able to generate 2 set of graphs because they took too long on the cluster to get scheduled and to be ran. They crashed midway. The goal of this experiment section is to improve the analysis for these sort of analysis in order to run everything as fast as possible.
+
+**Conclusion:** In progress
+
 **Result**:
 
 ## Notes:
