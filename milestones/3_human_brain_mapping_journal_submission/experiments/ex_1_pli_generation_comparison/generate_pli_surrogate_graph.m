@@ -5,7 +5,7 @@
 % Local Source
 %{
 INPUT_DIR = "/media/yacine/My Book/datasets/consciousness/AEC vs wPLI/source localized data/";
-OUTPUT_DIR = "/media/yacine/My Book/test_result/jason_graph/";
+OUTPUT_DIR = "/media/yacine/My Book/test_result/ex_1_pli_generation_comparison/pli_surrogate_graphs/";
 %}
 
 % Remote Source
@@ -113,7 +113,8 @@ for p = 1:length(P_IDS)
             pli_temp =  calculate_pli(theta_win, ind, V, R, N);
             
             % Correct it using surrogate analysis (FAULTY VERSION)
-            pli(:, :, k) = surrogate_analysis(theta_win, ind, V, R, N, pli_temp);
+            pli_temp_corr = surrogate_analysis(theta_win, ind, V, R, N, pli_temp); 
+            pli(:, :, k) = pli_temp_corr;
         end
         
         result.wpli = pli;
@@ -194,7 +195,7 @@ function pli_temp = calculate_pli_surrogate(theta_win, ind, V, R, N)
         ii = 1:jj-1;
         indv = ii + sum(1:jj-2);
         % Phase difference
-        RP = bsxfun(@minus, a_sig_splice(:, jj), a_sig_splice(:, ii));
+        RP = bsxfun(@minus, theta_win(:, jj), a_sig_splice(:, ii));
         srp = sin(RP);
         pli_vector(indv) = abs(sum(sign(srp),1))/N;
     end

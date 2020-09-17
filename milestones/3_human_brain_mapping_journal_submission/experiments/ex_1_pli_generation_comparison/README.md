@@ -273,7 +273,7 @@ see: `generate_jason_pli_mod_2.m`
 
 The second improvement to do is to remove the substraction of the mean hilbert transform and run the analysis as Jason setup with the faulty wPLI with full EEG.
 
-**RUNNING**
+**ABORTED** It took way to long to generate.
 
 ## Jason version third modification
 see: `generate_jason_pli_mod_3.m`
@@ -292,4 +292,12 @@ see `genetate_pli_surrogate_graph.m`
 
 In this version we are using the PLI definition without the weighting along with a surrogate analysis of significance using PLI instead of wPLI.
 
-**RUNNING**
+|      | AEC | wPLI |
+|------|-----|-----|
+| B/U  | 85% | 73% |
+| B/PR | 68% | 69% |
+
+This is still lower than what we were expecting, however it is better than the `Jason version first modification` which was faulty + on only small window. Increasing the window for the surrogates to the whole window might help here. Will need to test it out.
+
+## Lucrezia Liuzzi PLI + surrogates + whole segment
+**TODO**

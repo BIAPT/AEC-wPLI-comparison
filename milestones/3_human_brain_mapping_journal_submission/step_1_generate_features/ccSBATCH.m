@@ -9,7 +9,7 @@ classdef ccSBATCH
         account = 'def-sblain';
 
         % Nodes, cpus per task, GPUs per node
-        nodes = 2;
+        nodes = 1;
         ntasksPerNode = 1;  % Must stay at 1
         cpusPerTask = 40;   % To allow speedup on entire nodes
         gpusPerNode = 0;
@@ -18,7 +18,7 @@ classdef ccSBATCH
         memPerCPU = '10000'
 
         % Requested walltime
-        walltime = '10:00:00'
+        walltime = '1:00:00'
 
         % You may use otherOptions to append a string to the qsub command
         % e.g.
