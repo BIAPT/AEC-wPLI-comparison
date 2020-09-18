@@ -1,4 +1,4 @@
-#!/bin/bash -l
+#!/bin/bash
 #SBATCH --job-name=example-pli-analysis
 #SBATCH --account=def-sblain # adjust this to match the accounting group you are using to submit jobs
 #SBATCH --time=0-1:00:00        # adjust this to match the walltime of your job (D-HH:MM:SS)
@@ -15,13 +15,8 @@ module load matlab/2018a
 # Create temporary job info location
 mkdir -p /scratch/$USER/$SLURM_JOB_ID
 
-echo "Start"
-pwd
-
 # will run on at most 40 cores
-srun matlab -nodisplay -r "pwd; example_pli_analysis({$P_ID}, {$EPOCH})"
-
-echo "Stop"
+srun matlab -nodisplay -r "example_pli_analysis({$P_ID}, {$EPOCH})"
 
 # Cleanup
 rm -rf /scratch/$USER/$SLURM_JOB_ID
