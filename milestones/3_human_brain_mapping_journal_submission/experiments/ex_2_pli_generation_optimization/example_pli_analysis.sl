@@ -15,9 +15,13 @@ module load matlab/2018a
 # Create temporary job info location
 mkdir -p /scratch/$USER/$SLURM_JOB_ID
 
+echo "Start"
+pwd
+
 # will run on at most 40 cores
 srun matlab -nodisplay -r "pwd; example_pli_analysis({$P_ID}, {$EPOCH})"
 
+echo "Stop"
 
 # Cleanup
 rm -rf /scratch/$USER/$SLURM_JOB_ID
