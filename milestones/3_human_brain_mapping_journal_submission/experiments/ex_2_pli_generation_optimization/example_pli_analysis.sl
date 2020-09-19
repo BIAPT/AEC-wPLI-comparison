@@ -16,7 +16,7 @@ module load matlab/2018a
 mkdir -p /scratch/$USER/$SLURM_JOB_ID
 
 # will run on at most 40 cores
-srun matlab -nodisplay -r "example_pli_analysis({$P_ID}, {$EPOCH})"
+matlab -nodisplay -r "example_pli_analysis({$P_ID}, {$EPOCH})"
 
 # Cleanup
 rm -rf /scratch/$USER/$SLURM_JOB_ID
