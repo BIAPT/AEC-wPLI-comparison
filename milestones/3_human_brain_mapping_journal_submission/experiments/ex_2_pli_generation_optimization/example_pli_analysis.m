@@ -16,6 +16,17 @@ function example_pli_analysis(p_id, epoch)
 
     % Add NA library to our path so that we can use it
     addpath(genpath(NEUROALGO_PATH));
+
+    % Setup the number of CPUs we need
+    NUM_CPU = 40;
+    % Create a "local" cluster object
+    local_cluster = parcluster('local')
+
+    % Modify the JobStorageLocation to $SLURM_TMPDIR
+    pc.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'))
+
+    % Start the parallel pool
+    parpool(local_cluster, NUM_CPU)
     %}
 
     % indice of the scalp regions
