@@ -22,13 +22,13 @@ function example_pli_analysis(p_id, epoch)
     % Disable this feature
     distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happening in the cluster
     % Create a "local" cluster object
-    local_cluster = parcluster('local')
+    #local_cluster = parcluster('local')
 
     % Modify the JobStorageLocation to $SLURM_TMPDIR
     pc.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'))
 
     % Start the parallel pool
-    parpool(local_cluster, NUM_CPU)
+    parpool(NUM_CPU)
     %}
 
     % indice of the scalp regions
