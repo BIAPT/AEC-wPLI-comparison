@@ -45,7 +45,7 @@ This is the main part of the analysis. It contains the Matlab code that was cut 
     % Disable this feature
     distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happening in the cluster
     % Create a "local" cluster object
-    %local_cluster = parcluster('local')
+    % local_cluster = parcluster('local')
 
     % Modify the JobStorageLocation to $SLURM_TMPDIR
     pc.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'))
@@ -54,3 +54,4 @@ This is the main part of the analysis. It contains the Matlab code that was cut 
     parpool(NUM_CPU)
 ```
 
+The rest of the script correspond to what was there before except trimmed down to handle 1 input participant with 1 input condition. The main idea is that it will load the right dataset, calculate PLI properly only on that dataset and then save it using the input to create a filename.

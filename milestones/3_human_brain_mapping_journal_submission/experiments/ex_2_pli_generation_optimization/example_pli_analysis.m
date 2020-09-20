@@ -10,25 +10,22 @@ function example_pli_analysis(p_id, epoch)
 
     % Remote Source
     %
+
+    % Create a "local" cluster object
+    local_cluster = parcluster('local')
+
+    % Modify the JobStorageLocation to $SLURM_TMPDIR
+    local_cluster.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'))
+
+    % Start the parallel pool
+    parpool(local_cluster, str2num(getenv('SLURM_CPUS_ON_NODE')))
+
     INPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/data/source_localized_data/";
     OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/ex_2_pli_generation_optimization/";
     NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
 
     % Add NA library to our path so that we can use it
     addpath(genpath(NEUROALGO_PATH));
-
-    % Setup the number of CPUs we need
-    NUM_CPU = 40;
-    % Disable this feature
-    distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happening in the cluster
-    % Create a "local" cluster object
-    % local_cluster = parcluster('local')
-
-    % Modify the JobStorageLocation to $SLURM_TMPDIR
-    pc.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'))
-
-    % Start the parallel pool
-    parpool(NUM_CPU)
     %}
 
     % indice of the scalp regions
