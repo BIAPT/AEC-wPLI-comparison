@@ -116,7 +116,10 @@ function example_pli_analysis(P_ID, EPOCH)
         pli_temp =  calculate_pli(theta_win, ind, V, R, N);
         
         % Correct it using surrogate analysis
+        fprintf("Calculating surrogates: \n")
         pli_temp_corr = surrogate_analysis(theta, ind, V, R, N, pli_temp)
+        fprintf("Done calculating surrogates: \n")
+        pli_temp_corr
         pli(:, :, k) = pli_temp_corr;
     end
 
