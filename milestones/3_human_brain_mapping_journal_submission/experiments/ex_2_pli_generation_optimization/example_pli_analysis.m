@@ -107,7 +107,7 @@ function example_pli_analysis(P_ID, EPOCH)
 
     % Loop over time windows
     parfor k = 1:K
-
+        fprintf("Calculating window '%d' \n", k);
         ibeg = (N/2)*(k-1) + 1;
         iwind = ibeg:ibeg+N-1;
 
@@ -158,7 +158,6 @@ function [PLIcorr] = surrogate_analysis(theta, ind, V, R, N, pli_temp)
 
 
 %Calculating the surrogate
-    display('Calculating surrogate:');
     parfor j = 1:20
         PLI_surr(j,:,:) = calculate_pli_surrogate(theta, ind, V, R, N);
     end
