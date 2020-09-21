@@ -35,7 +35,7 @@ The main part of the analysis is this snippet:
 ```bash
 matlab -nodisplay -r "example_pli_analysis('$P_ID', '$EPOCH')"
 ```
-Once we've loaded matlab, we can call it on the command line an run the example_pli_analysis as a function with the parameter `P_ID` and `EPOCH` that were set in the previous bash file. The `example_pli_analysis.m` has the same name as the slurm file, but it doesn't needs to.
+Once we've loaded matlab, we can call it on the command line an run the example_pli_analysis as a function with the parameter `P_ID` and `EPOCH` that were set in the previous bash file. The `example_pli_analysis.m` has the same name as the slurm file, but it doesn't need to.
 
 ## example_pli_analysis.m
 This is the main part of the analysis. It contains the Matlab code that was cut down to add more flexibility so that it can run directly for a given `P_ID` and a given `EPOCH`. Since we are working without the Parallele Engine from MATLAB2020a we need to do the weird gymnastic in which we set the `NUM_CPU=40` otherwise MATLAB will think that we want only 12 CPUS no matter what we set in the slurm file.
