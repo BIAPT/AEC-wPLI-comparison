@@ -161,7 +161,7 @@ function [PLIcorr] = surrogate_analysis(theta, ind, V, R, N, pli_temp)
 
 
 %Calculating the surrogate
-    parfor j = 1:20
+    for j = 1:20
         PLI_surr(j,:,:) = calculate_pli_surrogate(theta, ind, V, R, N);
     end
 
