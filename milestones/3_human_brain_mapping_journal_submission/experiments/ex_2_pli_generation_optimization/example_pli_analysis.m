@@ -116,8 +116,8 @@ function example_pli_analysis(P_ID, EPOCH)
         pli_temp =  calculate_pli(theta_win, ind, V, R, N);
         
         % Correct it using surrogate analysis
-        pli_temp_corr = surrogate_analysis(theta, ind, V, R, N, pli_temp); 
-        pli(:, :, k) = pli_temp_corr
+        pli_temp_corr = surrogate_analysis(theta, ind, V, R, N, pli_temp)
+        pli(:, :, k) = pli_temp_corr;
     end
 
     result.wpli = pli;
@@ -197,7 +197,7 @@ function pli_temp = calculate_pli_surrogate(theta, ind, V, R, N)
         ii = 1:jj-1;
         indv = ii + sum(1:jj-2);
         % Phase difference
-        RP = bsxfun(@minus, theta(:, jj), a_sig_splice(:, ii))
+        RP = bsxfun(@minus, theta(:, jj), a_sig_splice(:, ii));
         srp = sin(RP);
         pli_vector(indv) = abs(sum(sign(srp),1))/N;
     end
