@@ -41,7 +41,6 @@ Once we've loaded matlab, we can call it on the command line an run the example_
 This is the main part of the analysis. It contains the Matlab code that was cut down to add more flexibility so that it can run directly for a given `P_ID` and a given `EPOCH`. Since we are working without the Parallele Engine from MATLAB2020a we need to do the weird gymnastic in which we set the `NUM_CPU=40` otherwise MATLAB will think that we want only 12 CPUS no matter what we set in the slurm file.
 
 ```matlab
-    NUM_CPU = 40;
     % Disable this feature
     distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happening in the cluster
     % Create a "local" cluster object
@@ -51,7 +50,7 @@ This is the main part of the analysis. It contains the Matlab code that was cut 
     pc.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'))
 
     % Start the parallel pool
-    parpool(NUM_CPU)
+    parpool(local_cluster, str2num(getenv('SLURM_CPUS_ON_NODE')))
 ```
 
 The rest of the script correspond to what was there before except trimmed down to handle 1 input participant with 1 input condition. The main idea is that it will load the right dataset, calculate PLI properly only on that dataset and then save it using the input to create a filename.
