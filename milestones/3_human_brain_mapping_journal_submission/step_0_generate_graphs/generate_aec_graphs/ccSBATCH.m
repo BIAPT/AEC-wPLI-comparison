@@ -11,7 +11,7 @@ classdef ccSBATCH
         % Nodes, cpus per task, GPUs per node
         nodes = 1;
         ntasksPerNode = 1;  % Must stay at 1
-        cpusPerTask = 20;   % To allow speedup on entire nodes
+        cpusPerTask = 40;   % To allow speedup on entire nodes
         gpusPerNode = 0;
 
         % Specify the memory per CPU
