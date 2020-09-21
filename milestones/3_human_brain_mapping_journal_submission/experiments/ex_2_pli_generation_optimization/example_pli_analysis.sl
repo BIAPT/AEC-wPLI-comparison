@@ -18,7 +18,7 @@ mkdir -p /scratch/$USER/$SLURM_JOB_ID
 # will run on at most 40 cores
 P_ID="MDFA03"
 EPOCH="eyesclosed_1"
-matlab -nodisplay -r "example_pli_analysis"
+srun matlab -nodisplay -r "example_pli_analysis"
 
 # Cleanup
 rm -rf /scratch/$USER/$SLURM_JOB_ID

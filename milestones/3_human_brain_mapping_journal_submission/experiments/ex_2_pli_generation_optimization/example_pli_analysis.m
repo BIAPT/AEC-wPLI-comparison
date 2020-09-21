@@ -11,7 +11,7 @@ OUTPUT_DIR = "/media/yacine/My Book/test_result/ex_1_pli_generation_comparison/p
 
 % Create a "local" cluster object
 % Check the default clusterProfile
-local_cluster = parcluster
+local_cluster = parcluster('local')
 
 % Modify the JobStorageLocation to $SLURM_TMPDIR
 local_cluster.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'))
