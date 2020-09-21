@@ -18,6 +18,5 @@ mkdir -p /scratch/$USER/$SLURM_JOB_ID
 # will run on at most 80 cores
 srun matlab -nodisplay -r "generate_wpli" 
 
-
 # Cleanup
 rm -rf /scratch/$USER/$SLURM_JOB_ID

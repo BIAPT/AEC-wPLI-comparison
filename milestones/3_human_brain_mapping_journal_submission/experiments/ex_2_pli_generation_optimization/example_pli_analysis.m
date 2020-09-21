@@ -10,7 +10,7 @@ OUTPUT_DIR = "/media/yacine/My Book/test_result/ex_1_pli_generation_comparison/p
 %
 
 % Create a "local" cluster object
-% Check the default clusterProfile
+distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happening in the cluster
 local_cluster = parcluster('local')
 
 % Modify the JobStorageLocation to $SLURM_TMPDIR
