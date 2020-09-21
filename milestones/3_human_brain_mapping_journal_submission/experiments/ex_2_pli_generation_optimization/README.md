@@ -55,3 +55,6 @@ This is the main part of the analysis. It contains the Matlab code that was cut 
 ```
 
 The rest of the script correspond to what was there before except trimmed down to handle 1 input participant with 1 input condition. The main idea is that it will load the right dataset, calculate PLI properly only on that dataset and then save it using the input to create a filename.
+
+## Note
+- I had a lots of trouble with MATLAB and sbatching the slurm file, I kept getting the same crash for the parcluster call. Turns out that some file were corrupted! Check out the section [Running multiple parallel MATLAB jobs simultaneously](https://docs.computecanada.ca/wiki/MATLAB). Bottom line is that MATLAB is very unreliable on clusters and made me lose a considerable amount of time. Will make the switch to Python for this section of the analysis asap.

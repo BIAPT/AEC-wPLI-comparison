@@ -12,6 +12,7 @@ P_IDS=("MDFA03" "MDFA05" "MDFA06" "MDFA07" "MDFA10" "MDFA11" "MDFA12" "MDFA15" "
 
 # Delete the local_cluster_jobs folder to avoid corruption from lock files
 # This is not always needed but I've spent 3h on this problem so it is worthwhile to check
+# I have no idea why this is happening, but checkout the note on the README.md for info
 echo "Removing possible corrupted jobs files"
 rm -r $HOME/.matlab/local_cluster_jobs/
 
