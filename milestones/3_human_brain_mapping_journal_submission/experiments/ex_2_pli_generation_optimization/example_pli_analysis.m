@@ -3,13 +3,13 @@
 function example_pli_analysis(P_ID, EPOCH)
     %% Path Setup
     % Local Source
-    %
+    %{
     INPUT_DIR = "/media/yacine/My Book/datasets/consciousness/AEC vs wPLI/source localized data/";
     OUTPUT_DIR = "/media/yacine/My Book/test_result/ex_1_pli_generation_comparison/pli_surrogate_graphs/";
     %}
 
     % Remote Source
-    %{
+    %
 
     % Create a "local" cluster object
     distcomp.feature( 'LocalUseMpiexec', false ); % This was because of some bug happening in the cluster
