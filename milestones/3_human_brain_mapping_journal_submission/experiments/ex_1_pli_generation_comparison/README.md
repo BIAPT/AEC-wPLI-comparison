@@ -58,7 +58,7 @@ see: `generate_features_from_old_graph.m`
 
 In this analysis we tried to reassure ourselves that everything in the machine learning pipeline was working properly by generating the features.csv matrix from the matrix that Jason generated. We were able to re-generate the exact number we've outlined in the paper. This means that the problem lies in the generation of the (w)PLI graphs.
 
-It yield:
+It yields:
 
 |      | AEC | PLI |
 |------|-----|-----|
@@ -318,8 +318,11 @@ see `genetate_pli_surrogate_graph_mod_1.m`
 
 In this version it's the same idea as the previous one **Lucrezia Liuzzi PLI + surrogates** however we will be doing the surrogate analysis of significance on the whole EEG recording everytime.
 
-**ABORTED** It took way too long to run.
-
+Here is the result for the analysis:
+|      | AEC | wPLI |
+|------|-----|-----|
+| B/U  | 85% | 72% |
+| B/PR | 68% | 68% |
 
 # Conclusion
 The general conclusion that we can take for this serie of analysis is that:
