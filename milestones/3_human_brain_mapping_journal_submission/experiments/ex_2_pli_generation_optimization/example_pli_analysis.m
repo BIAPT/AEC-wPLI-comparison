@@ -3,13 +3,13 @@
 function example_pli_analysis(P_ID, EPOCH)
     %% Path Setup
     % Local Source
-    %{
+    %
     INPUT_DIR = "/media/yacine/My Book/datasets/consciousness/AEC vs wPLI/source localized data/";
     OUTPUT_DIR = "/media/yacine/My Book/test_result/ex_1_pli_generation_comparison/pli_surrogate_graphs/";
     %}
 
     % Remote Source
-    %
+    %{
 
     % Create a "local" cluster object
     distcomp.feature( 'LocalUseMpiexec', false ); % This was because of some bug happening in the cluster
@@ -113,11 +113,11 @@ function example_pli_analysis(P_ID, EPOCH)
 
         % Calculate PLI
         theta_win = theta(iwind, :);
-        pli_temp =  calculate_pli(theta_win, ind, V, R, N);
+        pli_temp =  calculate_pli(theta_win, ind, V);
 
 
         % Correct it using surrogate analysis
-        pli_temp_corr = surrogate_analysis(theta, ind, V, R, N, pli_temp);
+        pli_temp_corr = surrogate_analysis(theta, ind, V, pli_temp);
         pli(:, :, k) = pli_temp_corr;
     end
 
@@ -133,10 +133,12 @@ function example_pli_analysis(P_ID, EPOCH)
 
 end
 
-function [pli_temp] = calculate_pli(theta_win, ind, V, R, N)
+function [pli_temp] = calculate_pli(theta_win, ind, V)
 %% CALCULATE PLI helper function to wrap the calculation of PLI
 
+        [N,R] = size(theta_win);
         pli_vector = zeros(V,1);
+        
         % loop over all possible ROI pairs
         for jj = 2:R
             ii = 1:jj-1;
@@ -154,18 +156,15 @@ function [pli_temp] = calculate_pli(theta_win, ind, V, R, N)
 end
 
 
-function [PLIcorr] = surrogate_analysis(theta, ind, V, R, N, pli_temp)
+function [PLIcorr] = surrogate_analysis(theta, ind, V, pli_temp)
 %% SURROGATE ANALYSIS this is a better way of correcting pli
 
 
 %Calculating the surrogate
     parfor j = 1:20
-        PLI_surr(j,:,:) = calculate_pli_surrogate(theta, ind, V, R, N);
+        fprintf("Surrogate window: %d\n", j);
+        PLI_surr(j,:,:) = calculate_pli_surrogate(theta, ind, V);
     end
-
-    fprintf("Finished surogate: \n");
-    PLI_surr(:,1,1)
-    fprintf("End\n")
 
     %Here we compare the calculated dPLI versus the surrogate
     %and test for significance            
@@ -187,10 +186,11 @@ function [PLIcorr] = surrogate_analysis(theta, ind, V, R, N, pli_temp)
             
 end
 
-function pli_temp = calculate_pli_surrogate(theta, ind, V, R, N)
+function pli_temp = calculate_pli_surrogate(theta, ind, V)
 % Given a multivariate data, returns phase lag index matrix
 % Modified the mfile of 'phase synchronization'
 
+    [N,R] = size(theta);
     num_pts = length(theta);
     splice = randi(num_pts);  % determines random place in signal where it will be spliced
 

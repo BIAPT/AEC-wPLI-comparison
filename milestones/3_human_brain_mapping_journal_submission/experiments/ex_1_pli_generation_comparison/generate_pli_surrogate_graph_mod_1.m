@@ -190,6 +190,7 @@ function pli_temp = calculate_pli_surrogate(theta, ind, V, R, N)
     a_sig_splice = [theta(splice:num_pts,:); theta(1:splice-1,:)];  % %This is the randomized signal
     
     pli_vector = zeros(V,1);
+    
     % loop over all possible ROI pairs
     for jj = 2:R
         ii = 1:jj-1;
