@@ -12,11 +12,11 @@ function example_pli_analysis(P_ID, EPOCH)
     %
 
     % Create a "local" cluster object
-    distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happening in the cluster
-    local_cluster = parcluster('local')
+    distcomp.feature( 'LocalUseMpiexec', false ); % This was because of some bug happening in the cluster
+    local_cluster = parcluster('local');
 
     % Modify the JobStorageLocation to $SLURM_TMPDIR
-    local_cluster.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'))
+    local_cluster.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'));
 
     % Start the parallel pool
     parpool(local_cluster, str2num(getenv('SLURM_CPUS_ON_NODE')))
