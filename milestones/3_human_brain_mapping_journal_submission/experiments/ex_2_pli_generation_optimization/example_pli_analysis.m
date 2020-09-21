@@ -1,6 +1,11 @@
 %% Yacine Mahdid 17 Septembre 2020
 
-function example_pli_analysis(P_ID, EPOCH)
+function example_pli_analysis(p_id, epoch)
+    %% EXAMPLE PLI ANALYSIS this is an example script to run the pli generation as fast as possible
+    % input:
+    % p_id: is the id of the participant (e.g. MDFAXX)
+    % epoch: is the epoch of interest (e.g. eyesclosed_1)
+
     %% Path Setup
     % Local Source
     %{
@@ -50,12 +55,11 @@ function example_pli_analysis(P_ID, EPOCH)
     %% Setup the Directory Structure
     mkdir(OUTPUT_DIR)
 
-
     %% Calculate wPLI on all windows            
-    fprintf("Analyzing participant '%s' at EPOCH '%s'\n", P_ID, EPOCH);
+    fprintf("Analyzing participant '%s' at epoch '%s'\n", p_id, epoch);
 
-    participant_in_path = strcat(INPUT_DIR, P_ID, filesep, P_ID, '_', EPOCH, '.mat');
-    participant_out_path = strcat(OUTPUT_DIR, P_ID, '_', EPOCH, '_', graph, '.mat');
+    participant_in_path = strcat(INPUT_DIR, p_id, filesep, p_id, '_', epoch, '.mat');
+    participant_out_path = strcat(OUTPUT_DIR, p_id, '_', epoch, '_', graph, '.mat');
 
     %% Load data
     load(participant_in_path);
@@ -154,41 +158,10 @@ function [pli_temp] = calculate_pli(theta_win, ind, V)
         pli_temp = pli_temp + pli_temp';
 end
 
-
-function [PLIcorr] = surrogate_analysis(theta, ind, V, pli_temp)
-%% SURROGATE ANALYSIS this is a better way of correcting pli
-
-
-%Calculating the surrogate
-    parfor j = 1:20
-        fprintf("Surrogate window: %d\n", j);
-        PLI_surr(j,:,:) = calculate_pli_surrogate(theta, ind, V);
-    end
-
-    %Here we compare the calculated dPLI versus the surrogate
-    %and test for significance            
-    for m = 1:length(pli_temp)
-        for n = 1:length(pli_temp)
-            test = PLI_surr(:,m,n);
-            p = signrank(test, pli_temp(m,n));       
-            if p < 0.05
-                if pli_temp(m,n) - median(test) < 0 %Special case to make sure no PLI is below 0
-                    PLIcorr(m,n) = 0;
-                else
-                    PLIcorr(m,n) = pli_temp(m,n) - median(test);
-                end
-            else
-                PLIcorr(m,n) = 0;
-            end          
-        end
-    end
-            
-end
-
 function pli_temp = calculate_pli_surrogate(theta, ind, V)
-% Given a multivariate data, returns phase lag index matrix
-% Modified the mfile of 'phase synchronization'
-
+    % Given a multivariate data, returns phase lag index matrix
+    % Modified the mfile of 'phase synchronization'
+    
     [N,R] = size(theta);
     num_pts = length(theta);
     splice = randi(num_pts);  % determines random place in signal where it will be spliced
@@ -210,4 +183,32 @@ function pli_temp = calculate_pli_surrogate(theta, ind, V)
     pli_temp = zeros(R, R);
     pli_temp(ind) = pli_vector(:);
     pli_temp = pli_temp + pli_temp';
+end
+
+function [pli_corr] = surrogate_analysis(theta, ind, V, pli_temp)
+%% SURROGATE ANALYSIS this is a better way of correcting pli
+
+    %Calculating the surrogate
+    parfor j = 1:20
+        pli_surr(j,:,:) = calculate_pli_surrogate(theta, ind, V);
+    end
+
+    %Here we compare the calculated dPLI versus the surrogate
+    %and test for significance            
+    for m = 1:length(pli_temp)
+        for n = 1:length(pli_temp)
+            test = pli_surr(:,m,n);
+            p = signrank(test, pli_temp(m,n));       
+            if p < 0.05
+                if pli_temp(m,n) - median(test) < 0 %Special case to make sure no PLI is below 0
+                    pli_corr(m,n) = 0;
+                else
+                    pli_corr(m,n) = pli_temp(m,n) - median(test);
+                end
+            else
+                pli_corr(m,n) = 0;
+            end          
+        end
+    end
+            
 end
