@@ -10,6 +10,11 @@
 EPOCHS=("eyesclosed_1" "induction" "emergence_first" "emergence_last" "eyesclosed_8")
 P_IDS=("MDFA03" "MDFA05" "MDFA06" "MDFA07" "MDFA10" "MDFA11" "MDFA12" "MDFA15" "MDFA17")
 
+# Delete the local_cluster_jobs folder to avoid corruption from lock files
+# This is not always needed but I've spent 3h on this problem so it is worthwhile to check
+echo "Removing possible corrupted jobs files"
+rm -r $HOME/.matlab/local_cluster_jobs/
+
 # batching loop
 for p_id in ${P_IDS[@]}; do
     for epoch in ${EPOCHS[@]}; do
