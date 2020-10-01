@@ -16,6 +16,12 @@ The result we were trying to hit is the following in a binary classification bet
 | B/U  | 85% | 78% |
 | B/PR | 68% | 78% |
 
+B means Baseline
+U means unconsciousness
+PR means Pre-Recovery
+/ means against
+and here we are doing Baseline agains Unconsciousness or Pre-Recovery
+
 ### Experiments Attempted
 - BIAPT wPLI based graph generation
 - Feature generation from old graph
