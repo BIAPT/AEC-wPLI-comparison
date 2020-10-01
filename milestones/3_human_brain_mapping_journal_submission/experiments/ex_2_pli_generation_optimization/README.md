@@ -51,7 +51,7 @@ This is the main part of the analysis. It contains the Matlab code that was cut 
     % Disable this feature
     distcomp.feature( 'LocalUseMpiexec', false ) % This was because of some bug happening in the cluster
     % Create a "local" cluster object
-    % local_cluster = parcluster('local')
+    local_cluster = parcluster('local')
 
     % Modify the JobStorageLocation to $SLURM_TMPDIR
     pc.JobStorageLocation = strcat('/scratch/yacine08/', getenv('SLURM_JOB_ID'))
