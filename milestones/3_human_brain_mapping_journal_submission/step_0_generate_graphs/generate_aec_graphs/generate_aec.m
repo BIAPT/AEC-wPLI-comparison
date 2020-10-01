@@ -39,8 +39,9 @@ high_frequency = 13;
 window_size = 10; % in seconds
 step_size = 5; % in seconds
 
-% cuts edge points from hilbert transform
-cut = 10;
+% cut_amount: amount of points from hilbert transform to remove from the start and end.
+% the goal is to not keep cut_amount from the start and cut_amount from the end.
+cut_amount = 10;
 
 % Type of graph to calculate
 graph = 'aec';
@@ -92,7 +93,7 @@ for p = 1:length(P_IDS)
         parfor win_i = 1:num_window
            disp(strcat("AEC at window: ",string(win_i)," of ", string(num_window))); 
            segment_data = squeeze(windowed_data(win_i,:,:));
-           aec(:,:, win_i) = aec_pairwise_corrected(segment_data, NUM_REGIONS, cut);
+           aec(:,:, win_i) = aec_pairwise_corrected(segment_data, NUM_REGIONS, cut_amount);
         end
 
         % Average amplitude correlations over all windows with pairwise
@@ -146,13 +147,13 @@ function [windowed_data, num_window] = create_sliding_window(data, window_size, 
     
 end
 
-function [aec] = aec_pairwise_corrected(data, num_regions, cut)
+function [aec] = aec_pairwise_corrected(data, num_regions, cut_amount)
 %% AEC PAIRWISE CORRECTED helper function to calculate the pairwise corrected aec
 %
 % input:
 % data: the data segment to calculate pairwise corrected aec on
 % num_regions: number of regions
-% cut: the amount we need to remove from the hilbert transform
+% cut_amount: the amount we need to remove from the hilbert transform
 %
 % output:
 % aec: a num_region*num_region matrix which has the amplitude envelope
@@ -178,7 +179,7 @@ function [aec] = aec_pairwise_corrected(data, num_regions, cut)
             xc = x - y*beta_leak;            
                        
             ht = hilbert([xc,y]);
-            ht = ht(cut+1:end-cut,:);
+            ht = ht(cut_amount+1:end-cut_amount,:);
             ht = bsxfun(@minus,ht,mean(ht,1));
             
             % Envelope
