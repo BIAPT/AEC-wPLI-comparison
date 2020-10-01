@@ -44,10 +44,13 @@ function example_pli_analysis(p_id, epoch)
     low_frequency = 8;
     high_frequency = 13;
 
-    % Size of the cuts for the data
+    % Size of the window for the data and how much we are moving the window (step_size) to generate data points
     window_size = 10; % in seconds
     step_size = 5; % in seconds
-    cut = 10;
+
+    % cut_amount: amount of points from hilbert transform to remove from the start and end.
+    % the goal is to not keep cut_amount from the start and cut_amount from the end.
+    cut_amount = 10; 
 
     % Type of graph to calculate
     graph = 'wpli';
@@ -88,7 +91,7 @@ function example_pli_analysis(p_id, epoch)
     [m,R] = size(Vfilt);
 
     ht = hilbert(Vfilt);
-    ht = ht(cut+1:end-cut,:);
+    ht = ht(cut_amount+1:end-cut_amount,:);
     ht = bsxfun(@minus,ht,mean(ht,1));
 
     % Phase information
@@ -99,7 +102,7 @@ function example_pli_analysis(p_id, epoch)
     % Window duration for PLI calculation
     T = 100/(2*B);                % ~100 effective points
     N = round(T*fd/2)*2;
-    K = fix((m-N/2-cut*2)/(N/2)); % number of windows, 50% overlap
+    K = fix((m-N/2-cut_amount*2)/(N/2)); % number of windows, 50% overlap
     V = nchoosek(R,2);            % number of ROI pairs
 
     %% Iterate over each window and calculate pairwise corrected aec
