@@ -76,7 +76,7 @@ function example_pli_analysis(p_id, epoch)
         LABELS{ii} = Atlas.Scouts(ii).Label;
     end
 
-    % Sampling frequency : need to round
+    % Sampling frequency
     fd = 1/(Time(2)-Time(1));
 
     %% Filtering
@@ -92,6 +92,11 @@ function example_pli_analysis(p_id, epoch)
 
     ht = hilbert(Vfilt);
     ht = ht(cut_amount+1:end-cut_amount,:);
+
+    % bsxfun: bsxfun(fun,A,B) applies the element-wise binary operation specified by the function handle fun to arrays A and B. 
+    % @minus: is the function to represent '-' as we can just put '-' sign in the bsxfun function
+    % basically its doing ht - mean(ht,1). This is a bit confusing since you could also have done ht - mean(ht,1)
+    % without any problem. Here I wanted to keep as much syntax from Lucrezia as possible for the example.
     ht = bsxfun(@minus,ht,mean(ht,1));
 
     % Phase information
