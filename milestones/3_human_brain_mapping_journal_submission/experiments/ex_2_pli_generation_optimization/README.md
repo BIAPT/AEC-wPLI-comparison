@@ -35,7 +35,14 @@ The main part of the analysis is this snippet:
 ```bash
 matlab -nodisplay -r "example_pli_analysis('$P_ID', '$EPOCH')"
 ```
-Once we've loaded matlab, we can call it on the command line an run the example_pli_analysis as a function with the parameter `P_ID` and `EPOCH` that were set in the previous bash file. The `example_pli_analysis.m` has the same name as the slurm file, but it doesn't need to.
+Once we've loaded matlab, we can call it on the command line an run the example_pli_analysis as a function with the parameter `P_ID` and `EPOCH` that were set in the previous bash file. The `example_pli_analysis.m` has the same name as the slurm file, but it doesn't need to. 
+
+**clarification**: The `P_ID` and the `EPOCH` variable are string coming from two bash arrays of string that were set in the run_pli_generation.bash file which looks like this:
+```bash
+EPOCHS=("eyesclosed_1" "induction" "emergence_first" "emergence_last" "eyesclosed_8")
+P_IDS=("MDFA03" "MDFA05" "MDFA06" "MDFA07" "MDFA10" "MDFA11" "MDFA12" "MDFA15" "MDFA17")
+```
+This means that if we want to run a subset of the whole analysis we can remove item from this list and we will not batch them for analysis. If we keep everything we will call `example_pli_analysis('$P_ID', '$EPOCH')` with 40 cores 5*9 times which will spawn 45 analysis.
 
 ## example_pli_analysis.m
 This is the main part of the analysis. It contains the Matlab code that was cut down to add more flexibility so that it can run directly for a given `P_ID` and a given `EPOCH`. Since we are working without the Parallele Engine from MATLAB2020a we need to do the weird gymnastic in which we set the `NUM_CPU=40` otherwise MATLAB will think that we want only 12 CPUS no matter what we set in the slurm file.
