@@ -6,7 +6,7 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=40      # adjust this if you are using parallel commands
 #SBATCH --mem=90000         # adjust this according to the memory requirement per node you need (this is MegaByte)
-#SBATCH --mail-user=yacine.mahdid@mail.mcgill.ca 
+#SBATCH --mail-user=username@mail.mcgill.ca 
 #SBATCH --mail-type=ALL
 
 # Choose a version of MATLAB by loading a module:
