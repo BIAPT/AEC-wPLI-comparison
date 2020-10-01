@@ -128,7 +128,10 @@ function example_pli_analysis(p_id, epoch)
     % Loop over time windows
     parfor k = 1:K
         fprintf("Calculating window '%d' \n", k);
+
+        % This is the begining of the window segment (a scalar)
         ibeg = (N/2)*(k-1) + 1;
+        % this is the index of the window segment (a vector)
         iwind = ibeg:ibeg+N-1;
 
         % Calculate PLI
