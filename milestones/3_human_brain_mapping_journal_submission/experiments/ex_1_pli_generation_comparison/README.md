@@ -16,8 +16,15 @@ The result we were trying to hit is the following in a binary classification bet
 | B/U  | 85% | 78% |
 | B/PR | 68% | 78% |
 
+B means Baseline
+U means unconsciousness
+PR means Pre-Recovery
+/ means against
+and here we are doing Baseline agains Unconsciousness or Pre-Recovery
+
 ### Experiments Attempted
 - BIAPT wPLI based graph generation
+- Feature generation from old graph
 - Lucrezia Liuzzi PLI without surrogates correction
 - Jason version (i.e. Lucrezia + wPLI surrogates correction)
 - Jason version with modification 1 : surrogates on smaller window
@@ -52,6 +59,17 @@ This version yield the following result:
 | B/U  | 85% | 69% |
 | B/PR | 68% | 68% |
 
+## Feature generation from old graph
+see: `generate_features_from_old_graph.m`
+
+In this analysis we tried to reassure ourselves that everything in the machine learning pipeline was working properly by generating the features.csv matrix from the matrix that Jason generated. We were able to re-generate the exact number we've outlined in the paper. This means that the problem lies in the generation of the (w)PLI graphs.
+
+It yields:
+
+|      | AEC | PLI |
+|------|-----|-----|
+| B/U  | 85% | 78% |
+| B/PR | 68% | 78% |
 
 ## Lucrezia Liuzzi PLI (no surrogate)
 see: `generate_liuzzi_pli.m`
@@ -306,8 +324,11 @@ see `genetate_pli_surrogate_graph_mod_1.m`
 
 In this version it's the same idea as the previous one **Lucrezia Liuzzi PLI + surrogates** however we will be doing the surrogate analysis of significance on the whole EEG recording everytime.
 
-**ABORTED** It took way too long to run.
-
+Here is the result for the analysis:
+|      | AEC | wPLI |
+|------|-----|-----|
+| B/U  | 85% | 72% |
+| B/PR | 68% | 68% |
 
 # Conclusion
 The general conclusion that we can take for this serie of analysis is that:
