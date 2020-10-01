@@ -64,9 +64,15 @@ function example_pli_analysis(p_id, epoch)
     participant_in_path = strcat(INPUT_DIR, p_id, filesep, p_id, '_', epoch, '.mat');
     participant_out_path = strcat(OUTPUT_DIR, p_id, '_', epoch, '_', graph, '.mat');
 
-    %% Load data
+    %% Load data into the global workspace
+    % doing a raw load this way is not ideal as a lot of variables will be populated magically
+    % however, this is how Jason and Lucrezia code was setup so I tried to refactor as little as possible
+    % to not introduce to many changes.
     load(participant_in_path);
 
+    % Here we are filtering the Value (which is Lucrezia name for the EEG data)
+    % and the scouts (which hold the information like label) which is for the AAL atlas
+    % the name honestly doesn't make much sense
     Value = Value(SCALP_REGIONS,:);
     Atlas.Scouts = Atlas.Scouts(SCALP_REGIONS);
 
