@@ -90,7 +90,9 @@ function example_pli_analysis(p_id, epoch)
     %% No correction + PLI calculation
     [m,R] = size(Vfilt);
 
+    % Take the hilbert transform of the filtered signal Vfilt
     ht = hilbert(Vfilt);
+    % Remove edge point at the start and end by cut_amount
     ht = ht(cut_amount+1:end-cut_amount,:);
 
     % bsxfun: bsxfun(fun,A,B) applies the element-wise binary operation specified by the function handle fun to arrays A and B. 
@@ -193,7 +195,9 @@ function pli_temp = calculate_pli_surrogate(theta, ind, V)
 end
 
 function [pli_corr] = surrogate_analysis(theta, ind, V, pli_temp)
-%% SURROGATE ANALYSIS this is a better way of correcting pli
+%% SURROGATE ANALYSIS this is a better way of correcting pli than previously found in Jason code
+%  since we are fixing the pli using the pli definition instead of the wpli. Mixing pli and wpli is
+%  not standard and I'm really not sure what it means.
 
     %Calculating the surrogate
     parfor j = 1:20
