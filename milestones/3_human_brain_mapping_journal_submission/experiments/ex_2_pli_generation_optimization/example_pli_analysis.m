@@ -35,7 +35,7 @@ function example_pli_analysis(p_id, epoch)
 
     %}
 
-    % indice of the scalp regions
+    % indice of the scalp regions of interest in the source space from the AAL atlas (82 regions in total)
     SCALP_REGIONS = [82 62 54 56 58 60 30 26 34 32 28 24 36 86 66 76 84 74 72 70 88 3 78 52 50 48 5 22 46 38 40 98 92 90 96 94 68 16 18 20 44 83 63 55 57 59 61 31 27 35 33 29 25 37 87 67 77 85 75 71 73 89 4 79 53 51 49 6 23 47 39 41 99 93 91 97 95 69 17 19 21 45];
     NUM_REGIONS = length(SCALP_REGIONS);
 
