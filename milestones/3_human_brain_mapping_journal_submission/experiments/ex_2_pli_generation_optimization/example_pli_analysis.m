@@ -168,7 +168,6 @@ end
 
 function pli_temp = calculate_pli_surrogate(theta, ind, V)
     % Given a multivariate data, returns phase lag index matrix
-    % Modified the mfile of 'phase synchronization'
     
     [N,R] = size(theta);
     num_pts = length(theta);
