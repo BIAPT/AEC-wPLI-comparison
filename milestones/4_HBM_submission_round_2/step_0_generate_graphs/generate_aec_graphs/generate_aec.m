@@ -13,9 +13,9 @@ NUM_CPU = 2;
 
 % Remote Source
 %
-INPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/data/source_localized_data/";
-OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/graphs/";
-NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
+INPUT_DIR = "/lustre02/project/def-sblain/lotte/aec_vs_wpli/data/source_localized_data/";
+OUTPUT_DIR = "/lustre02/project/def-sblain/lotte/aec_vs_wpli/result/graphs/";
+NEUROALGO_PATH = "/lustre02/project/def-sblain/lotte/aec_vs_wpli/NeuroAlgo";
 
 % Add NA library to our path so that we can use it
 addpath(genpath(NEUROALGO_PATH));
