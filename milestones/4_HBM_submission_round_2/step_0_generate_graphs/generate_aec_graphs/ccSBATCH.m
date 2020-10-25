@@ -22,7 +22,7 @@ classdef ccSBATCH
 
         % You may use otherOptions to append a string to the qsub command
         % e.g.
-        otherOptions = '--mail-user=charlotte.maschke@mail.mcgill.ca --mail-type=ALL --job-name=make-aec'
+        otherOptions = '--mail-user=q2h3s6p4k0e9o7a5@biaptlab.slack.com --mail-type=ALL --job-name=make-aec'
         
     end
 

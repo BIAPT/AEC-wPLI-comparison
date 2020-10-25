@@ -12,10 +12,10 @@ NUM_CPU = 2;
 %}
 
 % Remote Source
-
-INPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/data/source_localized_data/";
-OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/graphs/";
-NEUROALGO_PATH = "/lustre03/project/6010672/yacine08/NeuroAlgo";
+%
+INPUT_DIR = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/data/source_localized_data/";
+OUTPUT_DIR = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/graphs/";
+NEUROALGO_PATH = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/NeuroAlgo";
 
 % Add NA library to our path so that we can use it
 addpath(genpath(NEUROALGO_PATH));
@@ -27,6 +27,8 @@ EPOCHS = {'eyesclosed_1', 'induction', 'emergence_first', 'emergence_last', 'eye
 % indice of the scalp regions
 SCALP_REGIONS = [82 62 54 56 58 60 30 26 34 32 28 24 36 86 66 76 84 74 72 70 88 3 78 52 50 48 5 22 46 38 40 98 92 90 96 94 68 16 18 20 44 83 63 55 57 59 61 31 27 35 33 29 25 37 87 67 77 85 75 71 73 89 4 79 53 51 49 6 23 47 39 41 99 93 91 97 95 69 17 19 21 45];
 NUM_REGIONS = length(SCALP_REGIONS);
+
+logFile = '~/scratch/output_test_parfor.log';
 
 % wPLI Parameters:
 % Alpha bandpass
@@ -83,7 +85,7 @@ for p = 1:length(P_IDS)
         sampling_rate = fd; % in Hz
         [windowed_data, num_window] = create_sliding_window(filtered_data, window_size, step_size, sampling_rate);
 
-        %% Iterate over each window and calculate pairwise corrected aec
+        %% Iterate over each window and calculate pairwise corrected pli
         result = struct();
         pli = zeros(NUM_REGIONS, NUM_REGIONS, num_window);
 

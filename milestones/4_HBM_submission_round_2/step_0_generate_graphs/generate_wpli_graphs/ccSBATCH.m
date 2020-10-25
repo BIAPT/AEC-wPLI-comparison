@@ -18,12 +18,12 @@ classdef ccSBATCH
         memPerCPU = '10000'
 
         % Requested walltime
-        walltime = '00:45:00'
+        walltime = '01:45:00'
 
         % You may use otherOptions to append a string to the qsub command
         % e.g.
-        otherOptions = '--mail-user=yacine.mahdid@mail.mcgill.ca --mail-type=ALL --job-name=make-wpli'
-        
+        otherOptions = '--mail-user=q2h3s6p4k0e9o7a5@biaptlab.slack.com --mail-type=ALL --job-name=make-wpli'
+         
     end
 
     methods(Static)
