@@ -20,7 +20,7 @@ sys.path.append(os.path.abspath(scriptpath))
 
 # Common import shared across analysis
 import commons
-from commons import classify_loso
+from commons import classify_loso, print_summary
 from commons import load_pickle, find_best_model, filter_dataframe
 
 # This will be given by the srun in the bash file
@@ -48,4 +48,4 @@ pipe = Pipeline([
 
 accuracies, cms = classify_loso(X, y, group, pipe)
 
-print_summary(accuracies, group, clf.parameters)
+print_summary(accuracies, group)

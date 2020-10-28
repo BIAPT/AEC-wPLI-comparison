@@ -77,7 +77,7 @@ class DummyEstimator(BaseEstimator):
     def score(self): pass
 """
 
-def print_summary(accuracies, group, best_params):
+def print_summary(accuracies, group, best_params= None):
     """
     Helper function to print a summary of a classifier performance
     :param accuracies: a list of the accuracy obtained across fold (participant)
@@ -85,11 +85,17 @@ def print_summary(accuracies, group, best_params):
     :param df: dataframe containing all the data about the participant
     :return: None
     """
+    if best_params != None:
+        p_ids = np.unique(group)
+        print("Accuracies: ")
+        for accuracy, p_id, best_param in zip(accuracies, p_ids, best_params):
+            print(f"Participant {p_id}: accuracy = {accuracy} model:{best_param}")
 
-    p_ids = np.unique(group)
-    print("Accuracies: ")
-    for accuracy, p_id, best_param in zip(accuracies, p_ids, best_params):
-        print(f"Participant {p_id}: accuracy = {accuracy} model:{best_param}")
+    else:
+        p_ids = np.unique(group)
+        print("Accuracies: ")
+        for accuracy, p_id in zip(accuracies, p_ids):
+            print(f"Participant {p_id}: accuracy = {accuracy}")
 
     print(f"Mean accuracy: {np.mean(accuracies)}")
 
@@ -164,6 +170,7 @@ def find_best_model(best_params):
         print("Best overall model selected: ")
         print(f"svc_{C}_kernel_{k}")
         clf = SVC(C=C, max_iter=10000, kernel=k)
+        clf.get_params()
 
     elif content[0] == "lda":
         solver = content[1]
