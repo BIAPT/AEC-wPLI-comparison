@@ -42,7 +42,7 @@ clf = find_best_model(best_clf_data['best_params'])
 pipe = Pipeline([
     ('imputer', SimpleImputer(missing_values=np.nan, strategy='mean')),
     ('scaler', StandardScaler()),
-    ('SVM', clf)])
+    ('CLF', clf)])
 
 # Training and bootstrap interval generation
 acc, perms, p_value = permutation_test(X, y, group, pipe, num_permutation=1000)

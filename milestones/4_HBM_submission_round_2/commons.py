@@ -155,17 +155,23 @@ def find_best_model(best_params):
     best_clf_params = max(models_occurence, key=models_occurence.get)
 
     content = best_clf_params.split('_')
-    if content[0] == "linsvc":
+    if content[0] == "svc":
         C = float(content[1])
-        clf = SVC(C=C, max_iter=10000, kernel='linear')
-    elif content[0] == "rbfsvc":
-        C = float(content[1])
-        clf = SVC(C=C, kernel="rbf", max_iter=10000)
+        k = str(content[3])
+        print("####################################################################")
+        print("Best overall model selected: ")
+        print(f"svc_{C}_kernel_{k}")
+        clf = SVC(C=C, max_iter=10000, kernel=k)
+
     elif content[0] == "lda":
         solver = content[1]
         clf = LinearDiscriminantAnalysis(solver=solver)
+        print("####################################################################")
+        print("Best overall model selected: ")
+        print("lda")
 
-    print(f"Best model selected: {clf}")
+
+    print(f"model summary: {clf}")
 
     return clf
 
