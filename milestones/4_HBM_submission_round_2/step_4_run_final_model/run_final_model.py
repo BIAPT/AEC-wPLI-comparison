@@ -48,4 +48,15 @@ pipe = Pipeline([
 
 accuracies, cms = classify_loso(X, y, group, pipe)
 
+clf_data = {
+    'accuracies': accuracies,
+    #'f1s': f1s,
+    'cms': cms,
+    #'best_params': best_params,
+}
+
+final_acc_file = open(final_acc_filename, 'ab')
+pickle.dump(clf_data, final_acc_file)
+final_acc_file.close()
+
 print_summary(accuracies, group)
