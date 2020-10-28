@@ -16,7 +16,7 @@ from math import floor
 from sklearn.base import BaseEstimator
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.svm import LinearSVC
+#from sklearn.svm import LinearSVC
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
@@ -59,7 +59,7 @@ FILTER_REGEX = {
 search_space = [{'clf': [LinearDiscriminantAnalysis()],
                  'clf__solver': ['svd']},
 
-                {'clf': [LinearSVC(max_iter=10000)],
+                {'clf': [SVC(max_iter=10000, kernel='linear')],
                  'clf__C': [0.1, 0.4, 0.5, 1, 10]},
 
                 {'clf': [SVC(kernel="rbf", max_iter=10000)],
@@ -135,12 +135,13 @@ def find_best_model(best_params):
     models_occurence = {}
     for param in best_params:
         clf = param['clf']
-        if isinstance(clf, LinearSVC):
-            C = param['clf__C']
-            key = f"linsvc_{C}"
-        elif isinstance(clf, SVC):
-            C = param['clf__C']
-            key = f"rbfsvc_{C}"
+        if isinstance(clf, SVC):
+            if clf.kernel == 'linear':
+                C = param['clf__C']
+                key = f"linsvc_{C}"
+            elif clf.kernel == 'rbf':
+                C = param['clf__C']
+                key = f"rbfsvc_{C}"
         elif isinstance(clf, LinearDiscriminantAnalysis):
             solver = param['clf__solver']
             key = f"lda_{solver}"
@@ -157,7 +158,7 @@ def find_best_model(best_params):
     content = best_clf_params.split('_')
     if content[0] == "linsvc":
         C = float(content[1])
-        clf = LinearSVC(C=C, max_iter=10000)
+        clf = SVC(C=C, max_iter=10000, kernel='linear')
     elif content[0] == "rbfsvc":
         C = float(content[1])
         clf = SVC(C=C, kernel="rbf", max_iter=10000)
