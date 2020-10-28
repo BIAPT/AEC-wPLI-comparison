@@ -136,6 +136,8 @@ def find_best_model(best_params):
     models_occurence = {}
     for param in best_params:
         clf = param['clf']
+        print('##################################################')
+        print(param)
         if isinstance(clf, SVC):
             C = param['clf__C']
             k = param['clf__kernel']
