@@ -39,11 +39,12 @@ X, y, group = filter_dataframe(graph, epoch, feature_group)
 
 best_clf_data = load_pickle(best_clf_filename)
 clf = find_best_model(best_clf_data['best_params'])
+print(f"BEST model {clf}") #NEW
 
 pipe = Pipeline([
     ('imputer', SimpleImputer(missing_values=np.nan, strategy='mean')),
     ('scaler', StandardScaler()),
-    ('SVM', clf)])
+    ('SVM', clf)]) # ! THIS IS NOT NECESSARY THE SVM; IT ONLY IS THE BEST CLASSIFIER
 
 # Training and bootstrap interval generation
 acc_distribution, acc_interval = bootstrap_interval(X, y, group, pipe, num_resample=1000, p_value=0.05)

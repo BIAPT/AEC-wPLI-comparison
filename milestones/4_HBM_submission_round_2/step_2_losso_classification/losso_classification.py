@@ -66,4 +66,4 @@ pickle.dump(clf_data, best_clf_file)
 best_clf_file.close()
 
 # Print out the summary in the console
-print_summary(accuracies, group)
+print_summary(accuracies, group, best_params)

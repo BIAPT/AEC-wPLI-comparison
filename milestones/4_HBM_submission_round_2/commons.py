@@ -17,6 +17,7 @@ from sklearn.base import BaseEstimator
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import LinearSVC
+from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
@@ -34,8 +35,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 
 # File and Dir Path Config
-DF_FILE_PATH = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/features.csv" # "/home/yacine/Documents/BIAPT/features.csv"
-OUTPUT_DIR = "/lustre03/project/6010672/yacine08/aec_vs_pli/result/" #"/home/yacine/Documents/BIAPT/testing/"
+OUTPUT_DIR = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/";
+DF_FILE_PATH = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/features.csv";
 
 # Data Structures used in the analysis
 EPOCHS = {
@@ -55,16 +56,27 @@ FILTER_REGEX = {
     "func-bin": "wei"
 }
 
+search_space = [{'clf': [LinearDiscriminantAnalysis()],
+                 'clf__solver': ['svd']},
 
+                {'clf': [LinearSVC(max_iter=10000)],
+                 'clf__C': [0.1, 0.4, 0.5, 1, 10]},
+
+                {'clf': [SVC(kernel="rbf", max_iter=10000)],
+                 'clf__C': [0.1, 0.4, 0.5, 1, 10]}
+                ]
+
+#Double occurence
+"""
 class DummyEstimator(BaseEstimator):
-    """Dummy estimator to allow gridsearch to test many estimator"""
+    #Dummy estimator to allow gridsearch to test many estimator
 
     def fit(self): pass
 
     def score(self): pass
+"""
 
-
-def print_summary(accuracies, group):
+def print_summary(accuracies, group, best_params):
     """
     Helper function to print a summary of a classifier performance
     :param accuracies: a list of the accuracy obtained across fold (participant)
@@ -75,8 +87,8 @@ def print_summary(accuracies, group):
 
     p_ids = np.unique(group)
     print("Accuracies: ")
-    for accuracy, p_id in zip(accuracies, p_ids):
-        print(f"Participant {p_id}: accuracy = {accuracy}")
+    for accuracy, p_id, best_param in zip(accuracies, p_ids, best_params):
+        print(f"Participant {p_id}: accuracy = {accuracy} model:{best_param}")
 
     print(f"Mean accuracy: {np.mean(accuracies)}")
 
@@ -124,21 +136,12 @@ def find_best_model(best_params):
     for param in best_params:
 
         clf = param['clf']
-        if isinstance(clf, LogisticRegression):
+        if isinstance(clf, LinearSVC):
             C = param['clf__C']
-            key = f"log_{C}"
-        elif isinstance(clf, LinearSVC):
+            key = f"linsvc_{C}"
+        if isinstance(clf, SVC):
             C = param['clf__C']
-            key = f"svc_{C}"
-        elif isinstance(clf, DecisionTreeClassifier):
-            criterion = param['clf__criterion']
-            key = f"dec_{criterion}"
-        elif isinstance(clf, RandomForestClassifier):
-            n_estimators = param['clf__n_estimators']
-            max_depth = param['clf__max_depth']
-            min_samples_split = param['clf__min_samples_split']
-            min_samples_leaf = param['clf__min_samples_leaf']
-            key = f"rand_{n_estimators}_{max_depth}_{min_samples_split}_{min_samples_leaf}"
+            key = f"rbfsvc_{C}"
         elif isinstance(clf, LinearDiscriminantAnalysis):
             solver = param['clf__solver']
             key = f"lda_{solver}"
@@ -153,44 +156,17 @@ def find_best_model(best_params):
     best_clf_params = max(models_occurence, key=models_occurence.get)
 
     content = best_clf_params.split('_')
-    if content[0] == "log":
+    if content[0] == "linsvc":
         C = float(content[1])
-        clf = LogisticRegression(penalty="l2", solver="lbfgs", max_iter=1000, C=C)
-    elif content[0] == "svc":
+        clf = LinearSVC(C=C, max_iter=10000)
+    elif content[0] == "rbfsvc":
         C = float(content[1])
-        clf = LinearSVC(C=C)
-    elif content[0] == "dec":
-        criterion = content[1]
-        clf = DecisionTreeClassifier(criterion=criterion)
-    elif content[0] == "rand":
-        n_estimators = int(content[1])
-        max_depth = int(float(content[2]))
-        min_samples_split = int(content[3])
-        min_samples_leaf = int(content[4])
-        clf = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth,
-                                     min_samples_split=min_samples_split, min_samples_leaf=min_samples_leaf)
+        clf = SVC(C=C, kernel="rbf", max_iter=10000)
     elif content[0] == "lda":
         solver = content[1]
         clf = LinearDiscriminantAnalysis(solver=solver)
-
     return clf
 
-
-# Candidate learning algorithms and their hyperparameters
-search_space = [{'clf': [LogisticRegression()],
-                 'clf__penalty': ['l2'],
-                 'clf__solver': ['lbfgs'],
-                 'clf__max_iter': [1000],
-                 'clf__C': np.logspace(0, 4, 10)},
-
-                {'clf': [LinearDiscriminantAnalysis()],
-                 'clf__solver': ['svd', 'lsqr']},
-
-                {'clf': [LinearSVC()],
-                 'clf__C': [0.1, 0.4, 0.5, 1, 10]},
-
-                {'clf': [DecisionTreeClassifier()],  # Actual Estimator
-                 'clf__criterion': ['gini', 'entropy']}]
 
 def classify_loso(X, y, group, clf):
     """ Main classification function to train and test a ml model with Leave one subject out
@@ -343,13 +319,12 @@ class DummyEstimator(BaseEstimator):
     
     def score(self): pass
 
-
+"""
 def create_gridsearch_pipeline():
-    """ Helper function to create a gridsearch with a search space containing classifiers
-
-        Returns:
-            gs (sklearn gridsearch): this is the grid search objec wrapping the pipeline
-    """
+    #Helper function to create a gridsearch with a search space containing classifiers
+    #   Returns:
+    #        gs (sklearn gridsearch): this is the grid search objec wrapping the pipeline
+    
 
     # Create a pipeline
     pipe = Pipeline([
@@ -358,22 +333,21 @@ def create_gridsearch_pipeline():
         ('clf', DummyEstimator())])  # Placeholder Estimator
 
     # Candidate learning algorithms and their hyperparameters
-    search_space = [{'clf': [LogisticRegression()],  # Actual Estimator
-                     'clf__penalty': ['l2'],
-                     'clf__solver': ['lbfgs'],
-                     'clf__max_iter': [1000],
-                     'clf__C': np.logspace(0, 4, 10)},
+    search_space = [{'clf': [LinearDiscriminantAnalysis()],
+                     'clf__solver': ['svd']},
 
-                    {'clf': [LinearSVC()],
-                     'clf__C': [1, 10, 100, 1000]},
+                    {'clf': [LinearSVC(max_iter=10000)],
+                     'clf__C': [0.1, 0.4, 0.5, 1, 10]},
 
-                    {'clf': [DecisionTreeClassifier()],  # Actual Estimator
-                     'clf__criterion': ['gini', 'entropy']}]
-    
+                    {'clf': [SVC(kernel="rbf", max_iter=10000)],
+                     'clf__C': [0.1, 0.4, 0.5, 1, 10]}
+                    ]
 
     # We will try to use as many processor as possible for the gridsearch
     gs = GridSearchCV(pipe, search_space, cv=LeaveOneGroupOut(), n_jobs=-1)
     return gs
+"""
+
 
 def save_model(gs, model_file):
     
