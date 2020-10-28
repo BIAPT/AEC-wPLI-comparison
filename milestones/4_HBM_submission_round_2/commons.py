@@ -135,12 +135,12 @@ def find_best_model(best_params):
     models_occurence = {}
     for param in best_params:
         clf = param['clf']
-        if isinstance(clf, SVC):
-            C = param['clf__C']
-            key = f"rbfsvc_{C}"
-        elif isinstance(clf, LinearSVC):
+        if isinstance(clf, LinearSVC):
             C = param['clf__C']
             key = f"linsvc_{C}"
+        elif isinstance(clf, SVC):
+            C = param['clf__C']
+            key = f"rbfsvc_{C}"
         elif isinstance(clf, LinearDiscriminantAnalysis):
             solver = param['clf__solver']
             key = f"lda_{solver}"
