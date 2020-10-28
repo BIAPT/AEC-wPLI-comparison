@@ -44,7 +44,7 @@ print(f"BEST model {clf}") #NEW
 pipe = Pipeline([
     ('imputer', SimpleImputer(missing_values=np.nan, strategy='mean')),
     ('scaler', StandardScaler()),
-    ('SVM', clf)]) # ! THIS IS NOT NECESSARY THE SVM; IT ONLY IS THE BEST CLASSIFIER
+    ('CLF', clf)]) # ! THIS IS NOT NECESSARY THE SVM; IT ONLY IS THE BEST CLASSIFIER
 
 # Training and bootstrap interval generation
 acc_distribution, acc_interval = bootstrap_interval(X, y, group, pipe, num_resample=1000, p_value=0.05)
@@ -59,7 +59,7 @@ pickle.dump(bootstrap_data, bootstrap_file)
 bootstrap_file.close()
 
 # Print out some high level summary
-print("F1 Distribution:")
+print("Accuracy Distribution:")
 print(acc_distribution)
 print(f"Mean: {np.mean(acc_distribution)} and std: {np.std(acc_distribution)}")
 print("Bootstrap Interval")

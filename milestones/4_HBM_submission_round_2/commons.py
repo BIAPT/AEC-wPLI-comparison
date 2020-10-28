@@ -165,6 +165,9 @@ def find_best_model(best_params):
     elif content[0] == "lda":
         solver = content[1]
         clf = LinearDiscriminantAnalysis(solver=solver)
+
+    print(f"Best model selected: {clf}")
+
     return clf
 
 
@@ -375,4 +378,5 @@ def bootstrap_classify(X, y, group, clf, sample_id,):
     # Classify and get the results
     accuracies, cms = classify_loso(sample_X, sample_y, sample_group, clf)
 
+    # NEW: F1 score not used only returns accuracy
     return np.mean(accuracies)
