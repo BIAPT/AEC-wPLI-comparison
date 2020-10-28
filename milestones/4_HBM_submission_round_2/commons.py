@@ -59,11 +59,12 @@ FILTER_REGEX = {
 search_space = [{'clf': [LinearDiscriminantAnalysis()],
                  'clf__solver': ['svd']},
 
-                {'clf': [SVC(max_iter=10000, kernel='linear')],
-                 'clf__C': [0.1, 0.4, 0.5, 1, 10]},
+                {'clf': [SVC(max_iter=10000)],
+                 'clf__C': [0.1, 0.4, 0.5, 1, 10],
+                 'clf__kernel': ["linear","rbf"]},
 
-                {'clf': [SVC(kernel="rbf", max_iter=10000)],
-                 'clf__C': [0.1, 0.4, 0.5, 1, 10]}
+                #{'clf': [SVC(kernel="rbf", max_iter=10000)],
+                # 'clf__C': [0.1, 0.4, 0.5, 1, 10]}
                 ]
 
 #Double occurence
@@ -136,12 +137,10 @@ def find_best_model(best_params):
     for param in best_params:
         clf = param['clf']
         if isinstance(clf, SVC):
-            if clf.kernel == 'linear':
-                C = param['clf__C']
-                key = f"linsvc_{C}"
-            elif clf.kernel == 'rbf':
-                C = param['clf__C']
-                key = f"rbfsvc_{C}"
+            C = param['clf__C']
+            k = param['clf__kernel']
+            key = f"svc_{C}_kernel_{k}"
+
         elif isinstance(clf, LinearDiscriminantAnalysis):
             solver = param['clf__solver']
             key = f"lda_{solver}"
