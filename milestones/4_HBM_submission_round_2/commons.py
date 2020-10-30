@@ -63,8 +63,6 @@ search_space = [{'clf': [LinearDiscriminantAnalysis()],
                  'clf__C': [0.1, 0.4, 0.5, 1, 10],
                  'clf__kernel': ["linear","rbf"]},
 
-                #{'clf': [SVC(kernel="rbf", max_iter=10000)],
-                # 'clf__C': [0.1, 0.4, 0.5, 1, 10]}
                 ]
 
 #Double occurence

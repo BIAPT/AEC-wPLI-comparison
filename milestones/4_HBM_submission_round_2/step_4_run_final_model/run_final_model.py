@@ -33,6 +33,8 @@ best_clf_filename = commons.OUTPUT_DIR + f'best_clf_{analysis_param}.pickle'
 # Parse the parameters
 (graph, epoch, feature_group) = analysis_param.split("_")
 
+graph = ['']
+
 print(f"FINAL Model: Graph {graph} at ec1 vs {epoch} with feature {feature_group}")
 
 X, y, group = filter_dataframe(graph, epoch, feature_group)
