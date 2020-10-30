@@ -36,7 +36,7 @@ Cs= [0.1, 0.4, 0.5, 1, 10]
 kernels = ['linear','rbf']
 for c in Cs:
     for k in kernels:
-        clf=SVC(max_iter=10000, kernel=k, c=c)
+        clf=SVC(max_iter=10000, kernel=k, C=c)
 
         for graph in GRAPHS:
             for epoch in EPOCHS:
@@ -65,7 +65,7 @@ for c in Cs:
                 final_acc_file.close()
                 print(sum(accuracies))
 
-clf=LinearDiscriminantAnalysis(max_iter=10000)
+clf=LinearDiscriminantAnalysis()
 for graph in GRAPHS:
     for epoch in EPOCHS:
         final_acc_filename = commons.OUTPUT_DIR + f"final_LDA_{graph}_{epoch}_func.pickle"
