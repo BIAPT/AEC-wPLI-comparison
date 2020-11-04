@@ -40,7 +40,7 @@ for c in Cs:
 
         for graph in GRAPHS:
             for epoch in EPOCHS:
-                final_acc_filename = commons.OUTPUT_DIR + f"final_SVC_{k}_c_{c}_{graph}_{epoch}_func.pickle"
+                final_acc_filename = commons.OUTPUT_DIR + f"final_SVC_{k}_c_{c}_{graph}_{epoch}_raw.pickle"
 
                 if graph != "both":
                     print (f"MODE {graph}")
