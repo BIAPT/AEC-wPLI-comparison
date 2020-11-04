@@ -43,20 +43,20 @@ for c in Cs:
                 final_acc_filename = commons.OUTPUT_DIR + f"final_SVC_{k}_c_{c}_{graph}_{epoch}_func.pickle"
 
                 if graph != "both":
-                    print (f"MODE {epoch}")
+                    print (f"MODE {graph}")
                     print(f"SVC Model {k}_c={c} Graph {graph} at ec1 vs {epoch}")
                     X, y, group = filter_dataframe(graph, epoch, 'func')
 
                 if graph == "both":
-                    print (f"MODE {epoch}")
+                    print (f"MODE {graph}")
                     print(f"SVC Model {k}_c={c} Graph {graph} at ec1 vs {epoch}")
                     X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, 'func')
                     X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, 'func')
                     X = np.hstack((X_aec,X_pli))
-                    if y_aec == y_pli:
+                    if np.array_equal(y_aec, y_pli):
                         print("Y-values equal")
                         y= y_aec
-                    if group_aec == group_pli:
+                    if np.array_equal(group_aec, group_pli):
                         print("group-values equal")
                         group= group_aec
 
@@ -86,20 +86,20 @@ for graph in GRAPHS:
         final_acc_filename = commons.OUTPUT_DIR + f"final_LDA_{graph}_{epoch}_func.pickle"
 
         if graph != "both":
-            print(f"MODE {epoch}")
+            print(f"MODE {graph}")
             print(f"LDA Model Graph {graph} at ec1 vs {epoch}")
             X, y, group = filter_dataframe(graph, epoch, 'func')
 
         if graph == "both":
-            print(f"MODE {epoch}")
+            print(f"MODE {graph}")
             print(f"LDA Model  Graph {graph} at ec1 vs {epoch}")
             X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, 'func')
             X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, 'func')
             X = np.hstack((X_aec, X_pli))
-            if y_aec == y_pli:
+            if np.array_equal(y_aec, y_pli):
                 print("Y-values equal")
                 y = y_aec
-            if group_aec == group_pli:
+            if np.array_equal(group_aec, group_pli):
                 print("group-values equal")
                 group = group_aec
 
