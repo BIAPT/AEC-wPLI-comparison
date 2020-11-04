@@ -53,7 +53,8 @@ FILTER_REGEX = {
     "wei": "std|mean|bin",
     "bin": "std|mean|wei",
     "func-wei": "bin",
-    "func-bin": "wei"
+    "func-bin": "wei",
+    "raw": "mean|std"
 }
 
 search_space = [{'clf': [LinearDiscriminantAnalysis()],

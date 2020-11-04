@@ -32,8 +32,8 @@ from commons import load_pickle, filter_dataframe
 EPOCHS = {"emf5","eml5"}
 GRAPHS = ["aec", "pli", "both"]
 
-Cs= [0.1, 0.4, 0.5, 1, 10]
-kernels = ['linear','rbf']
+Cs= [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 5, 10]
+kernels = ['linear']
 for c in Cs:
     for k in kernels:
         clf=SVC(max_iter=10000, kernel=k, C=c)
@@ -45,13 +45,13 @@ for c in Cs:
                 if graph != "both":
                     print (f"MODE {graph}")
                     print(f"SVC Model {k}_c={c} Graph {graph} at ec1 vs {epoch}")
-                    X, y, group = filter_dataframe(graph, epoch, 'func')
+                    X, y, group = filter_dataframe(graph, epoch, 'raw')
 
                 if graph == "both":
                     print (f"MODE {graph}")
                     print(f"SVC Model {k}_c={c} Graph {graph} at ec1 vs {epoch}")
-                    X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, 'func')
-                    X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, 'func')
+                    X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, 'raw')
+                    X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, 'raw')
                     X = np.hstack((X_aec,X_pli))
                     if np.array_equal(y_aec, y_pli):
                         print("Y-values equal")
@@ -83,18 +83,18 @@ for c in Cs:
 clf=LinearDiscriminantAnalysis()
 for graph in GRAPHS:
     for epoch in EPOCHS:
-        final_acc_filename = commons.OUTPUT_DIR + f"final_LDA_{graph}_{epoch}_func.pickle"
+        final_acc_filename = commons.OUTPUT_DIR + f"final_LDA_{graph}_{epoch}_raw.pickle"
 
         if graph != "both":
             print(f"MODE {graph}")
             print(f"LDA Model Graph {graph} at ec1 vs {epoch}")
-            X, y, group = filter_dataframe(graph, epoch, 'func')
+            X, y, group = filter_dataframe(graph, epoch, 'raw')
 
         if graph == "both":
             print(f"MODE {graph}")
             print(f"LDA Model  Graph {graph} at ec1 vs {epoch}")
-            X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, 'func')
-            X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, 'func')
+            X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, 'raw')
+            X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, 'raw')
             X = np.hstack((X_aec, X_pli))
             if np.array_equal(y_aec, y_pli):
                 print("Y-values equal")
