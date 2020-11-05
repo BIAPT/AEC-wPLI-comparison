@@ -29,7 +29,7 @@ from commons import load_pickle, filter_dataframe
 
 # This will be given by the srun in the bash file
 # Get the argument
-EPOCHS = {"emf5","eml5"}
+EPOCHS = {"emf5","eml5"} # to compare against baseline
 GRAPHS = ["aec", "pli", "both"]
 
 Cs= [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 5, 10]
