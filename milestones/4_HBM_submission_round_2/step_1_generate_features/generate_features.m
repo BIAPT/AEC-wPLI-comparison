@@ -117,7 +117,7 @@ for f_i = 1:length(FREQUENCIES)
                     std_graph = std(single_graph,0,2);
                     
                     % Write both of them into the csv file
-                    rows_graph(w_i, :) = [p_i, f_i, e_i, g_i, w_i, mean_graph', std_graph', X_graph_wei', X_graph_bin'];
+                    rows_graph(w_i, :) = [p_i, f_i, e_i, g_i, w_i, mean_graph', std_graph'];
                     
                 end
 
