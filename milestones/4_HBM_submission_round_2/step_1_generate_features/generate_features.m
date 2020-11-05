@@ -52,6 +52,7 @@ for r_i = 1:num_regions
     header = [header,std_header];
 end
 
+%{
 for r_i = 1:num_regions
     clust_coeff = strcat("wei_clust_coeff_ ", string(r_i));
     header = [header,clust_coeff];      
@@ -65,7 +66,7 @@ for r_i = 1:num_regions
 end
 
 header = [header, "bin_norm_avg_clust_coeff", "bin_norm_g_eff", "bin_community", "bin_small_worldness"];
-
+%}
 
 % Overwrite the file
 delete(OUTPUT_PATH);
@@ -114,15 +115,18 @@ for f_i = 1:length(FREQUENCIES)
                     % Functional connectivity features
                     mean_graph = mean(single_graph,2);
                     std_graph = std(single_graph,0,2);
-
+                    
+                    %{
                     % Weighted Graph Feature
                     X_graph_wei = generate_weighted_graph_feature_vector(single_graph, num_null_network, bin_swaps, weight_frequency, transform);
 
                     % Binarized Graph Feature
                     X_graph_bin = generate_binary_graph_feature_vector(single_graph, num_null_network, bin_swaps, weight_frequency, t_level);
+                    %}
 
                     % Write both of them into the csv file
-                    rows_graph(w_i, :) = [p_i, f_i, e_i, g_i, w_i, mean_graph', std_graph', X_graph_wei', X_graph_bin'];
+                    %rows_graph(w_i, :) = [p_i, f_i, e_i, g_i, w_i, mean_graph', std_graph', X_graph_wei', X_graph_bin'];
+                    rows_graph(w_i, :) = [p_i, f_i, e_i, g_i, w_i, mean_graph', std_graph'];
                 end
 
                 % Writting out to the file the feature calculated
@@ -134,6 +138,10 @@ for f_i = 1:length(FREQUENCIES)
     end
 end
 
+disp(strcat("features calculated: number of features: ", string(size(rows_graph))));
+
+
+%{
 function [X] = generate_binary_graph_feature_vector(graph, num_null_network, bin_swaps, weight_frequency, t_level)
 %GENERATE_FEATURE_VECTOR calculate graph theory feature
 %   This is based on experiment_1 and will calculate the following feature
@@ -208,3 +216,4 @@ function [X] = generate_weighted_graph_feature_vector(graph, num_null_network, b
     %% Features vector construction
     X = [clust_coeff; norm_avg_clust_coeff; norm_g_eff; community; w_small_worldness];
 end
+%}
