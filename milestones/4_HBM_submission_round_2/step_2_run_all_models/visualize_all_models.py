@@ -31,7 +31,7 @@ RESULT_PATH = "C:/Users/User/Documents/1_MASTER/LAB/AEC_PLI/results/"
 
 # This will be given by the srun in the bash file
 # Get the argument
-EPOCHS = {"emf5","eml5"}
+EPOCHS = {"emf5","eml5"} # compared against baseline
 GRAPHS = ["aec", "pli","both"]
 
 Cs= [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 5, 10]
@@ -87,6 +87,7 @@ plt.close(fig)
 pdf.close()
 
 with open('C:/Users/User/Documents/1_MASTER/LAB/AEC_PLI/all_models_acc.txt', 'w') as f:
+    print(all_acc, file=f)
     print(all_acc, file=f)
 
 print('The END')
