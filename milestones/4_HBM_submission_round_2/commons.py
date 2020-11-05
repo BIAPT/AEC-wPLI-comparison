@@ -110,7 +110,6 @@ def filter_dataframe(graph, epoch):
     #df.drop(df.filter(regex=FILTER_REGEX[feature_group]), axis=1, inplace=True)
     df.drop(['p_id','frequency','epoch','graph','window'], axis=1, inplace=True)
 
-    print(f"Feature Group: {feature_group}:")
     print(df.shape)
     print(df)
 
