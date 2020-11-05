@@ -116,14 +116,6 @@ for f_i = 1:length(FREQUENCIES)
                     mean_graph = mean(single_graph,2);
                     std_graph = std(single_graph,0,2);
                     
-                    %{
-                    % Weighted Graph Feature
-                    X_graph_wei = generate_weighted_graph_feature_vector(single_graph, num_null_network, bin_swaps, weight_frequency, transform);
-
-                    % Binarized Graph Feature
-                    X_graph_bin = generate_binary_graph_feature_vector(single_graph, num_null_network, bin_swaps, weight_frequency, t_level);
-                    %}
-
                     % Write both of them into the csv file
                     %rows_graph(w_i, :) = [p_i, f_i, e_i, g_i, w_i, mean_graph', std_graph', X_graph_wei', X_graph_bin'];
                     rows_graph(w_i, :) = [p_i, frequency, epoch, graph, w_i, mean_graph', std_graph'];
