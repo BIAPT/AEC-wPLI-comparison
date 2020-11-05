@@ -45,13 +45,13 @@ for c in Cs:
                 if graph != "both":
                     print (f"MODE {graph}")
                     print(f"SVC Model {k}_c={c} Graph {graph} at ec1 vs {epoch}")
-                    X, y, group = filter_dataframe(graph, epoch, 'raw')
+                    X, y, group = filter_dataframe(graph, epoch)
 
                 if graph == "both":
                     print (f"MODE {graph}")
                     print(f"SVC Model {k}_c={c} Graph {graph} at ec1 vs {epoch}")
-                    X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, 'raw')
-                    X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, 'raw')
+                    X_pli, y_pli, group_pli = filter_dataframe('pli', epoch)
+                    X_aec, y_aec, group_aec = filter_dataframe('aec', epoch)
                     X = np.hstack((X_aec,X_pli))
                     if np.array_equal(y_aec, y_pli):
                         print("Y-values equal")
@@ -88,13 +88,13 @@ for graph in GRAPHS:
         if graph != "both":
             print(f"MODE {graph}")
             print(f"LDA Model Graph {graph} at ec1 vs {epoch}")
-            X, y, group = filter_dataframe(graph, epoch, 'raw')
+            X, y, group = filter_dataframe(graph, epoch)
 
         if graph == "both":
             print(f"MODE {graph}")
             print(f"LDA Model  Graph {graph} at ec1 vs {epoch}")
-            X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, 'raw')
-            X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, 'raw')
+            X_pli, y_pli, group_pli = filter_dataframe('pli', epoch)
+            X_aec, y_aec, group_aec = filter_dataframe('aec', epoch)
             X = np.hstack((X_aec, X_pli))
             if np.array_equal(y_aec, y_pli):
                 print("Y-values equal")

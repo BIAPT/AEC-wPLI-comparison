@@ -37,6 +37,7 @@ from sklearn.impute import SimpleImputer
 # File and Dir Path Config
 OUTPUT_DIR = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/";
 DF_FILE_PATH = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/features.csv";
+DF_FILE_PATH = "C:/Users/User/Desktop/raw_features.csv";
 
 # Data Structures used in the analysis
 EPOCHS = {
@@ -94,7 +95,7 @@ def print_summary(accuracies, group, best_params= None):
     print(f"Mean accuracy: {np.mean(accuracies)}")
 
 
-def filter_dataframe(graph, epoch, feature_group):
+def filter_dataframe(graph, epoch):
     """ Helper function to filter the dataframe for a specific binary classifier"""
 
     # Read the CSV
@@ -106,9 +107,9 @@ def filter_dataframe(graph, epoch, feature_group):
     # Keep only the epoch of interest
     df = df[(df.epoch == EPOCHS[epoch]) | (df.epoch == EPOCHS['ec1'])]
 
-
     # Keep only the features of interest
-    df.drop(df.filter(regex=FILTER_REGEX[feature_group]), axis=1, inplace=True)
+    #df.drop(df.filter(regex=FILTER_REGEX[feature_group]), axis=1, inplace=True)
+    df.drop(['p_id','frequency','epoch','graph','window'], axis=1, inplace=True)
 
     print(f"Feature Group: {feature_group}:")
     print(df.shape)
