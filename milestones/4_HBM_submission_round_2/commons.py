@@ -40,16 +40,17 @@ DF_FILE_PATH = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/featur
 
 # Data Structures used in the analysis
 EPOCHS = {
-    "ec1": 'eyesclosed_1',
-    "ind": 'induction',
-    "emf5": 'emergence_first',
-    "eml5": 'emergence_last',
-    "ec8": 'eyesclosed_8'
+    "ec1": 1,
+    "ind": 2,
+    "emf5": 3,
+    "eml5": 4,
+    "ec8": 5
 }
 
 GRAPHS = ["aec", "pli"]
 
 FILTER_REGEX = {"raw": "mean|std"}
+
 """
 search_space = [{'clf': [LinearDiscriminantAnalysis()],
                  'clf__solver': ['svd']},
@@ -60,7 +61,6 @@ search_space = [{'clf': [LinearDiscriminantAnalysis()],
 
                 ]
 """
-
 #Double occurence
 """
 class DummyEstimator(BaseEstimator):
@@ -101,11 +101,11 @@ def filter_dataframe(graph, epoch, feature_group):
     df = pd.read_csv(DF_FILE_PATH)
 
     # Keep only the Graph of interest
-    #df = df[df.graph == (GRAPHS.index(graph)+1)]
-    df = df[df.graph == graph]
+    df = df[df.graph == (GRAPHS.index(graph)+1)]
 
     # Keep only the epoch of interest
     df = df[(df.epoch == EPOCHS[epoch]) | (df.epoch == EPOCHS['ec1'])]
+
 
     # Keep only the features of interest
     df.drop(df.filter(regex=FILTER_REGEX[feature_group]), axis=1, inplace=True)
