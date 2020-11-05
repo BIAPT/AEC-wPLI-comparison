@@ -118,7 +118,7 @@ for f_i = 1:length(FREQUENCIES)
                     
                     % Write both of them into the csv file
                     %rows_graph(w_i, :) = [p_i, f_i, e_i, g_i, w_i, mean_graph', std_graph', X_graph_wei', X_graph_bin'];
-                    rows_graph(w_i, :) = [p_i, frequency, epoch, graph, w_i, mean_graph', std_graph'];
+                    rows_graph(w_i, :) = [p_i, string(frequency), string(epoch), string(graph), w_i, mean_graph', std_graph'];
                 end
 
                 % Writting out to the file the feature calculated
