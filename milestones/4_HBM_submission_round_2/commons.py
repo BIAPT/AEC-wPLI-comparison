@@ -37,7 +37,6 @@ from sklearn.impute import SimpleImputer
 # File and Dir Path Config
 OUTPUT_DIR = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/";
 DF_FILE_PATH = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/features.csv";
-DF_FILE_PATH = "C:/Users/User/Desktop/raw_features.csv";
 
 # Data Structures used in the analysis
 EPOCHS = {
