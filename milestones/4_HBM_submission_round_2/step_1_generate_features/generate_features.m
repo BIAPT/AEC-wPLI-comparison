@@ -27,7 +27,7 @@ addpath(genpath(NEUROALGO_PATH));
 
 % we can only use alpha here since ec8 was only calculated for that
 P_IDS = {'MDFA03', 'MDFA05', 'MDFA06', 'MDFA07', 'MDFA10', 'MDFA11', 'MDFA12', 'MDFA15', 'MDFA17'};
-EPOCHS = {'eyesclosed_1', 'emergence_first', 'emergence_last', 'eyesclosed_8'};
+EPOCHS = {'eyesclosed_1', 'induction', 'emergence_first', 'emergence_last', 'eyesclosed_8'};
 GRAPHS = {'aec','wpli'};
 FREQUENCIES = {'alpha'};
 
@@ -126,19 +126,21 @@ for f_i = 1:length(FREQUENCIES)
 
                     % Write both of them into the csv file
                     %rows_graph(w_i, :) = [p_i, f_i, e_i, g_i, w_i, mean_graph', std_graph', X_graph_wei', X_graph_bin'];
-                    rows_graph(w_i, :) = [p_i, f_i, e_i, g_i, w_i, mean_graph', std_graph'];
+                    rows_graph(w_i, :) = [p_i, frequency, epoch, graph, w_i, mean_graph', std_graph'];
                 end
 
                 % Writting out to the file the feature calculated
                 for w_i = 1:num_window
                     dlmwrite(OUTPUT_PATH, rows_graph(w_i, :), '-append');
+                    
+                disp(strcat("features calculated: number of features: ", string(size(rows_graph))));
+
                 end
             end
         end
     end
 end
 
-disp(strcat("features calculated: number of features: ", string(size(rows_graph))));
 
 
 %{
