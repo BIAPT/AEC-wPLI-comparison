@@ -16,4 +16,4 @@ source $SLURM_TMPDIR/env/bin/activate
 pip install --no-index --upgrade pip
 pip install --no-index scikit-learn
 pip install --no-index pandas
-python step_4_run_final_model/run_final_model.py $ANALYSIS_PARAM
+python step_3_run_final_model/run_final_model.py $ANALYSIS_PARAM
