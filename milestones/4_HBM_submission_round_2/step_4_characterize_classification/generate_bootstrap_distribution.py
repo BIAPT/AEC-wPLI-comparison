@@ -5,6 +5,8 @@ import sys
 # Data science import
 import pickle
 import numpy as np
+import pandas as pd
+import csv
 
 # Sklearn import
 from sklearn.pipeline import Pipeline
@@ -30,10 +32,15 @@ from commons import load_pickle, find_best_model, filter_dataframe
 EPOCHS = {"ind","emf5","eml5","ec8"} # to compare against baseline
 GRAPHS = ["aec", "pli", "both"]
 
+bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap_Final_model_SUMMARY.csv"
+boot_data=pd.DataFrame(np.zeros((len(EPOCHS)*len(GRAPHS),5)))
+names=['epoch','graph','Acc_Dist Mean', 'Acc_Dist Std', 'acc_interval']
+boot_data.columns=names
+c=0
+
 for graph in GRAPHS:
     for epoch in EPOCHS:
 
-        bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap_{graph}_ec1_vs_{epoch}.pickle"
         best_clf_filename = final_acc_filename = commons.OUTPUT_DIR + f"FINAL_MODEL_{graph}_ec1_vs_{epoch}_raw.pickle"
 
         print(f"Bootstrap: Graph {graph} at ec1 vs {epoch}")
@@ -67,13 +74,13 @@ for graph in GRAPHS:
         acc_distribution, acc_interval = bootstrap_interval(X, y, group, pipe, num_resample=1000, p_value=0.05)
 
         # Save the data to disk
-        bootstrap_file = open(bootstrap_filename, 'ab')
-        bootstrap_data = {
-            'distribution': acc_distribution,
-            'interval': acc_interval
-        }
-        pickle.dump(bootstrap_data, bootstrap_file)
-        bootstrap_file.close()
+        #bootstrap_file = open(bootstrap_filename, 'ab')
+        #bootstrap_data = {
+        #    'distribution': acc_distribution,
+        #    'interval': acc_interval
+        #}
+        #pickle.dump(bootstrap_data, bootstrap_file)
+        #bootstrap_file.close()
 
         # Print out some high level summary
         print("Accuracy Distribution:")
@@ -81,3 +88,15 @@ for graph in GRAPHS:
         print(f"Mean: {np.mean(acc_distribution)} and std: {np.std(acc_distribution)}")
         print("Bootstrap Interval")
         print(acc_interval)
+
+        boot_data.loc[c, 'epoch'] = epoch
+        boot_data.loc[c, 'graph'] = graph
+        boot_data.loc[c, 'Random Mean'] = np.mean(acc_distribution)
+        boot_data.loc[c, 'Accuracy'] = np.std(acc_distribution)
+        boot_data.loc[c, 'p-value'] = acc_interval
+
+        c += 1
+
+boot_data.to_csv(bootstrap_filename, index=False, header= True, sep=',')
+print('finished')
+
