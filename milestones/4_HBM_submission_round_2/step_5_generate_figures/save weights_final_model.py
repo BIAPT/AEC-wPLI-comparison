@@ -32,7 +32,6 @@ EPOCH = {"emf5","eml5"} # to compare against baseline
 GRAPHS = ["aec", "pli"]
 
 DF_FILE_PATH = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/features.csv";
-#DF_FILE_PATH = "C:/Users/User/Desktop/raw_features.csv";
 df = pd.read_csv(DF_FILE_PATH)
 features=df.columns[5:]
 

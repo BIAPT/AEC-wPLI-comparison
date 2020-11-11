@@ -5,6 +5,8 @@ import sys
 # Data science import
 import pickle
 import numpy as np
+import pandas as pd
+import csv
 
 # Sklearn import
 from sklearn.pipeline import Pipeline
@@ -27,10 +29,16 @@ from commons import load_pickle, find_best_model, filter_dataframe
 EPOCHS = {"ind","emf5","eml5","ec8"} # to compare against baseline
 GRAPHS = ["aec", "pli", "both"]
 
+permutation_filename = commons.OUTPUT_DIR + f"permutation_Final_model_SUMMARY.csv"
+perm_data=pd.DataFrame(np.zeros((len(EPOCHS)*len(GRAPHS),5)))
+names=['epoch','graph','Random Mean', 'Accuracy', 'p-value']
+perm_data.columns=names
+c=0
+
+
 for graph in GRAPHS:
     for epoch in EPOCHS:
 
-        permutation_filename = commons.OUTPUT_DIR + f"permutation_Final_model_{graph}_ec1_vs_{epoch}.pickle"
         best_clf_filename = final_acc_filename = commons.OUTPUT_DIR + f"FINAL_MODEL_{graph}_ec1_vs_{epoch}_raw.pickle"
 
         print(f"Permutation: Graph {graph} at ec1 vs {epoch}")
@@ -71,7 +79,18 @@ for graph in GRAPHS:
         print("P Value:")
         print(p_value)
 
+        perm_data.loc[c, 'epoch'] = epoch
+        perm_data.loc[c, 'graph'] = graph
+        perm_data.loc[c, 'Random Mean'] = np.mean(perms)
+        perm_data.loc[c, 'Accuracy'] = acc
+        perm_data.loc[c, 'p-value'] = p_value
+
+        c += 1
+
         # Save the data to disk
-        perms_file = open(permutation_filename, 'ab')
-        pickle.dump(perms, perms_file)
-        perms_file.close()
+        #perms_file = open(permutation_filename, 'ab')
+        #pickle.dump([perms, acc, p_value], perms_file)
+        #perms_file.close()
+
+perm_data.to_csv(permutation_filename, index=False, header= True, sep=',')
+print('finished')
