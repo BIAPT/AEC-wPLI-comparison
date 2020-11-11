@@ -29,7 +29,7 @@ from sklearn.svm import SVC
 EPOCHS = {"ind","emf5","eml5","ec8"} # to compare against baseline
 GRAPHS = ["aec", "pli", "both"]
 
-clf=SVC(max_iter=10000, kernel='linear', C=0.1)
+clf = commons.best_model
 
 for graph in GRAPHS:
     for epoch in EPOCHS:

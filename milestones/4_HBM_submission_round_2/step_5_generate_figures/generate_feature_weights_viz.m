@@ -65,6 +65,14 @@ for reg = 1:num_locs
     fixed_rois(:,:,:,reg) = aal_reg == rois(selected_region_index(reg)).ID;
 end
 
+function make_figure_top(output_name, fixed_rois, map, weights)
+    make_figure(output_name, fixed_rois, map, weights, 1:82, [-90 90]);
+end
+
+function make_figure_sagittal(output_name, fixed_rois, map, weights)
+    make_figure(output_name, fixed_rois, map, weights, 1:41, [0 0]);
+end
+
 
 %% Figure Generation
 for i = 1:length(labels)
@@ -132,10 +140,3 @@ function make_figure(output_name, fixed_rois, map, weights, region_range, view_r
     delete(gcf)
 end
 
-function make_figure_top(output_name, fixed_rois, map, weights)
-    make_figure(output_name, fixed_rois, map, weights, 1:82, [-90 90]);
-end
-
-function make_figure_sagittal(output_name, fixed_rois, map, weights)
-    make_figure(output_name, fixed_rois, map, weights, 1:41, [0 0]);
-end
