@@ -16,4 +16,4 @@ source $SLURM_TMPDIR/env/bin/activate
 pip install --no-index --upgrade pip
 pip install --no-index scikit-learn
 pip install --no-index pandas
-python step_3_characterize_classification/generate_permutations_tests.py $ANALYSIS_PARAM
+python step_4_characterize_classification/generate_permutations_tests.py

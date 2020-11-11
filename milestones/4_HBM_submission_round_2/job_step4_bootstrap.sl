@@ -2,7 +2,7 @@
 #SBATCH --job-name=bootstrap
 #SBATCH --account=def-sblain
 #SBATCH --mem=90000      # increase as needed
-#SBATCH --time=0-10:00:00
+#SBATCH --time=0-00:40:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=40
@@ -16,4 +16,4 @@ source $SLURM_TMPDIR/env/bin/activate
 pip install --no-index --upgrade pip
 pip install --no-index scikit-learn
 pip install --no-index pandas
-python step_3_characterize_classification/generate_bootstrap_distribution.py $ANALYSIS_PARAM
+python step_4_characterize_classification/generate_bootstrap_distribution.py
