@@ -33,8 +33,8 @@ EPOCHS = {"ind","emf5","eml5","ec8"} # to compare against baseline
 GRAPHS = ["aec", "pli", "both"]
 
 bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap_Final_model_SUMMARY.csv"
-boot_data=pd.DataFrame(np.zeros((len(EPOCHS)*len(GRAPHS),5)))
-names=['epoch','graph','Acc_Dist Mean', 'Acc_Dist Std', 'acc_interval']
+boot_data=pd.DataFrame(np.zeros((len(EPOCHS)*len(GRAPHS),6)))
+names=['epoch','graph','Acc_Dist Mean', 'Acc_Dist Std', 'acc_interval_low', 'acc_interval_high']
 boot_data.columns=names
 c=0
 
@@ -91,9 +91,10 @@ for graph in GRAPHS:
 
         boot_data.loc[c, 'epoch'] = epoch
         boot_data.loc[c, 'graph'] = graph
-        boot_data.loc[c, 'Random Mean'] = np.mean(acc_distribution)
-        boot_data.loc[c, 'Accuracy'] = np.std(acc_distribution)
-        boot_data.loc[c, 'p-value'] = acc_interval
+        boot_data.loc[c, 'Acc_Dist Mean'] = np.mean(acc_distribution)
+        boot_data.loc[c, 'Acc_Dist Std'] = np.std(acc_distribution)
+        boot_data.loc[c, 'acc_interval_low'] = acc_interval[0]
+        boot_data.loc[c, 'acc_interval_high'] = acc_interval[1]
 
         c += 1
 
