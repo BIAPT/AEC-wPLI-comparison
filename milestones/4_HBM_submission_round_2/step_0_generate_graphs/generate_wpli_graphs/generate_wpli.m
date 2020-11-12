@@ -1,17 +1,10 @@
-%% Yacine Mahdid August 21 2020
+%% Charlotte Maschke November 11 2020
 % This script goal is to generate the wPLI matrices that are needed to
 % calculate the features for each participants from the source localized
-% data.
+% data. The matrices will be generated twice: once with overlapping and
+% once with non-overlapping windows in the alpha bandwidth.  
 
-%% Path Setup
-% Local Source
-%{
-INPUT_DIR = "/media/yacine/My Book/datasets/consciousness/AEC vs wPLI/source localized data/";
-OUTPUT_DIR = "/media/yacine/My Book/test_result/";
-NUM_CPU = 2;
-%}
-
-% Remote Source
+% Remote Source Setup
 %
 INPUT_DIR = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/data/source_localized_data/";
 OUTPUT_DIR = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/graphs/";
@@ -37,7 +30,9 @@ high_frequency = 13;
 
 % Size of the cuts for the data
 window_size = 10; % in seconds
-step_size = 5; % in seconds
+
+%this parameter is set to 1 (overlapping windows)and 10(non-overlapping windows).
+step_size = {1,10}; % in seconds
 
 p_value = 0.05;
 num_surrogates = 20;
@@ -46,70 +41,80 @@ num_surrogates = 20;
 graph = 'wpli';
 
 % Participant Path (will need to iterate at the end over all the files)
-for p = 1:length(P_IDS)
-   p_id = P_IDS{p};
-   for e = 1:length(EPOCHS)
-        epoch = EPOCHS{e};
-        
-        fprintf("Analyzing participant '%s' at epoch '%s'\n", p_id, epoch);
-        
-        participant_in_path = strcat(INPUT_DIR, p_id, filesep, p_id, '_', epoch, '.mat');
-        participant_out_path = strcat(OUTPUT_DIR, p_id, '_', epoch, '_', graph, '.mat');
- 
-        %% Load data
-        load(participant_in_path);
+for s = 1:length(step_size)
+    step = step_size{s};
+    
+    for p = 1:length(P_IDS)
+       p_id = P_IDS{p};
+       for e = 1:length(EPOCHS)
+            epoch = EPOCHS{e};
 
-        Value = Value(SCALP_REGIONS,:);
-        Atlas.Scouts = Atlas.Scouts(SCALP_REGIONS);
+            fprintf("Analyzing participant '%s' at epoch '%s' in stepsize '%s's\n", p_id, epoch,step);
 
-        % Get ROI labels from atlas
-        LABELS = cell(1,NUM_REGIONS);
-        for ii = 1:NUM_REGIONS
-            LABELS{ii} = Atlas.Scouts(ii).Label;
-        end
+            participant_in_path = strcat(INPUT_DIR, p_id, filesep, p_id, '_', epoch, '.mat');
+            
+            if step == 1
+                participant_out_path = strcat(OUTPUT_DIR,'alpha_step1/', p_id, '_', epoch, '_', graph, '.mat');            
+            elseif step == 10
+                participant_out_path = strcat(OUTPUT_DIR,'alpha_step10/', p_id, '_', epoch, '_', graph, '.mat');
+            end
 
-        % Sampling frequency : need to round
-        fd = 1/(Time(2)-Time(1));
+            
+            %% Load data
+            load(participant_in_path);
 
-        %% Filtering
-        % Frequency filtering, requires eeglab or other frequency filter.
-        Vfilt = filter_bandpass(Value, fd, low_frequency, high_frequency);
-        Vfilt = Vfilt';
+            Value = Value(SCALP_REGIONS,:);
+            Atlas.Scouts = Atlas.Scouts(SCALP_REGIONS);
 
-        % number of time points and Regions of Interest
-        num_points = length(Vfilt);
+            % Get ROI labels from atlas
+            LABELS = cell(1,NUM_REGIONS);
+            for ii = 1:NUM_REGIONS
+                LABELS{ii} = Atlas.Scouts(ii).Label;
+            end
 
-        %% Slice up the data into windows
-        filtered_data = Vfilt;
+            % Sampling frequency : need to round
+            fd = 1/(Time(2)-Time(1));
 
-        sampling_rate = fd; % in Hz
-        [windowed_data, num_window] = create_sliding_window(filtered_data, window_size, step_size, sampling_rate);
+            %% Filtering
+            % Frequency filtering, requires eeglab or other frequency filter.
+            Vfilt = filter_bandpass(Value, fd, low_frequency, high_frequency);
+            Vfilt = Vfilt';
 
-        %% Iterate over each window and calculate pairwise corrected pli
-        result = struct();
-        pli = zeros(NUM_REGIONS, NUM_REGIONS, num_window);
+            % number of time points and Regions of Interest
+            num_points = length(Vfilt);
 
-        parfor win_i = 1:num_window
-           disp(strcat("wPLI at window: ",string(win_i)," of ", string(num_window))); 
-           
-           segment_data = squeeze(windowed_data(win_i,:,:));
-           pli(:,:, win_i) = wpli(segment_data', num_surrogates, p_value);
-           
-        end
+            %% Slice up the data into windows
+            filtered_data = Vfilt;
 
-        result.wpli = pli;
+            sampling_rate = fd; % in Hz
+            [windowed_data, num_window] = create_sliding_window(filtered_data, window_size, step, sampling_rate);
 
-        % Bundling some metadata that could be useful along with the graph
-        result.window_size = window_size;
-        result.step_size = step_size;
-        result.p_value = p_value;
-        resut.num_surrogates = num_surrogates;
-        result.labels = LABELS;
+            %% Iterate over each window and calculate pairwise corrected pli
+            result = struct();
+            pli = zeros(NUM_REGIONS, NUM_REGIONS, num_window);
 
-        % Save the result structure at the right spot
-        save(participant_out_path, 'result');
-      
-   end
+            parfor win_i = 1:num_window
+               disp(strcat("wPLI at window: ",string(win_i)," of ", string(num_window))); 
+
+               segment_data = squeeze(windowed_data(win_i,:,:));
+               pli(:,:, win_i) = wpli(segment_data', num_surrogates, p_value);
+
+            end
+
+            result.wpli = pli;
+
+            % Bundling some metadata that could be useful along with the graph
+            result.window_size = window_size;
+            result.step_size = step;
+            result.p_value = p_value;
+            resut.num_surrogates = num_surrogates;
+            result.labels = LABELS;
+
+            % Save the result structure at the right spot
+            save(participant_out_path, 'result');
+
+       end
+    end
 end
 
 % This function is to get overlapping windowed data
@@ -143,42 +148,4 @@ function [windowed_data, num_window] = create_sliding_window(data, window_size, 
         index = index + 1;
     end
     
-end
-
-function [matrix] = old_wpli(Vfilt, cut, fd, R)
-    ht = hilbert(Vfilt);
-    ht = ht(cut+1:end-cut,:);
-    ht = bsxfun(@minus,ht,mean(ht,1));
-    % Phase information
-    theta = angle(ht);
-
-    % Bandwidth
-    B = 13-8;
-    % Window duration for PLI calculation
-    T = 100/(2*B);                % ~100 effective points
-    N = round(T*fd/2)*2;
-    K = fix((m-N/2-cut*2)/(N/2)); % number of windows, 50% overlap
-    V = nchoosek(R,2);            % number of ROI pairs
-    pli = zeros(V,K);
-
-    % Loop over time windows
-    for k = 1:K
-
-        ibeg = (N/2)*(k-1) + 1;
-        iwind = ibeg:ibeg+N-1;
-
-        % loop over all possible ROI pairs
-        for jj = 2:R
-            ii = 1:jj-1;
-            indv = ii + sum(1:jj-2);
-            % Phase difference
-            RP = bsxfun(@minus,theta(iwind,jj),theta(iwind, ii));
-            srp = sin(RP);
-            pli(indv,k) = abs(sum(sign(srp),1))/N;
-
-        end
-    end
-
-    % Convert to a square matrix
-    ind = logical(triu(ones(R),1));
 end

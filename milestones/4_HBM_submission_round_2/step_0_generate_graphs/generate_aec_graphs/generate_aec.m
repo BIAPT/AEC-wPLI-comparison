@@ -1,17 +1,10 @@
-%% Yacine Mahdid August 18 2020
+%% Charlotte Maschke November 11 2020
 % This script goal is to generate the AEC matrices that are needed to
 % calculate the features for each participants from the source localized
-% data.
+% data. The matrices will be generated twice: once with overlapping and
+% once with non-overlapping windows in the alpha bandwidth.  
 
-%% Path Setup
-% Local Source
-%{
-INPUT_DIR = "/media/yacine/My Book/datasets/consciousness/AEC vs wPLI/source localized data/";
-OUTPUT_DIR = "/media/yacine/My Book/test_result/";
-NUM_CPU = 2;
-%}
-
-% Remote Source
+% Remote Source Setup
 %
 INPUT_DIR = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/data/source_localized_data/";
 OUTPUT_DIR = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/graphs/";
@@ -37,7 +30,8 @@ high_frequency = 13;
 
 % Size of the cuts for the data
 window_size = 10; % in seconds
-step_size = 5; % in seconds
+%this parameter is set to 1 (overlapping windows)and 10(non-overlapping windows).
+step_size = {1,10}; % in seconds
 
 % cut_amount: amount of points from hilbert transform to remove from the start and end.
 % the goal is to not keep cut_amount from the start and cut_amount from the end.
@@ -47,73 +41,82 @@ cut_amount = 10;
 graph = 'aec';
 
 % Participant Path (will need to iterate at the end over all the files)
-for p = 1:length(P_IDS)
-   p_id = P_IDS{p};
-   for e = 1:length(EPOCHS)
-        epoch = EPOCHS{e};
-        
-        fprintf("Analyzing participant '%s' at epoch '%s'\n", p_id, epoch);
-        
-        participant_in_path = strcat(INPUT_DIR, p_id, filesep, p_id, '_', epoch, '.mat');
-        participant_out_path = strcat(OUTPUT_DIR, p_id, '_', epoch, '_', graph, '.mat');
+% Participant Path (will need to iterate at the end over all the files)
+for s = 1:length(step_size)
+    step = step_size{s};
+    for p = 1:length(P_IDS)
+       p_id = P_IDS{p};
+       for e = 1:length(EPOCHS)
+            epoch = EPOCHS{e};
+
+            fprintf("Analyzing participant '%s' at epoch '%s'\n", p_id, epoch);
+
+            participant_in_path = strcat(INPUT_DIR, p_id, filesep, p_id, '_', epoch, '.mat');
  
-        %% Load data
-        load(participant_in_path);
+            if step == 1
+                participant_out_path = strcat(OUTPUT_DIR,'alpha_step1/', p_id, '_', epoch, '_', graph, '.mat');            
+            elseif step == 10
+                participant_out_path = strcat(OUTPUT_DIR,'alpha_step10/', p_id, '_', epoch, '_', graph, '.mat');
+            end
 
-        Value = Value(SCALP_REGIONS,:);
-        Atlas.Scouts = Atlas.Scouts(SCALP_REGIONS);
+            %% Load data
+            load(participant_in_path);
 
-        % Get ROI labels from atlas
-        LABELS = cell(1,NUM_REGIONS);
-        for ii = 1:NUM_REGIONS
-            LABELS{ii} = Atlas.Scouts(ii).Label;
-        end
+            Value = Value(SCALP_REGIONS,:);
+            Atlas.Scouts = Atlas.Scouts(SCALP_REGIONS);
 
-        % Sampling frequency : need to round
-        fd = 1/(Time(2)-Time(1));
+            % Get ROI labels from atlas
+            LABELS = cell(1,NUM_REGIONS);
+            for ii = 1:NUM_REGIONS
+                LABELS{ii} = Atlas.Scouts(ii).Label;
+            end
 
-        %% Filtering
-        % Frequency filtering, requires eeglab or other frequency filter.
-        Vfilt = filter_bandpass(Value, fd, low_frequency, high_frequency);
-        Vfilt = Vfilt';
+            % Sampling frequency : need to round
+            fd = 1/(Time(2)-Time(1));
 
-        % number of time points and Regions of Interest
-        num_points = length(Vfilt);
+            %% Filtering
+            % Frequency filtering, requires eeglab or other frequency filter.
+            Vfilt = filter_bandpass(Value, fd, low_frequency, high_frequency);
+            Vfilt = Vfilt';
 
-        %% Slice up the data into windows
-        filtered_data = Vfilt;
+            % number of time points and Regions of Interest
+            num_points = length(Vfilt);
 
-        sampling_rate = fd; % in Hz
-        [windowed_data, num_window] = create_sliding_window(filtered_data, window_size, step_size, sampling_rate);
+            %% Slice up the data into windows
+            filtered_data = Vfilt;
 
-        %% Iterate over each window and calculate pairwise corrected aec
-        result = struct();
-        aec = zeros(NUM_REGIONS, NUM_REGIONS, num_window);
+            sampling_rate = fd; % in Hz
+            [windowed_data, num_window] = create_sliding_window(filtered_data, window_size, step, sampling_rate);
 
-        parfor win_i = 1:num_window
-           disp(strcat("AEC at window: ",string(win_i)," of ", string(num_window))); 
-           segment_data = squeeze(windowed_data(win_i,:,:));
-           aec(:,:, win_i) = aec_pairwise_corrected(segment_data, NUM_REGIONS, cut_amount);
-        end
+            %% Iterate over each window and calculate pairwise corrected aec
+            result = struct();
+            aec = zeros(NUM_REGIONS, NUM_REGIONS, num_window);
 
-        % Average amplitude correlations over all windows with pairwise
-        % correction. Correction is asymmetric so we take the average of the
-        % elements above and below the diagonal:
-        % e.g. ( corr(env(1)', env(2)) +  corr(env(1),env(2)') )/2,
-        % where (1) is an ROI and env' indicates a corrected envelope.
-        result.aec = (aec + permute(aec,[2,1,3]))/2; 
+            parfor win_i = 1:num_window
+               disp(strcat("AEC at window: ",string(win_i)," of ", string(num_window))); 
+               segment_data = squeeze(windowed_data(win_i,:,:));
+               aec(:,:, win_i) = aec_pairwise_corrected(segment_data, NUM_REGIONS, cut_amount);
+            end
 
-        % Bundling some metadata that could be useful along with the graph
-        result.window_size = window_size;
-        result.step_size = step_size;
-        result.labels = LABELS;
+            % Average amplitude correlations over all windows with pairwise
+            % correction. Correction is asymmetric so we take the average of the
+            % elements above and below the diagonal:
+            % e.g. ( corr(env(1)', env(2)) +  corr(env(1),env(2)') )/2,
+            % where (1) is an ROI and env' indicates a corrected envelope.
+            result.aec = (aec + permute(aec,[2,1,3]))/2; 
 
-        % Save the result structure at the right spot
-        save(participant_out_path, 'result');
-      
-   end
+            % Bundling some metadata that could be useful along with the graph
+            result.window_size = window_size;
+            result.step_size = step;
+            result.labels = LABELS;
+
+            % Save the result structure at the right spot
+            save(participant_out_path, 'result');
+
+       end
+    end
 end
-
+    
 % This function is to get overlapping windowed data
 function [windowed_data, num_window] = create_sliding_window(data, window_size, step_size, sampling_rate)
 %% CREATE SLIDING WINDOW will slice up the data into windows and return them
