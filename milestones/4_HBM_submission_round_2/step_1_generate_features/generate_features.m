@@ -41,19 +41,32 @@ end
 %delete(OUTPUT_PATH_1);
 %delete(OUTPUT_PATH_10);
 
-% Write header to the features file
-fileId = fopen(OUTPUT_PATH,'w');
-for i = 1:(length(header)-1)
-    fprintf(fileId,'%s,',header(i));
-end
-fprintf(fileId,"%s\n",header(length(header)));
-fclose(fileId);
 
 %% Write the body of the CSV file containing the data
 % We iterate over all the possible permutation and create our filename to
 % load
 for s = 1:length(step_size)
     step = step_size{s};
+    
+    % Write header to the features file
+    if step == 1
+        fileId = fopen(OUTPUT_PATH_1,'w');
+        for i = 1:(length(header)-1)
+            fprintf(fileId,'%s,',header(i));
+        end
+        fprintf(fileId,"%s\n",header(length(header)));
+        fclose(fileId);
+    
+    elseif step ==10
+        fileId = fopen(OUTPUT_PATH_10,'w');
+        for i = 1:(length(header)-1)
+            fprintf(fileId,'%s,',header(i));
+        end
+        fprintf(fileId,"%s\n",header(length(header)));
+        fclose(fileId);
+    
+    end
+    
     for f_i = 1:length(FREQUENCIES)
         frequency = FREQUENCIES{f_i};
         disp(strcat("Frequency: ", frequencyze," Stepsie ", num2str(step)));
