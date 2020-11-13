@@ -7,8 +7,8 @@
 
 % Remote Source
 DATA_PATH = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/graphs/";
-OUTPUT_PATH_1 = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/features_step01.csv";
-OUTPUT_PATH_10 = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/features_step10.csv";
+OUTPUT_PATH_1 = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/features_overlapping.csv";
+OUTPUT_PATH_10 = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/features_nonoverlap.csv";
 NEUROALGO_PATH = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/NeuroAlgo";
 
 
@@ -94,17 +94,16 @@ for s = 1:length(step_size)
 
                         % Write both of them into the csv file
                         rows_graph(w_i, :) = [p_i, f_i, e_i, g_i, w_i, mean_graph', std_graph'];
-                   end
-                   % Writting out to the file the feature calculated
-                   if step ==1
-                       for w_i = 1:num_window
-                       dlmwrite(OUTPUT_PATH_1, rows_graph(w_i, :), '-append');
-                       end
-                   elseif step == 10
-                       for w_i = 1:num_window
-                       dlmwrite(OUTPUT_PATH_10, rows_graph(w_i, :), '-append');
-                       end
-                   end
+
+                    end
+
+                    % Writting out to the file the feature calculated
+                    if step ==1
+                        for w_i = 1:num_window
+                        dlmwrite(OUTPUT_PATH, rows_graph(w_i, :), '-append');
+                        end
+                    elseif step == 10
+                        
                 end
             end
         end

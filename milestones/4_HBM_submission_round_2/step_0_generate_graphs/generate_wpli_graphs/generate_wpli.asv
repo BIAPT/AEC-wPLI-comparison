@@ -49,7 +49,7 @@ for s = 1:length(step_size)
        for e = 1:length(EPOCHS)
             epoch = EPOCHS{e};
 
-            fprintf("Analyzing participant '%s' at epoch '%s' \n", p_id, epoch);
+            fprintf("Analyzing participant '%s' at epoch '%s' in stepsize '%s's\n", p_id, epoch);
 
             participant_in_path = strcat(INPUT_DIR, p_id, filesep, p_id, '_', epoch, '.mat');
             
