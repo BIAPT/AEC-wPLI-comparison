@@ -1,3 +1,12 @@
+"""
+Charlotte Maschke November 11 2020
+This script is to run several machine learnin models over a selection of different hyperparameters.
+It does not use sklearn grid search, as the number of model parameters is not very large.
+It will output several files with accuracies for the independent models, which can be summarized and visualized
+using visualize_models.py.
+"""
+#
+
 # General Import
 import os
 import sys
@@ -16,9 +25,6 @@ from sklearn.svm import SVC
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 # Add the directory containing your module to the Python path (wants absolute paths)
-# Here we add to the path everything in the top level
-# Since the code will be called from generate_jobs.bash the path that needs to be added is the
-# one from the bash script (top level)
 scriptpath = "."
 sys.path.append(os.path.abspath(scriptpath))
 
@@ -29,17 +35,18 @@ from commons import load_pickle, filter_dataframe
 
 # This will be given by the srun in the bash file
 # Get the argument
-EPOCHS = {"emf5","eml5"} # to compare against baseline
+EPOCHS = {"emf5","eml5"} # to compare against baseline  # To select the model, we only use these 2 phases
 GRAPHS = ["aec", "pli", "both"]
 
+# select hyperparameters
 Cs= [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 5, 10]
 kernels = ['linear']
 for c in Cs:
     for k in kernels:
-        clf=SVC(max_iter=10000, kernel=k, C=c)
-
         for graph in GRAPHS:
             for epoch in EPOCHS:
+                clf = SVC(max_iter=10000, kernel=k, C=c)
+
                 final_acc_filename = commons.OUTPUT_DIR + f"final_SVC_{k}_c_{c}_{graph}_{epoch}_raw.pickle"
 
                 if graph != "both":

@@ -38,7 +38,8 @@ for r_i = 1:num_regions
 end
 
 % Overwrite the file
-delete(OUTPUT_PATH);
+delete(OUTPUT_PATH_1);
+delete(OUTPUT_PATH_10);
 
 % Write header to the features file
 fileId = fopen(OUTPUT_PATH,'w');
