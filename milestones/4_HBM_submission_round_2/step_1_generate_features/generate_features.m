@@ -69,7 +69,7 @@ for s = 1:length(step_size)
     
     for f_i = 1:length(FREQUENCIES)
         frequency = FREQUENCIES{f_i};
-        disp(strcat("Frequency: ", frequencyze," Stepsie ", num2str(step)));
+        disp(strcat("Frequency: ", frequency," Stepsie ", num2str(step)));
         for p_i = 1:length(P_IDS)
             participant = P_IDS(p_i);
             disp(strcat("Participant: ",participant));
