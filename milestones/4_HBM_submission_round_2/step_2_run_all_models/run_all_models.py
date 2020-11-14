@@ -49,7 +49,7 @@ for s in Steps:
                 for epoch in EPOCHS:
                     clf = SVC(max_iter=10000, kernel=k, C=c)
 
-                    final_acc_filename = commons.OUTPUT_DIR + f"final_SVC_{k}_c_{c}_{graph}_{epoch}_{s}.pickle"
+                    final_acc_filename = commons.OUTPUT_DIR + f"models/final_SVC_{k}_c_{c}_{graph}_{epoch}_{s}.pickle"
 
                     if graph != "both":
                         print (f"MODE {graph}")
@@ -92,7 +92,7 @@ for s in Steps:
     clf=LinearDiscriminantAnalysis()
     for graph in GRAPHS:
         for epoch in EPOCHS:
-            final_acc_filename = commons.OUTPUT_DIR + f"final_LDA_{graph}_{epoch}_{s}.pickle"
+            final_acc_filename = commons.OUTPUT_DIR + f"models/final_LDA_{graph}_{epoch}_{s}.pickle"
 
             if graph != "both":
                 print(f"MODE {graph}")
