@@ -9,13 +9,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.backends.backend_pdf
 import pickle
-import numpy as np
-import seaborn as sns
-import pickle
 import pandas as pd
 import numpy as np
 import seaborn as sns
-import matplotlib.pyplot as plt
 
 import commons
 from commons import load_pickle
