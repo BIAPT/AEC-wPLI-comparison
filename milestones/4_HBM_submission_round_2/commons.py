@@ -30,7 +30,8 @@ from sklearn.utils import resample
 best_model = SVC(max_iter=10000, kernel='linear', C=0.1)
 # File and Dir Path Config
 OUTPUT_DIR = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/";
-DF_FILE_PATH = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/features.csv";
+DF_FILE_PATH_01 = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/features_step01.csv";
+DF_FILE_PATH_10 = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/features_step10.csv";
 
 # Data Structures used in the analysis
 EPOCHS = {
@@ -68,11 +69,14 @@ def print_summary(accuracies, group, best_params= None):
     print(f"Mean accuracy: {np.mean(accuracies)}")
 
 
-def filter_dataframe(graph, epoch):
+def filter_dataframe(graph, epoch, s):
     """ Helper function to filter the dataframe for a specific binary classifier"""
 
     # Read the CSV
-    df = pd.read_csv(DF_FILE_PATH)
+    if s=='01':
+        df = pd.read_csv(DF_FILE_PATH_01)
+    if s=='10':
+        df = pd.read_csv(DF_FILE_PATH_10)
 
     # Keep only the Graph of interest
     df = df[df.graph == (GRAPHS.index(graph)+1)]
@@ -113,6 +117,7 @@ def classify_loso(X, y, group, clf):
     """
     logo = LeaveOneGroupOut()
 
+    f1s = []
     accuracies = []
     cms = np.zeros((2, 2))
     for train_index, test_index in logo.split(X, y, group):
@@ -123,12 +128,15 @@ def classify_loso(X, y, group, clf):
             clf.fit(X_train, y_train)
         y_hat = clf.predict(X_test)
 
+        f1 = f1_score(y_test, y_hat)
         acc = accuracy_score(y_test, y_hat)
         cm = confusion_matrix(y_test, y_hat)
 
+        f1s.append(f1)
         accuracies.append(acc)
         cms = np.add(cms, cm)
-    return accuracies, cms
+
+    return accuracies, f1s, cms
 
 
 def permutation_test(X, y, group, clf, num_permutation=1000):

@@ -28,7 +28,7 @@ from sklearn.svm import SVC
 # Get the argument
 EPOCHS = {"ind","emf5","eml5","ec8"} # to compare against baseline
 GRAPHS = ["aec", "pli", "both"]
-
+Steps = ['1', '10']
 clf = commons.best_model
 
 for graph in GRAPHS:
@@ -59,11 +59,11 @@ for graph in GRAPHS:
             ('scaler', StandardScaler()),
             ('CLF', clf)])
 
-        accuracies, cms = classify_loso(X, y, group, pipe)
+        accuracies, f1s, cms = classify_loso(X, y, group, pipe)
 
         clf_data = {
             'accuracies': accuracies,
-            #'f1s': f1s,
+            'f1s': f1s,
             'cms': cms,
             #'best_params': best_params,
         }
@@ -72,4 +72,5 @@ for graph in GRAPHS:
         pickle.dump(clf_data, final_acc_file)
         final_acc_file.close()
         print(sum(accuracies))
+        print(sum(f1s))
 

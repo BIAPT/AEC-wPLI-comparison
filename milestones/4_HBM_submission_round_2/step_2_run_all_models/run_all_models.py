@@ -37,98 +37,100 @@ from commons import load_pickle, filter_dataframe
 # Get the argument
 EPOCHS = {"emf5","eml5"} # to compare against baseline  # To select the model, we only use these 2 phases
 GRAPHS = ["aec", "pli", "both"]
+Steps = ['01', '10']
 
 # select hyperparameters
 Cs= [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 5, 10]
 kernels = ['linear']
-for c in Cs:
-    for k in kernels:
-        for graph in GRAPHS:
-            for epoch in EPOCHS:
-                clf = SVC(max_iter=10000, kernel=k, C=c)
+for s in Steps:
+    for c in Cs:
+        for k in kernels:
+            for graph in GRAPHS:
+                for epoch in EPOCHS:
+                    clf = SVC(max_iter=10000, kernel=k, C=c)
 
-                final_acc_filename = commons.OUTPUT_DIR + f"final_SVC_{k}_c_{c}_{graph}_{epoch}_raw.pickle"
+                    final_acc_filename = commons.OUTPUT_DIR + f"final_SVC_{k}_c_{c}_{graph}_{epoch}_{s}.pickle"
 
-                if graph != "both":
-                    print (f"MODE {graph}")
-                    print(f"SVC Model {k}_c={c} Graph {graph} at ec1 vs {epoch}")
-                    X, y, group = filter_dataframe(graph, epoch)
+                    if graph != "both":
+                        print (f"MODE {graph}")
+                        print(f"SVC Model {k}_c={c} Graph {graph} at ec1 vs {epoch}")
+                        X, y, group = filter_dataframe(graph, epoch, s)
 
-                if graph == "both":
-                    print (f"MODE {graph}")
-                    print(f"SVC Model {k}_c={c} Graph {graph} at ec1 vs {epoch}")
-                    X_pli, y_pli, group_pli = filter_dataframe('pli', epoch)
-                    X_aec, y_aec, group_aec = filter_dataframe('aec', epoch)
-                    X = np.hstack((X_aec,X_pli))
-                    if np.array_equal(y_aec, y_pli):
-                        print("Y-values equal")
-                        y= y_aec
-                    if np.array_equal(group_aec, group_pli):
-                        print("group-values equal")
-                        group= group_aec
+                    if graph == "both":
+                        print (f"MODE {graph}")
+                        print(f"SVC Model {k}_c={c} Graph {graph} at ec1 vs {epoch}")
+                        X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, s)
+                        X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, s)
+                        X = np.hstack((X_aec,X_pli))
+                        if np.array_equal(y_aec, y_pli):
+                            print("Y-values equal")
+                            y= y_aec
+                        if np.array_equal(group_aec, group_pli):
+                            print("group-values equal")
+                            group= group_aec
 
-                #build pipeline with best model
-                pipe = Pipeline([
-                    ('imputer', SimpleImputer(missing_values=np.nan, strategy='mean')),
-                    ('scaler', StandardScaler()),
-                    ('CLF', clf)])
+                    #build pipeline with best model
+                    pipe = Pipeline([
+                        ('imputer', SimpleImputer(missing_values=np.nan, strategy='mean')),
+                        ('scaler', StandardScaler()),
+                        ('CLF', clf)])
 
-                accuracies, cms = classify_loso(X, y, group, pipe)
+                    accuracies, f1s, cms = classify_loso(X, y, group, pipe)
 
-                clf_data = {
-                    'accuracies': accuracies,
-                    #'f1s': f1s,
-                    'cms': cms,
-                    #'best_params': best_params,
-                }
+                    clf_data = {
+                        'accuracies': accuracies,
+                        'f1s': f1s,
+                        'cms': cms,
+                        #'best_params': best_params,
+                    }
 
-                final_acc_file = open(final_acc_filename, 'ab')
-                pickle.dump(clf_data, final_acc_file)
-                final_acc_file.close()
-                print(sum(accuracies))
+                    final_acc_file = open(final_acc_filename, 'ab')
+                    pickle.dump(clf_data, final_acc_file)
+                    final_acc_file.close()
+                    print(sum(accuracies))
 
-clf=LinearDiscriminantAnalysis()
-for graph in GRAPHS:
-    for epoch in EPOCHS:
-        final_acc_filename = commons.OUTPUT_DIR + f"final_LDA_{graph}_{epoch}_raw.pickle"
+    clf=LinearDiscriminantAnalysis()
+    for graph in GRAPHS:
+        for epoch in EPOCHS:
+            final_acc_filename = commons.OUTPUT_DIR + f"final_LDA_{graph}_{epoch}_{s}.pickle"
 
-        if graph != "both":
-            print(f"MODE {graph}")
-            print(f"LDA Model Graph {graph} at ec1 vs {epoch}")
-            X, y, group = filter_dataframe(graph, epoch)
+            if graph != "both":
+                print(f"MODE {graph}")
+                print(f"LDA Model Graph {graph} at ec1 vs {epoch}")
+                X, y, group = filter_dataframe(graph, epoch, s)
 
-        if graph == "both":
-            print(f"MODE {graph}")
-            print(f"LDA Model  Graph {graph} at ec1 vs {epoch}")
-            X_pli, y_pli, group_pli = filter_dataframe('pli', epoch)
-            X_aec, y_aec, group_aec = filter_dataframe('aec', epoch)
-            X = np.hstack((X_aec, X_pli))
-            if np.array_equal(y_aec, y_pli):
-                print("Y-values equal")
-                y = y_aec
-            if np.array_equal(group_aec, group_pli):
-                print("group-values equal")
-                group = group_aec
+            if graph == "both":
+                print(f"MODE {graph}")
+                print(f"LDA Model  Graph {graph} at ec1 vs {epoch}")
+                X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, s)
+                X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, s)
+                X = np.hstack((X_aec, X_pli))
+                if np.array_equal(y_aec, y_pli):
+                    print("Y-values equal")
+                    y = y_aec
+                if np.array_equal(group_aec, group_pli):
+                    print("group-values equal")
+                    group = group_aec
 
-        #build pipeline with best model
-        pipe = Pipeline([
-            ('imputer', SimpleImputer(missing_values=np.nan, strategy='mean')),
-            ('scaler', StandardScaler()),
-            ('CLF', clf)])
+            #build pipeline with best model
+            pipe = Pipeline([
+                ('imputer', SimpleImputer(missing_values=np.nan, strategy='mean')),
+                ('scaler', StandardScaler()),
+                ('CLF', clf)])
 
-        accuracies, cms = classify_loso(X, y, group, pipe)
+            accuracies, f1s, cms = classify_loso(X, y, group, pipe)
 
-        clf_data = {
-            'accuracies': accuracies,
-            #'f1s': f1s,
-            'cms': cms,
-            #'best_params': best_params,
-        }
+            clf_data = {
+                'accuracies': accuracies,
+                'f1s': f1s,
+                'cms': cms,
+                #'best_params': best_params,
+            }
 
-        final_acc_file = open(final_acc_filename, 'ab')
-        pickle.dump(clf_data, final_acc_file)
-        final_acc_file.close()
-        print(sum(accuracies))
+            final_acc_file = open(final_acc_filename, 'ab')
+            pickle.dump(clf_data, final_acc_file)
+            final_acc_file.close()
+            print(sum(accuracies))
 
 
 print('The END')
