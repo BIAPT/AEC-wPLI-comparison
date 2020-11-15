@@ -5,7 +5,7 @@
 #SBATCH --time=0-00:30:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=40
+#SBATCH --cpus-per-task=1
 #SBATCH --mail-user=q2h3s6p4k0e9o7a5@biaptlab.slack.com # adjust this to match your email address
 #SBATCH --mail-type=ALL
 
