@@ -13,6 +13,10 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 
+# Add the directory containing your module to the Python path (wants absolute paths)
+scriptpath = "."
+sys.path.append(os.path.abspath(scriptpath))
+
 import commons
 from commons import load_pickle
 
