@@ -2,7 +2,7 @@
 #SBATCH --job-name=permutations
 #SBATCH --account=def-sblain
 #SBATCH --mem=90000      # increase as needed
-#SBATCH --time=0-2:00:00
+#SBATCH --time=0-4:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=40
