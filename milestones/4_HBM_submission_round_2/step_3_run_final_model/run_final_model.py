@@ -28,7 +28,7 @@ from sklearn.svm import SVC
 # Get the argument
 EPOCHS = {"ind","emf5","eml5","ec8"} # to compare against baseline
 GRAPHS = ["aec", "pli", "both"]
-Steps = ['1', '10']
+Steps = ['01', '10']
 clf = commons.best_model
 
 for s in Steps:
