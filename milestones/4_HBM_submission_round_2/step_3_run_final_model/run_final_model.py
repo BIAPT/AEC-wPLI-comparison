@@ -31,46 +31,47 @@ GRAPHS = ["aec", "pli", "both"]
 Steps = ['1', '10']
 clf = commons.best_model
 
-for graph in GRAPHS:
-    for epoch in EPOCHS:
-        final_acc_filename = commons.OUTPUT_DIR + f"FINAL_MODEL_{graph}_ec1_vs_{epoch}_raw.pickle"
+for s in Steps:
+    for graph in GRAPHS:
+        for epoch in EPOCHS:
+            final_acc_filename = commons.OUTPUT_DIR + f"final_models/FINAL_MODEL_{graph}_ec1_vs_{epoch}_step_{s}.pickle"
 
-        if graph != "both":
-            print (f"MODE {graph}")
-            print(f"FINAL SVC Model at Graph {graph} at ec1 vs {epoch}")
-            X, y, group = filter_dataframe(graph, epoch)
+            if graph != "both":
+                print(f"MODE {graph}")
+                print(f"FINAL Model Graph {graph} at ec1 vs {epoch}")
+                X, y, group = filter_dataframe(graph, epoch, s)
 
-        if graph == "both":
-            print (f"MODE {graph}")
-            print(f"FINAL SVC Model at Graph {graph} at ec1 vs {epoch}")
-            X_pli, y_pli, group_pli = filter_dataframe('pli', epoch)
-            X_aec, y_aec, group_aec = filter_dataframe('aec', epoch)
-            X = np.hstack((X_aec,X_pli))
-            if np.array_equal(y_aec, y_pli):
-                print("Y-values equal")
-                y= y_aec
-            if np.array_equal(group_aec, group_pli):
-                print("group-values equal")
-                group= group_aec
+            if graph == "both":
+                print(f"MODE {graph}")
+                print(f"FINAL Model Graph {graph} at ec1 vs {epoch}")
+                X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, s)
+                X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, s)
+                X = np.hstack((X_aec, X_pli))
+                if np.array_equal(y_aec, y_pli):
+                    print("Y-values equal")
+                    y = y_aec
+                if np.array_equal(group_aec, group_pli):
+                    print("group-values equal")
+                    group = group_aec
 
-        #build pipeline with best model
-        pipe = Pipeline([
-            ('imputer', SimpleImputer(missing_values=np.nan, strategy='mean')),
-            ('scaler', StandardScaler()),
-            ('CLF', clf)])
+            #build pipeline with best model
+            pipe = Pipeline([
+                ('imputer', SimpleImputer(missing_values=np.nan, strategy='mean')),
+                ('scaler', StandardScaler()),
+                ('CLF', clf)])
 
-        accuracies, f1s, cms = classify_loso(X, y, group, pipe)
+            accuracies, f1s, cms = classify_loso(X, y, group, pipe)
 
-        clf_data = {
-            'accuracies': accuracies,
-            'f1s': f1s,
-            'cms': cms,
-            #'best_params': best_params,
-        }
+            clf_data = {
+                'accuracies': accuracies,
+                'f1s': f1s,
+                'cms': cms,
+                #'best_params': best_params,
+            }
 
-        final_acc_file = open(final_acc_filename, 'ab')
-        pickle.dump(clf_data, final_acc_file)
-        final_acc_file.close()
-        print(sum(accuracies))
-        print(sum(f1s))
+            final_acc_file = open(final_acc_filename, 'ab')
+            pickle.dump(clf_data, final_acc_file)
+            final_acc_file.close()
+            print(sum(accuracies))
+            print(sum(f1s))
 
