@@ -23,7 +23,7 @@ sys.path.append(os.path.abspath(scriptpath))
 # Common import shared across analysis
 import commons
 from commons import permutation_test
-from commons import load_pickle, find_best_model, filter_dataframe
+from commons import load_pickle, filter_dataframe
 
 # Parse the parameters
 EPOCHS = {"ind","emf5","eml5","ec8"} # to compare against baseline
@@ -87,6 +87,6 @@ for s in Steps:
             perm_data.loc[c, 'p-value'] = p_value
 
             c += 1
-    
+
     perm_data.to_csv(permutation_filename, index=False, header= True, sep=',')
 print('finished')

@@ -30,7 +30,7 @@ for s in Steps:
     pdf = matplotlib.backends.backend_pdf.PdfPages(commons.OUTPUT_DIR + f"AEC_wPLI_FINAL_model_accuracies_step_{s}.pdf")
 
     # Path Initiatilization
-    IN_DIR = commons.OUTPUT_DIR + f"final_models/"
+    IN_DIR = commons.OUTPUT_DIR
     RESULT_PATH = commons.OUTPUT_DIR
 
 

@@ -23,7 +23,7 @@ sys.path.append(os.path.abspath(scriptpath))
 # Common import across analysis
 import commons
 from commons import bootstrap_interval
-from commons import load_pickle, find_best_model, filter_dataframe
+from commons import load_pickle, filter_dataframe
 
 # This will be given by the srun in the bash file
 # Get the argument
