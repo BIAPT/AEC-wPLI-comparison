@@ -235,7 +235,7 @@ def bootstrap_classify(X, y, group, clf, sample_id,):
     sample_X, sample_y, sample_group = resample(X, y, group)
 
     # Classify and get the results
-    accuracies, cms = classify_loso(sample_X, sample_y, sample_group, clf)
+    accuracies, f1s, cms = classify_loso(sample_X, sample_y, sample_group, clf)
 
     # NEW: F1 score not used only returns accuracy
     return np.mean(accuracies)
