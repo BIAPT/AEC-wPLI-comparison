@@ -2,7 +2,7 @@
 #SBATCH --job-name=bootstrap
 #SBATCH --account=def-sblain
 #SBATCH --mem=90000      # increase as needed
-#SBATCH --time=0-00:40:00
+#SBATCH --time=0-02:30:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=40
