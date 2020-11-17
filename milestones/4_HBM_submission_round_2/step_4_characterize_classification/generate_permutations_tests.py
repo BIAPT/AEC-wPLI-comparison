@@ -42,7 +42,7 @@ for s in Steps:
 
             best_clf_filename = final_acc_filename = commons.OUTPUT_DIR + f"final_models/FINAL_MODEL_{graph}_ec1_vs_{epoch}_step_{s}.pickle"
 
-            print(f"Permutation: Graph {graph} at ec1 vs {epoch}")
+            print(f"Permutation: Graph {graph} at ec1 vs {epoch} step {s}")
 
             if graph != "both":
                 print(f"MODE {graph}")
