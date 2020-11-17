@@ -3,9 +3,9 @@
 # We assume running this from the script directory
 
 # Parse the parameters
-EPOCHS = ("ind","emf5","eml5","ec8") # to compare against baseline
-GRAPHS = ("aec", "pli", "both")
-STEPS = ('01', '10')
+EPOCHS = ("ind" "emf5" "eml5","ec8") 
+GRAPHS = ("aec" "pli" "both")
+STEPS = ("01" "10")
 
 
 for graph in ${GRAPHS[@]}; do
