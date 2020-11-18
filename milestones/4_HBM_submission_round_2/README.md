@@ -76,8 +76,24 @@ The recent milestone is a more limited version which only contains the parameter
 
 ## Step 4: Run the Final model bootstrap and permutation
 
-- Then adapt and run `step_4_bootstrap.sl` and   `step_4_permutation.sl` 
+- Open the commons.py file and make sure that the parameter "best_model" is the model you have selected as your best performing model. (based on the previous step) 
 
-  --> this will output  csv files with the permutation and bootstrap accuracies for all conditions. 
+- crate a folder called  "bootstrap" and "permutation" in the "results" folder
 
-  
+- Inside the step 4 folder, adapt  `job_bootstarp.sl and job_permutation.sl`  to contain your e-mail address
+
+- navigate back to the subfolder  and open "generate_jobs.bash". This bash code contains all conditions you'll run the analysis on. It works like a for loop within a job but submits one individual job for each iteration. This has the advantage of having lots of small jobs instead of one giant job. This reduces the waiting time significantly.  
+
+- Adapt the conditions you want to run and run the following command ` bash generate_jobs.bash step_4_characterize_classification/job_permutation.sl` 
+
+  --> this should fill the "permutation" folder with excel files for all conditions 
+
+- Adapt the conditions you want to run and run the following command ` bash generate_jobs.bash step_4_characterize_classification/job_bootstrap.sl` 
+
+  --> this should fill the "bootstrap" folder with excel files for all conditions 
+
+- You can now download these folders
+
+## Step 5: Visualize the features
+
+- Open the commons.py file and make sure that the parameter "best_model" is the model you have selected as your best performing model. (based on the previous step) 

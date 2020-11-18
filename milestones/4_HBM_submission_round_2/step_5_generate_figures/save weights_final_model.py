@@ -28,39 +28,59 @@ from sklearn.svm import SVC
 
 # This will be given by the srun in the bash file
 # Get the argument
-EPOCH = {"emf5","eml5"} # to compare against baseline
-GRAPHS = ["aec", "pli"]
+EPOCHS = {"ind","emf5","eml5","ec8"} # compared against baseline
+GRAPHS = ["aec", "pli","both"]
+Steps = ['01', '10']
 
-DF_FILE_PATH = "/home/lotte/projects/def-sblain/lotte/aec_vs_wpli/results/features.csv";
-df = pd.read_csv(DF_FILE_PATH)
-features=df.columns[5:]
+for step in Steps:
 
-clf_data=pd.DataFrame(np.zeros((4,166)))
-names=['epoch','graph']
-names.extend(features)
-clf_data.columns=names
-c=0
-for graph in GRAPHS:
-    for epoch in EPOCH:
-        clf = SVC(max_iter=100000, kernel='linear', C=0.1)
-        clf_data.loc[c,'epoch']=epoch
-        clf_data.loc[c,'graph']=graph
+    DF_FILE_PATH = commons.OUTPUT_DIR +f"features_step{step}.csv";
+    df = pd.read_csv(DF_FILE_PATH)
+    features=df.columns[5:]
+    clf_data=pd.DataFrame(np.zeros((4,166)))
+    names=['epoch','graph']
+    names.extend(features)
+    clf_data.columns=names
+    c=0
 
-        print (f"MODE {graph}")
-        print(f"FINAL SVC Model at Graph {graph} at ec1 vs {epoch}")
-        X, y, group = filter_dataframe(graph, epoch)
+    for graph in GRAPHS:
+        for epoch in EPOCHS:
+            if graph != "both":
+                print(f"MODE {graph}")
+                print(f"FINAL Model Graph {graph} at ec1 vs {epoch}")
+                X, y, group = filter_dataframe(graph, epoch, step)
 
-        #build pipeline with best model
-        pipe = Pipeline([
-            ('imputer', SimpleImputer(missing_values=np.nan, strategy='mean')),
-            ('scaler', StandardScaler()),
-            ('CLF', clf)])
+            if graph == "both":
+                print(f"MODE {graph}")
+                print(f"FINAL Model Graph {graph} at ec1 vs {epoch}")
+                X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, step)
+                X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, step)
+                X = np.hstack((X_aec, X_pli))
+                if np.array_equal(y_aec, y_pli):
+                    print("Y-values equal")
+                    y = y_aec
+                if np.array_equal(group_aec, group_pli):
+                    print("group-values equal")
+                    group = group_aec
 
-        accuracies, cms = classify_loso(X, y, group, pipe)
-        coeff = clf.coef_[0]
-        clf_data.loc[c,features] = coeff
-        c += 1
+            clf = commons.best_model
+            clf_data.loc[c,'epoch']=epoch
+            clf_data.loc[c,'graph']=graph
 
-clf_data.to_csv("C:/Users/User/Documents/1_MASTER/LAB/AEC_PLI/feature_weights.csv", index=False, header= True, sep=',')
+            print (f"MODE {graph}")
+            print(f"FINAL SVC Model at Graph {graph} at ec1 vs {epoch}_step_{step}")
+
+            #build pipeline with best model
+            pipe = Pipeline([
+                ('imputer', SimpleImputer(missing_values=np.nan, strategy='mean')),
+                ('scaler', StandardScaler()),
+                ('CLF', clf)])
+
+            accuracies, f1, cms = classify_loso(X, y, group, pipe)
+            coeff = clf.coef_[0]
+            clf_data.loc[c,features] = coeff
+            c += 1
+
+    clf_data.to_csv(commons.OUTPUT_DIR +f"feature_weights_{step}.csv", index=False, header= True, sep=',')
 print('finished')
 
