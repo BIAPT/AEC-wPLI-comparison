@@ -34,18 +34,18 @@ analysis_param = sys.argv[1]
 
 print(f"Permutation: Graph {graph} at ec1 vs {epoch} with steps of {steps}")
 
-permutation_filename = commons.OUTPUT_DIR + f"permutation/permutation_Final_model_{graph}_ec1_vs_{epoch}_step_{s}.csv"
-perm_data = pd.DataFrame(np.zeros((len(EPOCHS) * len(GRAPHS), 5)))
+permutation_filename = commons.OUTPUT_DIR + f"permutation/permutation_Final_model_{graph}_ec1_vs_{epoch}_step_{steps}.csv"
+perm_data = pd.DataFrame(np.zeros((1, 5)))
 names=['epoch','graph','Random Mean', 'Accuracy', 'p-value']
 perm_data.columns=names
 c=0
 
 if graph != "both":
-    X, y, group = filter_dataframe(graph, epoch, s)
+    X, y, group = filter_dataframe(graph, epoch, steps)
 
 if graph == "both":
-    X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, s)
-    X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, s)
+    X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, steps)
+    X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, steps)
     X = np.hstack((X_aec, X_pli))
     if np.array_equal(y_aec, y_pli):
         print("Y-values equal")

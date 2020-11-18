@@ -35,20 +35,20 @@ analysis_param = sys.argv[1]
 
 print(f"Bootstrap: Graph {graph} at ec1 vs {epoch} with steps of {steps}")
 
-bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap/bootstrap_Final_model_{graph}_ec1_vs_{epoch}_step_{s}.csv"
-boot_data = pd.DataFrame(np.zeros((len(EPOCHS) * len(GRAPHS), 6)))
+bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap/bootstrap_Final_model_{graph}_ec1_vs_{epoch}_step_{steps}.csv"
+boot_data = pd.DataFrame(np.zeros((1, 6)))
 names = ['epoch', 'graph', 'Acc_Dist Mean', 'Acc_Dist Std', 'acc_interval_low', 'acc_interval_high']
 boot_data.columns = names
 c = 0
 
-print(f"Bootstrap: Graph {graph} at ec1 vs {epoch} with step {s}")
+print(f"Bootstrap: Graph {graph} at ec1 vs {epoch} with step {steps}")
 
 if graph != "both":
-    X, y, group = filter_dataframe(graph, epoch, s)
+    X, y, group = filter_dataframe(graph, epoch, steps)
 
 if graph == "both":
-    X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, s)
-    X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, s)
+    X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, steps)
+    X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, steps)
     X = np.hstack((X_aec, X_pli))
     if np.array_equal(y_aec, y_pli):
         print("Y-values equal")
