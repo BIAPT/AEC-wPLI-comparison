@@ -28,17 +28,16 @@ from sklearn.svm import SVC
 
 # This will be given by the srun in the bash file
 # Get the argument
-EPOCHS = ["ind","emf5","eml5","ec8"] # compared against baseline
-GRAPHS = ["aec", "pli","both"]
+EPOCHS = ["ind", "emf5", "eml5", "ec8"]  # compared against baseline
+GRAPHS = ["aec", "pli", "both"]
 Steps = ['01', '10']
 
 for step in Steps:
-
     DF_FILE_PATH = commons.OUTPUT_DIR +f"features_step{step}.csv";
     df = pd.read_csv(DF_FILE_PATH)
     features=df.columns[5:]
-    clf_data=pd.DataFrame(np.zeros((4,166)))
-    names=['epoch','graph']
+    clf_data=pd.DataFrame(np.zeros((len(EPOCHS)*len(GRAPHS)+4,166))) #82 regions mean and sd +2
+    names=['epoch', 'graph', 'feature']
     names.extend(features)
     clf_data.columns=names
     c=0
@@ -77,9 +76,19 @@ for step in Steps:
                 ('CLF', clf)])
 
             accuracies, f1, cms = classify_loso(X, y, group, pipe)
-            coeff = clf.coef_[0]
-            clf_data.loc[c,features] = coeff
-            c += 1
+            if graph != "both":
+                coeff = clf.coef_[0]
+                clf_data.loc[c,features] = coeff
+                clf_data.loc[c, 'feature'] = graph
+                c += 1
+
+            if graph == "both":
+                 coeff = clf.coef_[0]
+                 clf_data.loc[c,features] = coeff[:82]
+                 clf_data.loc[c+1,features] = coeff[82:]
+                 clf_data.loc[c, 'feature'] = "aec"
+                 clf_data.loc[c+1, 'feature'] = "pli"
+                 c += 2
 
     clf_data.to_csv(commons.OUTPUT_DIR +f"feature_weights_{step}.csv", index=False, header= True, sep=',')
 print('finished')
