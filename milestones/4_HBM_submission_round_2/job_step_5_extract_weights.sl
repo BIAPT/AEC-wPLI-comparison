@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=extract weights
+#SBATCH --job-name=extract_weights
 #SBATCH --account=def-sblain
 #SBATCH --mem=90000      # increase as needed
 #SBATCH --time=0-00:30:00
