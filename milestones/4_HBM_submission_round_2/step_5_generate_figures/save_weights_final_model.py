@@ -23,7 +23,7 @@ sys.path.append(os.path.abspath(scriptpath))
 # Common import shared across analysis
 import commons
 from commons import classify_loso, print_summary
-from commons import load_pickle, find_best_model, filter_dataframe
+from commons import load_pickle, filter_dataframe
 from sklearn.svm import SVC
 
 # This will be given by the srun in the bash file
