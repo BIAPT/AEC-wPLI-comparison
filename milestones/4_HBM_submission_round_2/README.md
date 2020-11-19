@@ -97,3 +97,23 @@ The recent milestone is a more limited version which only contains the parameter
 ## Step 5: Visualize the features
 
 - Open the commons.py file and make sure that the parameter "best_model" is the model you have selected as your best performing model. (based on the previous step) 
+
+- adapt and submit the job ` job_step_5_extract_weights.sl` 
+
+  --> it will output you two .csv files  called "feature_weights" + stepsize
+
+- download these and run the figure generation on your own computer to monitor the process: follow the next steps to do so
+
+- copy the feature_weight csv into the step_5_generate_figures/plotting folder. 
+
+- create an empty folder called "figures" (this is where all figures will be saved") 
+
+- Open and adapt ` plot_brain_weights.m`  
+
+  --> this will output many .fig files in the "figures" folder 
+
+  (the parameter features corresponds to the feature which is selected when both graphs are inside the classifier)
+
+  
+
+- 

@@ -35,12 +35,12 @@ Steps = ['01', '10']
 for step in Steps:
     DF_FILE_PATH = commons.OUTPUT_DIR +f"features_step{step}.csv";
     df = pd.read_csv(DF_FILE_PATH)
-    features=df.columns[5:]
-    clf_data=pd.DataFrame(np.zeros((len(EPOCHS)*len(GRAPHS)+4,167))) #82 regions mean and sd +2
-    names=['epoch', 'graph', 'feature']
+    features = df.columns[5:]
+    clf_data = pd.DataFrame(np.zeros((len(EPOCHS)*len(GRAPHS)+4,167))) #82 regions mean and sd +2
+    names = ['epoch', 'graph', 'feature']
     names.extend(features)
-    clf_data.columns=names
-    c=0
+    clf_data.columns = names
+    c = 0
 
     for graph in GRAPHS:
         for epoch in EPOCHS:
@@ -88,6 +88,8 @@ for step in Steps:
                  clf_data.loc[c+1,features] = coeff[164:]
                  clf_data.loc[c, 'feature'] = "aec"
                  clf_data.loc[c+1, 'feature'] = "pli"
+                 clf_data.loc[c+1, 'epoch'] = epoch
+                 clf_data.loc[c+1, 'graph'] = graph
                  c += 2
 
     clf_data.to_csv(commons.OUTPUT_DIR +f"feature_weights_{step}.csv", index=False, header= True, sep=',')
