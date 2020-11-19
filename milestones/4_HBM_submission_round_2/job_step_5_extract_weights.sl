@@ -18,4 +18,4 @@ pip install --no-index scikit-learn
 pip install --no-index pandas
 pip install --no-index matplotlib
 pip install --no-index seaborn
-python step_5_generate_figures/weights_final_model.py
+python step_5_generate_figures/save_weights_final_model.py
