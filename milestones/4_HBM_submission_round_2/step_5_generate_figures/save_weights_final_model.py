@@ -84,8 +84,8 @@ for step in Steps:
 
             if graph == "both":
                  coeff = clf.coef_[0]
-                 clf_data.loc[c,features] = coeff[:82]
-                 clf_data.loc[c+1,features] = coeff[82:]
+                 clf_data.loc[c,features] = coeff[:164]
+                 clf_data.loc[c+1,features] = coeff[164:]
                  clf_data.loc[c, 'feature'] = "aec"
                  clf_data.loc[c+1, 'feature'] = "pli"
                  c += 2
