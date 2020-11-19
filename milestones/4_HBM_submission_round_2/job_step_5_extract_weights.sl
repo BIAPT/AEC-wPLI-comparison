@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=run_all_models
+#SBATCH --job-name=extract weights
 #SBATCH --account=def-sblain
 #SBATCH --mem=90000      # increase as needed
 #SBATCH --time=0-00:30:00
@@ -18,4 +18,4 @@ pip install --no-index scikit-learn
 pip install --no-index pandas
 pip install --no-index matplotlib
 pip install --no-index seaborn
-python step_5_generate_figures/save weights_final_model.py
+python step_5_generate_figures/weights_final_model.py

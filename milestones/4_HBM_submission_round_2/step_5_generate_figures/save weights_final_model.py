@@ -28,7 +28,7 @@ from sklearn.svm import SVC
 
 # This will be given by the srun in the bash file
 # Get the argument
-EPOCHS = {"ind","emf5","eml5","ec8"} # compared against baseline
+EPOCHS = ["ind","emf5","eml5","ec8"] # compared against baseline
 GRAPHS = ["aec", "pli","both"]
 Steps = ['01', '10']
 
