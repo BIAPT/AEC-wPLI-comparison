@@ -21,6 +21,10 @@ for step = ["01","10"]
         mean_weight = table{mode, 4:81+4};
         std_weight = table{mode, 82+4:end};
 
+        %replace missing values by 0 
+        std_weight(isnan(std_weight))= 0;
+        mean_weight(isnan(mean_weight))= 0;
+
         %% Plot the weights on the brain
         % Create the figure
         fixed_rois = get_fixed_rois();
@@ -42,9 +46,6 @@ for step = ["01","10"]
         make_figure_sagittal(fixed_rois, map, mean_weight);
         savefig('figures/'+step+epoch+'_graph_'+graph+'_feature_'+feature+'_mean_sag.fig')
         close()
-
-        %replace missing values by 0 
-        std_weight(isnan(std_weight))= 0;
 
         %std_weight
         make_figure_top(fixed_rois, map, std_weight);
