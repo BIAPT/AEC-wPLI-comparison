@@ -45,8 +45,6 @@ EPOCHS = {
 
 GRAPHS = ["aec", "pli"]
 
-FILTER_REGEX = {"raw": "mean|std"}
-
 def print_summary(accuracies, group, best_params= None):
     """
     Helper function to print a summary of a classifier performance
@@ -70,7 +68,7 @@ def print_summary(accuracies, group, best_params= None):
     print(f"Mean accuracy: {np.mean(accuracies)}")
 
 
-def filter_dataframe(graph, epoch, s):
+def filter_dataframe(graph, epoch1, epoch2, s):
     """ Helper function to filter the dataframe for a specific binary classifier"""
 
     # Read the CSV
@@ -83,7 +81,32 @@ def filter_dataframe(graph, epoch, s):
     df = df[df.graph == (GRAPHS.index(graph)+1)]
 
     # Keep only the epoch of interest
-    df = df[(df.epoch == EPOCHS[epoch]) | (df.epoch == EPOCHS['ec1'])]
+    df = df[(df.epoch == EPOCHS[epoch2]) | (df.epoch == EPOCHS[epoch1])]
+
+    print(df.shape)
+    print(df)
+
+    # Set the up the feature matrix, the label vector and the group ids
+    X = df.drop(['p_id', 'frequency', 'epoch', 'graph', 'window'], axis=1).to_numpy()
+    y = df.epoch.to_numpy()
+    group = df.p_id.to_numpy()
+
+    return X, y, group
+
+def filter_dataframe_multiple(graph, epoch1, epoch2, epoch3, s):
+    """ Helper function to filter the dataframe for a specific binary classifier"""
+
+    # Read the CSV
+    if s=='01':
+        df = pd.read_csv(DF_FILE_PATH_01)
+    if s=='10':
+        df = pd.read_csv(DF_FILE_PATH_10)
+
+    # Keep only the Graph of interest
+    df = df[df.graph == (GRAPHS.index(graph)+1)]
+
+    # Keep only the epoch of interest
+    df = df[(df.epoch == EPOCHS[epoch1]) | (df.epoch == EPOCHS[epoch2])| (df.epoch == EPOCHS[epoch3])]
 
     print(df.shape)
     print(df)

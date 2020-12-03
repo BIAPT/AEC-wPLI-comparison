@@ -39,13 +39,13 @@ for s in Steps:
             if graph != "both":
                 print(f"MODE {graph}")
                 print(f"FINAL Model Graph {graph} at ec1 vs {epoch}")
-                X, y, group = filter_dataframe(graph, epoch, s)
+                X, y, group = filter_dataframe(graph, 'ec1', epoch, s)
 
             if graph == "both":
                 print(f"MODE {graph}")
                 print(f"FINAL Model Graph {graph} at ec1 vs {epoch}")
-                X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, s)
-                X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, s)
+                X_pli, y_pli, group_pli = filter_dataframe('pli', 'ec1', epoch, s)
+                X_aec, y_aec, group_aec = filter_dataframe('aec', 'ec1', epoch, s)
                 X = np.hstack((X_aec, X_pli))
                 if np.array_equal(y_aec, y_pli):
                     print("Y-values equal")

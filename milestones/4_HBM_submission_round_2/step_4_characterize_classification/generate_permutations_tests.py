@@ -41,11 +41,11 @@ perm_data.columns=names
 c=0
 
 if graph != "both":
-    X, y, group = filter_dataframe(graph, epoch, steps)
+    X, y, group = filter_dataframe(graph, 'ec1', epoch, steps)
 
 if graph == "both":
-    X_pli, y_pli, group_pli = filter_dataframe('pli', epoch, steps)
-    X_aec, y_aec, group_aec = filter_dataframe('aec', epoch, steps)
+    X_pli, y_pli, group_pli = filter_dataframe('pli', 'ec1', epoch, steps)
+    X_aec, y_aec, group_aec = filter_dataframe('aec', 'ec1', epoch, steps)
     X = np.hstack((X_aec, X_pli))
     if np.array_equal(y_aec, y_pli):
         print("Y-values equal")
