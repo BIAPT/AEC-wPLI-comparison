@@ -57,9 +57,10 @@ for s in Steps:
             ('scaler', StandardScaler()),
             ('CLF', clf)])
 
-        print(X)
-        print(y)
-        print(group)
+        # needed to differentiate the labels for the later pipeline
+        # replace one condition to have the label 1 (for the binary comparison)
+        # THIS DOES NOT CHANGE THE ACTUAL SELECTED PHASE
+        y[y == 3] = 1
 
         accuracies, f1s, cms = classify_loso(X, y, group, pipe)
 
