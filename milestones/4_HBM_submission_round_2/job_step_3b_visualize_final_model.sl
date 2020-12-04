@@ -18,4 +18,4 @@ pip install --no-index scikit-learn
 pip install --no-index pandas
 pip install --no-index matplotlib
 pip install --no-index seaborn
-python step_3_run_final_model/visualize_final_model.py
+python -u step_3_run_final_model/visualize_final_model.py
