@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=visualize_all_models
+#SBATCH --job-name=bootstrap
 #SBATCH --account=def-sblain
 #SBATCH --mem=90000      # increase as needed
-#SBATCH --time=0-00:30:00
+#SBATCH --time=0-3:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=40
 #SBATCH --mail-user=q2h3s6p4k0e9o7a5@biaptlab.slack.com # adjust this to match your email address
 #SBATCH --mail-type=ALL
 
@@ -16,6 +16,4 @@ source $SLURM_TMPDIR/env/bin/activate
 pip install --no-index --upgrade pip
 pip install --no-index scikit-learn
 pip install --no-index pandas
-pip install --no-index matplotlib
-pip install --no-index seaborn
-python step_2_run_all_models/visualize_all_models.py
+python step_4_characterize_classification/generate_bootstrap_distribution_extra.py

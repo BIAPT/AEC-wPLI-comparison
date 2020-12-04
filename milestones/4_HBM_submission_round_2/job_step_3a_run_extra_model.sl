@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=run_final_model
+#SBATCH --job-name=run_extra_model
 #SBATCH --account=def-sblain
 #SBATCH --mem=90000      # increase as needed
 #SBATCH --time=0-00:20:00

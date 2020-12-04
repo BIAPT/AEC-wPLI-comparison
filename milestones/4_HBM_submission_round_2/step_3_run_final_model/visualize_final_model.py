@@ -26,7 +26,7 @@ GRAPHS = ["aec", "pli","both"]
 Steps = ['01', '10']
 
 for s in Steps:
-    pdf = matplotlib.backends.backend_pdf.PdfPages(commons.OUTPUT_DIR + f"AEC_wPLI_FINAL_model_accuracies_step_{s}.pdf")
+    pdf = matplotlib.backends.backend_pdf.PdfPages(commons.OUTPUT_DIR + f"NEW_AEC_wPLI_FINAL_model_accuracies_step_{s}.pdf")
 
     # Path Initiatilization
     IN_DIR = commons.OUTPUT_DIR
