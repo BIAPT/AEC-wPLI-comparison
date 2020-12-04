@@ -88,15 +88,22 @@ for s in Steps:
             # responsive
             X_r, y_r, group_r = filter_dataframe_multiple(graph, 'ec1', 'ec8', 'ind', s)
             for a in y_r:
-                a = 'resp'
+                a = 1
             # unresponsive
             X_u, y_u, group_u = filter_dataframe(graph, 'emf5', 'eml5', s)
             for a in y_u:
-                a = 'unre'
+                a = 6    #randomly choosen integer just need to be different from 1
 
+            # add responsive and unresponsive data together
             X = np.vstack((X_r, X_u))
-            group = np.vstack((group_r, group_u))
-            y = np.vstack((y_r, y_u))
+            print(X)
+            print(X.shape)
+            group = np.hstack((group_r, group_u))
+            print(group)
+            print(group.shape)
+            y = np.hstack((y_r, y_u))
+            print(y)
+            print(y.shape)
 
         if graph == "both":
             print(f"MODE {graph}")
@@ -104,27 +111,27 @@ for s in Steps:
             # responsive
             X_r_aec, y_r_aec, group_r_aec = filter_dataframe_multiple('aec', 'ec1', 'ec8', 'ind', s)
             for a in y_r_aec:
-                a = 'resp'
+                a = 1
             # unresponsive
             X_u_aec, y_u_aec, group_u_aec = filter_dataframe('aec', 'emf5', 'eml5', s)
             for a in y_u_aec:
-                a = 'unre'
+                a = 6
             X_aec = np.vstack((X_r_aec, X_u_aec))
-            group_aec = np.vstack((group_r_aec, group_u_aec))
-            y_aec = np.vstack((y_r_aec, y_u_aec))
+            group_aec = np.hstack((group_r_aec, group_u_aec))
+            y_aec = np.hstack((y_r_aec, y_u_aec))
 
             # responsive
             X_r_pli, y_r_pli, group_r_pli = filter_dataframe_multiple('pli', 'ec1', 'ec8', 'ind', s)
             for a in y_r_pli:
-                a = 'resp'
+                a = 1
             # unresponsive
             X_u_pli, y_u_pli, group_u_pli = filter_dataframe('pli', 'emf5', 'eml5', s)
             for a in y_u_pli:
-                a = 'unre'
+                a = 6
 
             X_pli = np.vstack((X_r_pli, X_u_pli))
-            group_pli = np.vstack((group_r_pli, group_u_pli))
-            y_pli = np.vstack((y_r_pli, y_u_pli))
+            group_pli = np.hstack((group_r_pli, group_u_pli))
+            y_pli = np.hstack((y_r_pli, y_u_pli))
 
             X = np.hstack((X_aec, X_pli))
             if np.array_equal(y_aec, y_pli):
@@ -133,6 +140,13 @@ for s in Steps:
             if np.array_equal(group_aec, group_pli):
                 print("group-values equal")
                 group = group_aec
+
+            print(X)
+            print(X.shape)
+            print(group)
+            print(group.shape)
+            print(y)
+            print(y.shape)
 
         #build pipeline with best model
         pipe = Pipeline([
