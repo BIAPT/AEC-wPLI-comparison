@@ -57,6 +57,10 @@ for s in Steps:
             ('scaler', StandardScaler()),
             ('CLF', clf)])
 
+        print(X)
+        print(y)
+        print(group)
+
         accuracies, f1s, cms = classify_loso(X, y, group, pipe)
 
         clf_data = {
