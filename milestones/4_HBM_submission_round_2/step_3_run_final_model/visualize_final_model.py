@@ -38,8 +38,8 @@ for s in Steps:
         emf5=load_pickle(f"{IN_DIR}final_models/FINAL_MODEL_{graph}_ec1_vs_emf5_step_{s}.pickle")
         eml5=load_pickle(f"{IN_DIR}final_models/FINAL_MODEL_{graph}_ec1_vs_eml5_step_{s}.pickle")
         ec8=load_pickle(f"{IN_DIR}final_models/FINAL_MODEL_{graph}_ec1_vs_ec8_step_{s}.pickle")
-        last_first = commons.OUTPUT_DIR + f"final_models/FINAL_MODEL_{graph}_eml5_vs_emf5_step_{s}.pickle"
-        resp_unres = commons.OUTPUT_DIR + f"final_models/FINAL_MODEL_{graph}_resp_vs_unres_step_{s}.pickle"
+        last_first =load_pickle(f"{IN_DIR}final_models/FINAL_MODEL_{graph}_eml5_vs_emf5_step_{s}.pickle")
+        resp_unres =load_pickle(f"{IN_DIR}final_models/FINAL_MODEL_{graph}_resp_vs_unres_step_{s}.pickle")
 
         acc=[np.array(ind['accuracies'])*100,
              np.array(emf5['accuracies'])*100,
