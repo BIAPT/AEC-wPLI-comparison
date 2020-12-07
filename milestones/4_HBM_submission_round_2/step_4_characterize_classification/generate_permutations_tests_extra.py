@@ -71,7 +71,7 @@ for s in Steps:
         # THIS DOES NOT CHANGE THE ACTUAL SELECTED PHASE
         y[y == 3] = 1
 
-        # Training and bootstrap interval generation
+        # Training and permutation test
         acc, perms, p_value = permutation_test(X, y, group, pipe, num_permutation=1000)
 
         # Print out some high level summary
@@ -157,7 +157,7 @@ for s in Steps:
             ('scaler', StandardScaler()),
             ('CLF', clf)])
 
-        # Training and bootstrap interval generation
+        # Training and permutation test
         acc, perms, p_value = permutation_test(X, y, group, pipe, num_permutation=1000)
 
         # Print out some high level summary
