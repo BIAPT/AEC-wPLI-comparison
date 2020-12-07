@@ -23,7 +23,7 @@ sys.path.append(os.path.abspath(scriptpath))
 # Common import across analysis
 # Common import shared across analysis
 import commons
-from commons import bootstrap_interval
+from commons import permutation_test
 from commons import load_pickle, filter_dataframe, filter_dataframe_multiple
 from sklearn.svm import SVC
 
@@ -35,11 +35,11 @@ clf = commons.best_model
 # Run deep vs light unconsciousness
 for s in Steps:
     for graph in GRAPHS:
-        print(f"Bootstrap: Graph {graph} at eml5_vs_emf5_step_{s}")
-        bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap/bootstrap_Final_model_{graph}_eml5_vs_emf5_step_{s}.csv"
-        boot_data = pd.DataFrame(np.zeros((1, 6)))
+        print(f"Permutation: Graph {graph} at eml5_vs_emf5_step_{s}")
+        permutation_filename = commons.OUTPUT_DIR + f"permutation/permutation_Final_model_{graph}_eml5_vs_emf5_step_{s}.csv"
+        perm_data = pd.DataFrame(np.zeros((1, 6)))
         names = ['epoch', 'graph', 'Acc_Dist Mean', 'Acc_Dist Std', 'acc_interval_low', 'acc_interval_high']
-        boot_data.columns = names
+        perm_data.columns = names
         c = 0
 
         if graph != "both":
@@ -72,36 +72,34 @@ for s in Steps:
         y[y == 3] = 1
 
         # Training and bootstrap interval generation
-        acc_distribution, acc_interval = bootstrap_interval(X, y, group, pipe, num_resample=1000, p_value=0.05)
+        acc, perms, p_value = permutation_test(X, y, group, pipe, num_permutation=1000)
 
         # Print out some high level summary
-        print("Accuracy Distribution:")
-        print(acc_distribution)
-        print(f"Mean: {np.mean(acc_distribution)} and std: {np.std(acc_distribution)}")
-        print("Bootstrap Interval")
-        print(acc_interval)
+        print("Random:")
+        print(np.mean(perms))
+        print("Actual Improvement")
+        print(acc)
+        print("P Value:")
+        print(p_value)
 
-        boot_data.loc[c, 'epoch'] = 'deep-light'
-        boot_data.loc[c, 'graph'] = graph
-        boot_data.loc[c, 'Acc_Dist Mean'] = np.mean(acc_distribution)
-        boot_data.loc[c, 'Acc_Dist Std'] = np.std(acc_distribution)
-        boot_data.loc[c, 'acc_interval_low'] = acc_interval[0]
-        boot_data.loc[c, 'acc_interval_high'] = acc_interval[1]
+        perm_data.loc[c, 'epoch'] = 'deep-light'
+        perm_data.loc[c, 'graph'] = graph
+        perm_data.loc[c, 'Random Mean'] = np.mean(perms)
+        perm_data.loc[c, 'Accuracy'] = acc
+        perm_data.loc[c, 'p-value'] = p_value
 
-        boot_data.to_csv(bootstrap_filename, index=False, header=True, sep=',')
-
+        perm_data.to_csv(permutation_filename, index=False, header=True, sep=',')
         print('finished')
-
 
 
 # Run responsiveness vs. unresponsiveness
 for s in Steps:
     for graph in GRAPHS:
-        print(f"Bootstrap: Graph {graph} at resp_vs_unre_step_{s}")
-        bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap/bootstrap_Final_model_{graph}_resp_vs_unre_step_{s}.csv"
-        boot_data = pd.DataFrame(np.zeros((1, 6)))
+        print(f"Permutation: Graph {graph} at resp_vs_unre_step_{s}")
+        permutation_filename = commons.OUTPUT_DIR + f"permutation/permutation_Final_model_{graph}_resp_vs_unre_step_{s}.csv"
+        perm_data = pd.DataFrame(np.zeros((1, 6)))
         names = ['epoch', 'graph', 'Acc_Dist Mean', 'Acc_Dist Std', 'acc_interval_low', 'acc_interval_high']
-        boot_data.columns = names
+        perm_data.columns = names
         c = 0
 
         if graph != "both":
@@ -160,30 +158,23 @@ for s in Steps:
             ('CLF', clf)])
 
         # Training and bootstrap interval generation
-        acc_distribution, acc_interval = bootstrap_interval(X, y, group, pipe, num_resample=1000, p_value=0.05)
+        acc, perms, p_value = permutation_test(X, y, group, pipe, num_permutation=1000)
 
         # Print out some high level summary
-        print("Accuracy Distribution:")
-        print(acc_distribution)
-        print(f"Mean: {np.mean(acc_distribution)} and std: {np.std(acc_distribution)}")
-        print("Bootstrap Interval")
-        print(acc_interval)
+        print("Random:")
+        print(np.mean(perms))
+        print("Actual Improvement")
+        print(acc)
+        print("P Value:")
+        print(p_value)
 
-        boot_data.loc[c, 'epoch'] = 'deep-light'
-        boot_data.loc[c, 'graph'] = graph
-        boot_data.loc[c, 'Acc_Dist Mean'] = np.mean(acc_distribution)
-        boot_data.loc[c, 'Acc_Dist Std'] = np.std(acc_distribution)
-        boot_data.loc[c, 'acc_interval_low'] = acc_interval[0]
-        boot_data.loc[c, 'acc_interval_high'] = acc_interval[1]
+        perm_data.loc[c, 'epoch'] = 'resp_unre'
+        perm_data.loc[c, 'graph'] = graph
+        perm_data.loc[c, 'Random Mean'] = np.mean(perms)
+        perm_data.loc[c, 'Accuracy'] = acc
+        perm_data.loc[c, 'p-value'] = p_value
 
-        boot_data.to_csv(bootstrap_filename, index=False, header=True, sep=',')
+        perm_data.to_csv(permutation_filename, index=False, header=True, sep=',')
 
         print('finished')
-
-
-
-
-
-
-
 
