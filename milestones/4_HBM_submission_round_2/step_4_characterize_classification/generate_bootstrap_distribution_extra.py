@@ -31,6 +31,7 @@ GRAPHS = ["aec", "pli", "both"]
 Steps = ['01', '10']
 clf = commons.best_model
 
+"""
 # Run deep vs light unconsciousness
 for s in Steps:
     for graph in GRAPHS:
@@ -91,7 +92,7 @@ for s in Steps:
 
         print('finished')
 
-
+"""
 
 # Run responsiveness vs. unresponsiveness
 for s in Steps:
