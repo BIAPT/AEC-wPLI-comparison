@@ -32,7 +32,7 @@ GRAPHS = ["aec", "pli", "both"]
 Steps = ['01', '10']
 
 for step in Steps:
-    DF_FILE_PATH = commons.OUTPUT_DIR +f"features_extra_step{step}.csv";
+    DF_FILE_PATH = commons.OUTPUT_DIR +f"features_step{step}.csv";
     df = pd.read_csv(DF_FILE_PATH)
     features = df.columns[5:]
     clf_data = pd.DataFrame(np.zeros((2*len(GRAPHS)+4,167))) #82 regions mean and sd +2
@@ -177,6 +177,6 @@ for step in Steps:
              clf_data.loc[c+1, 'graph'] = graph
              c += 2
 
-    clf_data.to_csv(commons.OUTPUT_DIR +f"feature_weights_{step}.csv", index=False, header= True, sep=',')
+    clf_data.to_csv(commons.OUTPUT_DIR +f"feature_weights_extra_{step}.csv", index=False, header= True, sep=',')
 print('finished')
 
