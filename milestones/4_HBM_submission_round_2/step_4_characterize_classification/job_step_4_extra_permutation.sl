@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --job-name=bootstrap
+#SBATCH --job-name=permutation
 #SBATCH --account=def-sblain
 #SBATCH --mem=90000      # increase as needed
-#SBATCH --time=0-3:00:00
+#SBATCH --time=0-12:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=40
@@ -16,4 +16,4 @@ source $SLURM_TMPDIR/env/bin/activate
 pip install --no-index --upgrade pip
 pip install --no-index scikit-learn
 pip install --no-index pandas
-python -u step_4_characterize_classification/generate_bootstrap_distribution_extra.py
+python step_4_characterize_classification/generate_permutations_tests_extra.py $ANALYSIS_PARAM
