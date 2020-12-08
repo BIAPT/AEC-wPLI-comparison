@@ -5,6 +5,10 @@ For everyone who is interested in a wide exploration of for example the comparis
 
 The recent milestone is a more limited version which only contains the parameters and analysis done for the submission of the study. The purpose of this milestone is to have one version of code, which has been used in exactly this format to submit the study.  
 
+** The files notated with EXTRA describe some later applied additional analysis about the classification accuracy between different states of unconsciousness and responsiveness vs. unresponsiveness **
+
+The files with the notation _EXTRA can be (if needed) run individually after step 2 has been finished and the final model has been selected. It basically applies a similar analysis to a different combination of the dataset. Some visualization tools are adapted for the steps with the extra analysis. If you do not run this, you need to adapt these plotting tools to only plot your conditions. 
+
 ## Preparation 
 - Make sure to have a compute canada account on the Beluga cluster.
 

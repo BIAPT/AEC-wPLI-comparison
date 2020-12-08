@@ -11,7 +11,7 @@ pli_hex = ['#f1eef6'; '#d0d1e6'; '#a6bddb'; '#74a9cf'; '#3690c0'; '#0570b0'; '#0
 
 for step = ["01","10"]
     % data from the table
-    table = readtable(('feature_weights_'+step+'.csv'));
+    table = readtable(('feature_weights_extra_'+step+'.csv'));
     
     for mode = 1:height(table)
 

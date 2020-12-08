@@ -35,7 +35,7 @@ for step in Steps:
     DF_FILE_PATH = commons.OUTPUT_DIR +f"features_step{step}.csv";
     df = pd.read_csv(DF_FILE_PATH)
     features = df.columns[5:]
-    clf_data = pd.DataFrame(np.zeros((2*len(GRAPHS)+4,167))) #82 regions mean and sd +2
+    clf_data = pd.DataFrame(np.zeros((2*len(GRAPHS)+2,167))) #82 regions mean and sd +2
     names = ['epoch', 'graph', 'feature']
     names.extend(features)
     clf_data.columns = names
