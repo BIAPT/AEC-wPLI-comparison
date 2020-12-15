@@ -18,4 +18,4 @@ pip install --no-index scikit-learn
 pip install --no-index pandas
 pip install --no-index matplotlib
 pip install --no-index seaborn
-python step_2_run_all_models/visualize_all_models.py
+python step_2_run_all_models/visualize_all_models_extra.py
