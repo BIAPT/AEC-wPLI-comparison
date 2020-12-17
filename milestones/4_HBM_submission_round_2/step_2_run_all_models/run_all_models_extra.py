@@ -39,7 +39,8 @@ GRAPHS = ["aec", "pli", "both"]
 Steps = ['01', '10']
 
 # select hyperparameters
-Cs= [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 5, 10]
+#Cs= [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 5, 10]
+Cs= [5, 10]
 kernels = ['linear']
 for s in Steps:
     for c in Cs:
