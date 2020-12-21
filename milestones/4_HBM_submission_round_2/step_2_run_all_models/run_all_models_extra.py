@@ -40,7 +40,7 @@ Steps = ['01', '10']
 
 # select hyperparameters
 #Cs= [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 5, 10]
-Cs= [5, 10]
+Cs= [5]
 kernels = ['linear']
 for s in Steps:
     for c in Cs:
@@ -274,6 +274,8 @@ for s in Steps:
             ('imputer', SimpleImputer(missing_values=np.nan, strategy='mean')),
             ('scaler', StandardScaler()),
             ('CLF', clf)])
+
+        y[y == 3] = 1
 
         accuracies, f1s, cms = classify_loso(X, y, group, pipe)
 
