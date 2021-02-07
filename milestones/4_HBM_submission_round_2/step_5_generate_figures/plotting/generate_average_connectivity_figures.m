@@ -10,8 +10,8 @@
 %% Global Experiment Variables
 
 % paths
-graph_path = "/home/yacine/Documents/BIAPT/AEC vs wPLI/data/step_size_5_sec/graphs/";
-output_path = "/home/yacine/Documents/BIAPT/AEC vs wPLI/result/step_size_5_seconds/";
+graph_path = "C:/Users/User/Desktop/AEC_wPLI_FINAL_19_11_2020/step0_graphs/alpha_step1/";
+output_path = "C:/Users/User/Desktop/AEC_wPLI_FINAL_19_11_2020/step0_graphs/alpha_step1/figures/";
 
 % Variables
 P_IDS = {'MDFA03', 'MDFA05', 'MDFA06', 'MDFA07', 'MDFA10', 'MDFA11', 'MDFA12', 'MDFA15', 'MDFA17'};
@@ -27,11 +27,10 @@ labels = region_table.label;
 fixed_rois = get_fixed_rois();
 for g_i = 1:length(GRAPHS)
     graph = GRAPHS{g_i};
-
     avg_participant_graph = zeros(NUM_REGIONS, NUM_REGIONS, length(EPOCHS));
+
     for e_i = 1:length(EPOCHS)
         epoch = EPOCHS{e_i};
-
         avg_graphs = zeros(NUM_REGIONS, NUM_REGIONS, length(P_IDS));
         for p_i = 1:length(P_IDS)
             participant = P_IDS{p_i};

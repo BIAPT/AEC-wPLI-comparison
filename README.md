@@ -1,5 +1,5 @@
 # AEC & wPLI Comparison
-This repository is for the study of AEC and wPLI functional connectivity metric and their relation to the classification of consciousness. The code found here has been iteratively improved and each iteration representing a milestone in the analysis journey. 
+This repository is for the study of AEC and wPLI functional connectivity metric and  their relation to the classification of consciousness. The code found here has been iteratively improved and each iteration representing a milestone in the analysis journey. 
 - **Milestone #0 First Attempt at Classification** : This is the first minimal viable analysis that was bootstraped with the data we had and initial iteration of the analysis techniques.
 - **Milestone #1 MAIN 2019 Poster Presentation** : This is the first outreach initiative for this analysis. We augmented the fist attempt with a graph theory analysis. The abstract that was submitted was selected for a [2 min student talk](https://youtu.be/5s_JU07t8wU).
 - **Milestone #2 OHBM 2020 Poster Presentation** : The analysis presented at the MAIN 2019 conference was augmented and pushed even further. The conference was remote so we could present the result in a video. Two were produced: a [short one](https://youtu.be/f5gJQHxkVOU) of about 3 minute and a [longer one](https://youtu.be/QSb7TimKjGM) of about 25 minutes.
