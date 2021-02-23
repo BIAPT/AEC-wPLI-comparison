@@ -1,5 +1,5 @@
-# Human Brain Mapping Submission_2
-This version is very similar to the previous milestone. We got some new team members responsible for the code of this and wanted to keep one version as it was before. The previous version is a more complex version containing many parameters and possibilities for further exploration (weighted and binarized graphs, more models, more complex methods...). 
+# NeuroImage Submission 2021/02
+This version is very similar to the previous milestone, but only contains the parameters and analysis for the submission 2021. The previous version is a more complex version containing many parameters and possibilities for further exploration (weighted and binarized graphs, more models, more complex methods...). 
 
 For everyone who is interested in a wide exploration of for example the comparison of weighted and binarized graphs, please refer to milestone 3. 
 
