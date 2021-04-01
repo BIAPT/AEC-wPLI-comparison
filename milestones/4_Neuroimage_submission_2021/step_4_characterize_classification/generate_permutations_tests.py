@@ -34,7 +34,7 @@ analysis_param = sys.argv[1]
 
 print(f"Permutation: Graph {graph} at ec1 vs {epoch} with steps of {steps}")
 
-permutation_filename = commons.OUTPUT_DIR + f"permutation/permutation_Final_model_{graph}_ec1_vs_{epoch}_step_{steps}.csv"
+permutation_filename = commons.OUTPUT_DIR + f"permutation/permutation_10000_Final_model_{graph}_ec1_vs_{epoch}_step_{steps}.csv"
 perm_data = pd.DataFrame(np.zeros((1, 5)))
 names=['epoch','graph','Random Mean', 'Accuracy', 'p-value']
 perm_data.columns=names
@@ -62,7 +62,7 @@ pipe = Pipeline([
     ('CLF', clf)])
 
 # Training and bootstrap interval generation
-acc, perms, p_value = permutation_test(X, y, group, pipe, num_permutation=1000)
+acc, perms, p_value = permutation_test(X, y, group, pipe, num_permutation=10000)
 
 # Print out some high level summary
 print("Random:")

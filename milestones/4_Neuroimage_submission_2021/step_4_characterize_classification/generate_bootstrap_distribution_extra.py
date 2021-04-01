@@ -38,7 +38,7 @@ clf = commons.best_model
 
 # Run deep vs light unconsciousness
 print(f"Bootstrap: Graph {graph} at eml5_vs_emf5_step_{s}")
-bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap/bootstrap_Final_model_{graph}_eml5_vs_emf5_step_{s}.csv"
+bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap/bootstrap_10000_Final_model_{graph}_eml5_vs_emf5_step_{s}.csv"
 boot_data = pd.DataFrame(np.zeros((1, 6)))
 names = ['epoch', 'graph', 'Acc_Dist Mean', 'Acc_Dist Std', 'acc_interval_low', 'acc_interval_high']
 boot_data.columns = names
@@ -74,7 +74,7 @@ pipe = Pipeline([
 y[y == 3] = 1
 
 # Training and bootstrap interval generation
-acc_distribution, acc_interval = bootstrap_interval(X, y, group, pipe, num_resample=1000, p_value=0.05)
+acc_distribution, acc_interval = bootstrap_interval(X, y, group, pipe, num_resample=10000, p_value=0.05)
 
 # Print out some high level summary
 print("Accuracy Distribution:")
@@ -96,7 +96,7 @@ print('finished')
 
 # Run responsiveness vs. unresponsiveness
 print(f"Bootstrap: Graph {graph} at resp_vs_unre_step_{s}")
-bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap/bootstrap_Final_model_{graph}_resp_vs_unre_step_{s}.csv"
+bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap/bootstrap_10000_Final_model_{graph}_resp_vs_unre_step_{s}.csv"
 boot_data = pd.DataFrame(np.zeros((1, 6)))
 names = ['epoch', 'graph', 'Acc_Dist Mean', 'Acc_Dist Std', 'acc_interval_low', 'acc_interval_high']
 boot_data.columns = names
@@ -158,7 +158,7 @@ pipe = Pipeline([
     ('CLF', clf)])
 
 # Training and bootstrap interval generation
-acc_distribution, acc_interval = bootstrap_interval(X, y, group, pipe, num_resample=1000, p_value=0.05)
+acc_distribution, acc_interval = bootstrap_interval(X, y, group, pipe, num_resample=10000, p_value=0.05)
 
 # Print out some high level summary
 print("Accuracy Distribution:")

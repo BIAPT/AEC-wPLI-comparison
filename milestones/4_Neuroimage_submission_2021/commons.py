@@ -163,7 +163,7 @@ def classify_loso(X, y, group, clf):
     return accuracies, f1s, cms
 
 
-def permutation_test(X, y, group, clf, num_permutation=1000):
+def permutation_test(X, y, group, clf, num_permutation=10000):
     """ Helper function to validate that a classifier is performing higher than chance
 
         Args:
@@ -189,7 +189,7 @@ def permutation_test(X, y, group, clf, num_permutation=1000):
     return accuracies, permutation_scores, p_value
 
 
-def bootstrap_interval(X, y, group, clf, num_resample=1000, p_value=0.05):
+def bootstrap_interval(X, y, group, clf, num_resample=10000, p_value=0.05):
     """Create a confidence interval for the classifier with the given p value
 
         Args:

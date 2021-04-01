@@ -2,7 +2,7 @@
 
 # We assume running this from the script directory
 GRAPHS=("aec" "pli" "both")
-STEPS=("01" "10")
+STEPS=("01")
 
 for graph in ${GRAPHS[@]}; do
 	for steps in ${STEPS[@]}; do 

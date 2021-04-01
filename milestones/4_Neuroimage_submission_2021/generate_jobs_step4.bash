@@ -3,7 +3,7 @@
 # We assume running this from the script directory
 EPOCHS=("ind" "emf5" "eml5" "ec8")
 GRAPHS=("aec" "pli" "both")
-STEPS=("01" "10")
+STEPS=("01")
 
 for graph in ${GRAPHS[@]}; do
     for epoch in ${EPOCHS[@]}; do

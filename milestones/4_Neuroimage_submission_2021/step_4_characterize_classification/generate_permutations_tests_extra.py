@@ -39,7 +39,7 @@ clf = commons.best_model
 
 # Run deep vs light unconsciousness
 print(f"Permutation: Graph {graph} at eml5_vs_emf5_step_{s}")
-permutation_filename = commons.OUTPUT_DIR + f"permutation/permutation_Final_model_{graph}_eml5_vs_emf5_step_{s}.csv"
+permutation_filename = commons.OUTPUT_DIR + f"permutation/permutation_10000_Final_model_{graph}_eml5_vs_emf5_step_{s}.csv"
 perm_data = pd.DataFrame(np.zeros((1, 6)))
 names = ['epoch', 'graph', 'Acc_Dist Mean', 'Acc_Dist Std', 'acc_interval_low', 'acc_interval_high']
 perm_data.columns = names
@@ -75,7 +75,7 @@ pipe = Pipeline([
 y[y == 3] = 1
 
 # Training and permutation test
-acc, perms, p_value = permutation_test(X, y, group, pipe, num_permutation=1000)
+acc, perms, p_value = permutation_test(X, y, group, pipe, num_permutation=10000)
 
 # Print out some high level summary
 print("Random:")
@@ -96,7 +96,7 @@ print('finished')
 
 
 print(f"Permutation: Graph {graph} at resp_vs_unre_step_{s}")
-permutation_filename = commons.OUTPUT_DIR + f"permutation/permutation_Final_model_{graph}_resp_vs_unre_step_{s}.csv"
+permutation_filename = commons.OUTPUT_DIR + f"permutation/permutation_10000_Final_model_{graph}_resp_vs_unre_step_{s}.csv"
 perm_data = pd.DataFrame(np.zeros((1, 6)))
 names = ['epoch', 'graph', 'Acc_Dist Mean', 'Acc_Dist Std', 'acc_interval_low', 'acc_interval_high']
 perm_data.columns = names
@@ -158,7 +158,7 @@ pipe = Pipeline([
     ('CLF', clf)])
 
 # Training and permutation test
-acc, perms, p_value = permutation_test(X, y, group, pipe, num_permutation=1000)
+acc, perms, p_value = permutation_test(X, y, group, pipe, num_permutation=10000)
 
 # Print out some high level summary
 print("Random:")

@@ -35,7 +35,7 @@ analysis_param = sys.argv[1]
 
 print(f"Bootstrap: Graph {graph} at ec1 vs {epoch} with steps of {steps}")
 
-bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap/bootstrap_Final_model_{graph}_ec1_vs_{epoch}_step_{steps}.csv"
+bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap/bootstrap_10000_Final_model_{graph}_ec1_vs_{epoch}_step_{steps}.csv"
 boot_data = pd.DataFrame(np.zeros((1, 6)))
 names = ['epoch', 'graph', 'Acc_Dist Mean', 'Acc_Dist Std', 'acc_interval_low', 'acc_interval_high']
 boot_data.columns = names
@@ -65,7 +65,7 @@ pipe = Pipeline([
     ('CLF', clf)])
 
 # Training and bootstrap interval generation
-acc_distribution, acc_interval = bootstrap_interval(X, y, group, pipe, num_resample=1000, p_value=0.05)
+acc_distribution, acc_interval = bootstrap_interval(X, y, group, pipe, num_resample=10000, p_value=0.05)
 
 # Print out some high level summary
 print("Accuracy Distribution:")
