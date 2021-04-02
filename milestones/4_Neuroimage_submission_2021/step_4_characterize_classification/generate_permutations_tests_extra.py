@@ -36,7 +36,7 @@ analysis_param = sys.argv[1]
 
 clf = commons.best_model
 
-
+"""
 # Run deep vs light unconsciousness
 print(f"Permutation: Graph {graph} at eml5_vs_emf5_step_{s}")
 permutation_filename = commons.OUTPUT_DIR + f"permutation/permutation_10000_Final_model_{graph}_eml5_vs_emf5_step_{s}.csv"
@@ -93,7 +93,7 @@ perm_data.loc[c, 'p-value'] = p_value
 
 perm_data.to_csv(permutation_filename, index=False, header=True, sep=',')
 print('finished')
-
+"""
 
 print(f"Permutation: Graph {graph} at resp_vs_unre_step_{s}")
 permutation_filename = commons.OUTPUT_DIR + f"permutation/permutation_10000_Final_model_{graph}_resp_vs_unre_step_{s}.csv"
