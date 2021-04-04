@@ -184,7 +184,7 @@ def permutation_test(X, y, group, clf, num_permutation=10000):
     with joblib.parallel_backend('loky'):
         (accuracies, permutation_scores, p_value) = permutation_test_score(clf, X, y, groups=group, cv=train_test_splits,
                                                                         n_permutations=num_permutation,
-                                                                        verbose=num_permutation, n_jobs=-1)
+                                                                        verbose = 0, n_jobs=-1)
 
     return accuracies, permutation_scores, p_value
 

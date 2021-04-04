@@ -36,7 +36,7 @@ analysis_param = sys.argv[1]
 
 clf = commons.best_model
 
-"""
+
 # Run deep vs light unconsciousness
 print(f"Bootstrap: Graph {graph} at eml5_vs_emf5_step_{s}")
 bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap/bootstrap_10000_Final_model_{graph}_eml5_vs_emf5_step_{s}.csv"
@@ -94,7 +94,7 @@ boot_data.loc[c, 'acc_interval_high'] = acc_interval[1]
 boot_data.to_csv(bootstrap_filename, index=False, header=True, sep=',')
 
 print('finished')
-"""
+
 # Run responsiveness vs. unresponsiveness
 print(f"Bootstrap: Graph {graph} at resp_vs_unre_step_{s}")
 bootstrap_filename = commons.OUTPUT_DIR + f"bootstrap/bootstrap_10000_Final_model_{graph}_resp_vs_unre_step_{s}.csv"
