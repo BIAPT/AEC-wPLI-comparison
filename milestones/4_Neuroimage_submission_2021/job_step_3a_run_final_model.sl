@@ -9,7 +9,7 @@
 #SBATCH --mail-user=q2h3s6p4k0e9o7a5@biaptlab.slack.com # adjust this to match your email address
 #SBATCH --mail-type=ALL
 
-module load python/3.7.4
+module load python/3.7
 
 virtualenv --no-download $SLURM_TMPDIR/env
 source $SLURM_TMPDIR/env/bin/activate
