@@ -127,4 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-*.csv
+
+milestones/4_NeuroImage_submission_2021/step_5_generate_figures/plotting/features_step01.csv
+milestones/3_Yacine_final_pipeline/step_4_generate_figures/brain_weight_plot/weights_data.csv
